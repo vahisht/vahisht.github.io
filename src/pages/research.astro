@@ -1,0 +1,43 @@
+---
+import Layout from "../layout/Layout.astro";
+import research from "../data/research.json";
+import { Image } from "astro:assets";
+---
+
+<Layout title="Research">
+
+    <section class="min-w-screen min-h-screen bg-gray-600 flex flex-col items-center gap-6 p-6">
+
+        <h1 class="text-4xl text-gray-300">Publications</h1>
+
+        <div class="flex gap-4">
+            <h2 class="text-xl sm:text-2xl text-gray-300 text-center">Virtual Reality</h2>
+            <h2 class="text-xl sm:text-2xl text-gray-300 text-center">Computer Vision</h2>
+            <h2 class="text-xl sm:text-2xl text-gray-300 text-center">Computer Graphics</h2>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            {
+                research.map((research) => (
+
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-10 ">
+                        <a href={research.url} target="_blank">
+                            {
+                                research.image !== ""
+                                ? <Image src={"/research/"+research.image} width={500} height={300} alt={research.title} />
+                                : <div class="w-[500px] h-[300px] flex justify-center items-center bg-gray-800 text-white">No picture found</div>
+                            }
+                        </a>
+                        <div class="flex flex-col justify-around grow gap-2 sm:gap-8">
+                            <h3 class="text-2xl text-gray-200">{research.title}</h3>
+                            <p class="text-gray-200">{research.authors}</p>
+                            <p class="text-gray-400 text-sm italic">{research.location}</p>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+    </section>
+
+</Layout>

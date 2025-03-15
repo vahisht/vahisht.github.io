@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets";
+import MobileNav from "../components/MobileNav.svelte"
+---
+
+<nav class="flex justify-between w-full h-20 bg-gray-700">
+
+    <Image src={"/logo.png"} alt="Logo" width={64} height={64} />
+
+    <div class="hidden sm:flex items-center text-gray-300 gap-2">
+        <a href={"/"}>
+            <p class="text-xl p-2">Home</p>
+        </a>
+        <a href={"/speedrun"}>
+            <p class="text-xl p-2">Speedrun</p>
+        </a>
+        <a href={"/research"}>
+            <p class="text-xl p-2">Research</p>
+        </a>
+        <a href={"/portfolio"}>
+            <p class="text-xl p-2">Portfolio</p>
+        </a>
+    </div>
+
+    <MobileNav client:visible />
+</nav>  

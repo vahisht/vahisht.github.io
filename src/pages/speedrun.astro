@@ -1,0 +1,40 @@
+---
+import Layout from "../layout/Layout.astro";
+import Section from "../components/speedrun/Section.svelte";
+import SeriesSelect from "../components/speedrun/SeriesSelect.svelte"
+import DialogBox from "../components/speedrun/DialogBox.svelte"
+---
+
+<Layout title="Speedruns">
+
+    <section class="min-w-screen min-h-screen bg-gray-600 flex flex-col gap-6 p-6">
+        
+        <SeriesSelect 
+            client:load 
+        />
+
+        <Section 
+            client:load
+            sectionTitle="My Speedruns"
+            section="speedrun"
+        />
+
+        <Section 
+            client:load
+            sectionTitle="My Commentaries"
+            section="commentary"
+        />
+
+        <!-- 
+            If you want to add more section just add another <Section/> component.
+            "sectionTitle" refers to the Title of the section.
+            "section" refers to the type in the .json file so it filters them correctly.
+        -->
+
+        <DialogBox 
+            client:load 
+        />
+
+    </section>
+
+</Layout>

@@ -1,0 +1,51 @@
+---
+
+---
+
+<section id="twitch-embed-container" class="w-screen h-screen bg-gray-500 flex flex-col justify-center items-center">
+
+    <div id="twitch-embed"></div>
+
+</section>
+
+
+
+<!-- Load the Twitch embed JavaScript file -->
+<script is:inline src="https://embed.twitch.tv/embed/v1.js"></script>
+
+<!-- Create a Twitch.Embed object that will render within the "twitch-embed" element -->
+<script is:inline>
+
+    const username = "vahisht"
+    async function checkIfLive() 
+    {
+        try 
+        {
+            const response = await fetch(`https://twitch.tv/${username}`);
+            const sourceCode = await response.text();
+            
+            if (sourceCode.includes("isLiveBroadcast")) {
+                return true
+            } else {
+                return false
+            }
+        }
+        catch (error) {
+            console.log("Error occurred:", error);
+            return false
+        } 
+    }
+
+    if (checkIfLive() === true) {
+
+        new Twitch.Embed("twitch-embed", {
+            width: 854,
+            height: 480,
+            channel: "vahisht",
+            // Only needed if this page is going to be embedded on other websites
+            parent: ["localhost", "vahisht-website.vercel.app", "othersite.example.com"]
+        });
+
+
+    }
+</script>

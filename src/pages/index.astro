@@ -1,0 +1,28 @@
+---
+import Layout from "../layout/Layout.astro";
+import Header from "../components/main/Header.astro"
+import NewsGallery from "../components/main/NewsGallery.svelte";
+import TwitchSection from "../components/main/TwitchSection.svelte";
+import AboutMe from "../components/main/AboutMe.astro"
+
+const clientId = import.meta.env.TWITCH_PUBLIC_KEY
+const clientSecret = import.meta.env.TWITCH_SECRET_KEY
+---
+
+<Layout title="Home">
+	
+	<Header/>
+
+	<TwitchSection 
+		client:visible 
+		clientId={clientId}
+		clientSecret={clientSecret}
+	/>
+
+	<NewsGallery 
+		client:visible 
+	/>
+
+	<AboutMe />
+
+</Layout>
