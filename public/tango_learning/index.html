@@ -490,6 +490,105 @@
     }
     #port-rules ol { padding-left: 1.4em; margin: 0; }
     #port-rules li { margin-bottom: 6px; }
+
+    /* ── Helper 8: Wire Cutting Protocol ── */
+    #wire-panel { width: 100%; }
+    #wire-board {
+      display: flex;
+      flex-direction: column;
+      background: #0c0c0c;
+      border: 2px solid #2a2a2a;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 12px rgba(0,0,0,0.85);
+      overflow: hidden;
+      padding: 4px 0;
+    }
+    .wire-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 0;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .wire-row:hover { background: rgba(255,255,255,0.07); }
+    .wire-row.selected { background: rgba(255,255,255,0.13); }
+    .wire-row.selected .wire-line { filter: brightness(1.5); }
+    .wire-post-col {
+      width: 14px;
+      align-self: stretch;
+      flex-shrink: 0;
+      background: linear-gradient(to right, #5a3010, #c08030, #e0a040, #c08030, #5a3010);
+    }
+    .wire-post-col--right { margin-left: 4px; }
+    .wire-post-col--left  { margin-right: 4px; }
+    .wire-plug {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+    .wire-line {
+      flex: 1;
+      height: 8px;
+      transition: filter 0.12s;
+    }
+    .wire-name {
+      min-width: 64px;
+      padding: 0 12px 0 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+      text-align: right;
+    }
+    #wire-circuit-pick { width: 100%; }
+    #wire-circuit-label {
+      font-size: 0.75rem;
+      color: #7090b0;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    #wire-circuit-btns { display: flex; gap: 10px; }
+    .wire-circuit-btn {
+      flex: 1;
+      height: 52px;
+      border-radius: 8px;
+      border: 2px solid #2a3a4a;
+      background: #1a2a3a;
+      color: #7090b0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .wire-circuit-btn:hover:not(:disabled) { background: #243a50; border-color: #3a5a7a; }
+    .wire-circuit-btn.selected {
+      background: #0a2040;
+      border-color: #5bc8f5;
+      color: #5bc8f5;
+      box-shadow: 0 0 12px #5bc8f540;
+    }
+    #wire-rules {
+      width: 100%;
+      background: #1e2a3a;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    #wire-rules h3 {
+      font-size: 0.8rem;
+      color: #7090b0;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    #wire-rules ul { list-style: none; padding: 0; margin: 0; }
+    #wire-rules li { padding: 6px 10px; border-radius: 6px; margin-bottom: 4px; }
+    #wire-rules li.rule-active  { background: #0e2a0e; border-left: 3px solid #3ddc5a; }
+    #wire-rules li.rule-inactive { opacity: 0.45; }
   </style>
 </head>
 <body>
@@ -539,6 +638,7 @@
     <div class="mission-header">Mission 6 &mdash; Big Bang Theory</div>
     <div class="mission-btns">
       <button class="entry-btn" onclick="startPort()">Port to colours <span class="entry-btn-role">Hacker</span></button>
+      <button class="entry-btn entry-btn--agent" onclick="startWire()">Wire cutting protocol <span class="entry-btn-role">Agent</span></button>
     </div>
   </div>
 
@@ -566,6 +666,25 @@
   <div id="port-rules" class="hidden"></div>
 
   <button id="continue-port" class="action-btn hidden" onclick="portNext()">Continue</button>
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<!-- ==================== HELPER 8: WIRE CUTTING PROTOCOL ==================== -->
+<div id="screen-wire" class="screen">
+  <h2>Wire Cutting Protocol</h2>
+  <div id="wire-panel"></div>
+  <div id="wire-circuit-pick">
+    <div id="wire-circuit-label">When circuit flashes</div>
+    <div id="wire-circuit-btns">
+      <button class="wire-circuit-btn" onclick="selectWireCircuit(1)">1</button>
+      <button class="wire-circuit-btn" onclick="selectWireCircuit(2)">2</button>
+      <button class="wire-circuit-btn" onclick="selectWireCircuit(3)">3</button>
+      <button class="wire-circuit-btn" onclick="selectWireCircuit(4)">4</button>
+    </div>
+  </div>
+  <div id="feedback-wire" class="feedback-text"></div>
+  <div id="wire-rules" class="hidden"></div>
+  <button id="continue-wire" class="action-btn hidden" onclick="wireNext()">Continue</button>
   <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
 </div>
 
@@ -1738,6 +1857,216 @@ function renderPortRules(correctIdx) {
   var el = document.getElementById('port-rules');
   el.innerHTML = html;
   el.classList.remove('hidden');
+}
+// ============================================================
+
+var WIRE_ACTIONS = [
+  { label: 'Bottom Red', borderColor: '#dc3d3d', bg: '#3a1010', color: '#ff8888', circuit: 1 },
+  { label: 'Yellow',     borderColor: '#f5d040', bg: '#2a2200', color: '#f5d040', circuit: 2 },
+  { label: 'Green',      borderColor: '#3ddc5a', bg: '#0a2a10', color: '#7af5a0', circuit: 3 },
+  { label: 'Top Blue',   borderColor: '#5bc8f5', bg: '#101040', color: '#8ad8ff', circuit: 4 }
+];
+
+var WIRE_RULE_TEXTS = [
+  'Yellow wire is anywhere between two blue wires',
+  'A blue wire is adjacent to the green wire',
+  'The two red wires are adjacent',
+  'The green wire is adjacent to the yellow wire'
+];
+
+var wireBag   = [];
+var wireState = null;
+
+function wireBagNext() {
+  if (wireBag.length === 0) {
+    wireBag = [0, 1, 2, 3];
+    for (var i = wireBag.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = wireBag[i]; wireBag[i] = wireBag[j]; wireBag[j] = tmp;
+    }
+  }
+  return wireBag.pop();
+}
+
+function wireRuleFires(arr) {
+  // Rule 0: yellow is between two blues (one blue above, one below)
+  var yi = arr.indexOf('Yellow');
+  var b1 = arr.indexOf('Blue');
+  var b2 = arr.lastIndexOf('Blue');
+  var r0 = (b1 < yi && yi < b2);
+  // Rule 1: blue adjacent to green
+  var r1 = false;
+  for (var i = 0; i < arr.length - 1; i++) {
+    if ((arr[i] === 'Blue' && arr[i+1] === 'Green') || (arr[i] === 'Green' && arr[i+1] === 'Blue')) { r1 = true; break; }
+  }
+  // Rule 2: two reds adjacent
+  var r2 = false;
+  for (var i = 0; i < arr.length - 1; i++) {
+    if (arr[i] === 'Red' && arr[i+1] === 'Red') { r2 = true; break; }
+  }
+  // Rule 3: green adjacent to yellow
+  var r3 = false;
+  for (var i = 0; i < arr.length - 1; i++) {
+    if ((arr[i] === 'Green' && arr[i+1] === 'Yellow') || (arr[i] === 'Yellow' && arr[i+1] === 'Green')) { r3 = true; break; }
+  }
+  return [r0, r1, r2, r3];
+}
+
+function generateWirePuzzle() {
+  var targetRule = wireBagNext();
+  var base = ['Red', 'Red', 'Blue', 'Blue', 'Green', 'Yellow'];
+  var arr = null;
+  for (var attempt = 0; attempt < 3000; attempt++) {
+    var cand = base.slice();
+    for (var i = cand.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = cand[i]; cand[i] = cand[j]; cand[j] = tmp;
+    }
+    var fires = wireRuleFires(cand);
+    var count = fires.filter(function(v) { return v; }).length;
+    if (count === 1 && fires[targetRule]) { arr = cand; break; }
+  }
+  if (arr === null) {
+    // fallback: any single-rule arrangement
+    for (var k = 0; k < 5000; k++) {
+      var cand2 = base.slice();
+      for (var i = cand2.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = cand2[i]; cand2[i] = cand2[j]; cand2[j] = tmp;
+      }
+      var fires2 = wireRuleFires(cand2);
+      var count2 = fires2.filter(function(v) { return v; }).length;
+      if (count2 === 1) { arr = cand2; targetRule = fires2.indexOf(true); break; }
+    }
+  }
+  wireState = { arr: arr, ruleIdx: targetRule };
+}
+
+var WIRE_CSS = {
+  Red:    { line: '#dc3d3d', text: '#ff8888' },
+  Blue:   { line: '#5bc8f5', text: '#8ad8ff' },
+  Green:  { line: '#3ddc5a', text: '#7af5a0' },
+  Yellow: { line: '#f5d040', text: '#f5ef80' }
+};
+
+var wireSelectedWire    = -1;
+var wireSelectedCircuit = -1;
+
+function wireLabel(arr, idx) {
+  var color = arr[idx];
+  var total = 0, before = 0;
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === color) { total++; if (i < idx) before++; }
+  }
+  if (total === 1) return color;
+  return (before === 0 ? 'Top' : 'Bottom') + ' ' + color;
+}
+
+function renderWirePanel(arr) {
+  var html = '<div id="wire-board">';
+  for (var i = 0; i < arr.length; i++) {
+    var color  = arr[i];
+    var css    = WIRE_CSS[color];
+    var shadow = '0 0 7px ' + css.line;
+    html += '<div class="wire-row" data-wire-idx="' + i + '" onclick="selectWire(' + i + ')">';
+    html += '<div class="wire-post-col wire-post-col--left"></div>';
+    html += '<div class="wire-plug" style="background:' + css.line + ';box-shadow:' + shadow + ';"></div>';
+    html += '<div class="wire-line" style="background:' + css.line + ';box-shadow:' + shadow + ';"></div>';
+    html += '<div class="wire-plug" style="background:' + css.line + ';box-shadow:' + shadow + ';"></div>';
+    html += '<div class="wire-post-col wire-post-col--right"></div>';
+    html += '<div class="wire-name" style="color:' + css.text + ';">' + color + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  document.getElementById('wire-panel').innerHTML = html;
+}
+
+function selectWire(idx) {
+  if (wireSelectedWire === -2) return; // locked after answer
+  wireSelectedWire = idx;
+  document.querySelectorAll('.wire-row').forEach(function(r) { r.classList.remove('selected'); });
+  document.querySelector('[data-wire-idx="' + idx + '"]').classList.add('selected');
+  maybeCheckWireCombo();
+}
+
+function selectWireCircuit(n) {
+  if (wireSelectedCircuit === -2) return; // locked after answer
+  wireSelectedCircuit = n;
+  document.querySelectorAll('.wire-circuit-btn').forEach(function(b, i) {
+    b.classList.toggle('selected', i + 1 === n);
+  });
+  maybeCheckWireCombo();
+}
+
+function maybeCheckWireCombo() {
+  if (wireSelectedWire >= 0 && wireSelectedCircuit >= 0) { checkWireCombo(); }
+}
+
+function checkWireCombo() {
+  wireSelectedWire    = -2;
+  wireSelectedCircuit = -2;
+  document.querySelectorAll('.wire-row').forEach(function(r) { r.style.pointerEvents = 'none'; });
+  document.querySelectorAll('.wire-circuit-btn').forEach(function(b) { b.disabled = true; });
+
+  var correct        = wireState.ruleIdx;
+  var correctLabel   = WIRE_ACTIONS[correct].label;
+  var correctCircuit = WIRE_ACTIONS[correct].circuit;
+  var chosenLabel    = wireLabel(wireState.arr, parseInt(document.querySelector('.wire-row.selected').dataset.wireIdx));
+  var chosenCircuit  = document.querySelector('.wire-circuit-btn.selected') &&
+    parseInt(document.querySelector('.wire-circuit-btn.selected').textContent);
+
+  var fb = document.getElementById('feedback-wire');
+  if (chosenLabel === correctLabel && chosenCircuit === correctCircuit) {
+    fb.textContent = '\u2713 Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    fb.textContent = '\u2717 Wrong \u2014 cut ' + correctLabel + ' at circuit ' + correctCircuit;
+    fb.className = 'feedback-text wrong';
+    renderWireRules(correct);
+    document.getElementById('wire-rules').className = '';
+    // highlight the correct wire row
+    document.querySelectorAll('.wire-row').forEach(function(r) {
+      var idx = parseInt(r.dataset.wireIdx);
+      if (wireLabel(wireState.arr, idx) === correctLabel) {
+        r.style.outline = '2px solid rgba(255,255,255,0.45)';
+        r.style.background = 'rgba(255,255,255,0.09)';
+      }
+    });
+  }
+  document.getElementById('continue-wire').className = 'action-btn';
+}
+
+function startWire() {
+  showScreen('screen-wire');
+  wireNext();
+}
+
+function wireNext() {
+  wireSelectedWire    = -1;
+  wireSelectedCircuit = -1;
+  generateWirePuzzle();
+  renderWirePanel(wireState.arr);
+  document.querySelectorAll('.wire-circuit-btn').forEach(function(b) {
+    b.classList.remove('selected');
+    b.disabled = false;
+  });
+  document.getElementById('feedback-wire').textContent = '';
+  document.getElementById('feedback-wire').className = 'feedback-text';
+  document.getElementById('wire-rules').className = 'hidden';
+  document.getElementById('continue-wire').className = 'action-btn hidden';
+}
+
+function renderWireRules(activeIdx) {
+  var html = '<h3>Rules (only one is true)</h3><ul>';
+  for (var i = 0; i < WIRE_RULE_TEXTS.length; i++) {
+    var a = WIRE_ACTIONS[i];
+    var cls = i === activeIdx ? 'rule-active' : 'rule-inactive';
+    html += '<li class="' + cls + '">' + WIRE_RULE_TEXTS[i];
+    html += ' &rarr; <strong style="color:' + a.borderColor + '">cut ' + a.label + '</strong>';
+    html += ' when circuit&nbsp;' + a.circuit + ' flashes</li>';
+  }
+  html += '</ul>';
+  document.getElementById('wire-rules').innerHTML = html;
 }
 // ============================================================
 
