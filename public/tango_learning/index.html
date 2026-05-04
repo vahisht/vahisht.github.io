@@ -290,6 +290,32 @@
     .mission-group--locked .entry-btn { cursor: default; background: #445; }
     .mission-group--locked .entry-btn:hover { background: #445; transform: none; }
 
+    /* ── Helper 6: Battery Backup ── */
+    #battery-compound {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #5bc8f5;
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 24px 20px;
+      background: #1e2a3a;
+      border: 2px solid #2a3a4a;
+      border-radius: 10px;
+      width: 100%;
+    }
+    #battery-answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+    #battery-answer-grid .answer-btn {
+      font-size: 1rem;
+      padding: 16px 12px;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
     /* ── Helper 5: Door Colour Sequence ── */
     #door-phase-wrap { width: 100%; }
     #door-phase-label {
@@ -418,6 +444,7 @@
     <div class="mission-header">Mission 3 &mdash; Business on the Go</div>
     <div class="mission-btns">
       <button class="entry-btn" onclick="startLateral()">Lateral compensator</button>
+      <button class="entry-btn" onclick="startBattery()">Battery backup</button>
     </div>
   </div>
 
@@ -574,6 +601,16 @@
     </div>
   </div>
 
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<!-- ==================== HELPER 6: BATTERY BACKUP ==================== -->
+<div id="screen-battery" class="screen">
+  <h2>Battery Backup</h2>
+  <div id="battery-compound">?</div>
+  <div id="battery-answer-grid"></div>
+  <div id="feedback-battery" class="feedback-text"></div>
+  <button id="continue-battery" class="action-btn hidden" onclick="batteryNext()">Continue</button>
   <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
 </div>
 
@@ -1012,11 +1049,11 @@ function drawNext() {
 // ============================================================
 
 var LATERAL_COLORS = {
-  Red:   { css: '#ff4444', slider: 25 },
-  White: { css: '#e8e8e8', slider: 33 },
-  Blue:  { css: '#5bc8f5', slider: 50 },
-  Green: { css: '#3ddc5a', slider: 75 },
-  Black: { css: '#aaaaaa', slider: 95 }
+  Red:   { css: '#ff4444', shadow: '',                              slider: 25 },
+  White: { css: '#ffffff', shadow: '0 0 8px rgba(255,255,255,0.9)', slider: 33 },
+  Blue:  { css: '#5bc8f5', shadow: '',                              slider: 50 },
+  Green: { css: '#3ddc5a', shadow: '',                              slider: 75 },
+  Black: { css: '#777777', shadow: '',                              slider: 95 }
 };
 var LATERAL_COLOR_NAMES = ['Red', 'White', 'Blue', 'Green', 'Black'];
 
@@ -1211,7 +1248,8 @@ function lateralNext() {
 
     var star = document.createElement('div');
     star.className = 'connector-star';
-    star.style.color = LATERAL_COLORS[color].css;
+    star.style.color      = LATERAL_COLORS[color].css;
+    star.style.textShadow  = LATERAL_COLORS[color].shadow;
     star.textContent = '\u2726';  // ✦
 
     var lbl = document.createElement('div');
@@ -1292,10 +1330,10 @@ function renderLateralRules(n, correctRuleIdx) {
   html += '</ol>';
   html += '<div class="slider-legend">'
         + '<span style="color:#ff4444">Red=25%</span>'
-        + '<span style="color:#e8e8e8">White=33%</span>'
+        + '<span style="color:#ffffff;text-shadow:0 0 6px rgba(255,255,255,0.8)">White=33%</span>'
         + '<span style="color:#5bc8f5">Blue=50%</span>'
         + '<span style="color:#3ddc5a">Green=75%</span>'
-        + '<span style="color:#aaaaaa">Black=95%</span>'
+        + '<span style="color:#777777">Black=95%</span>'
         + '</div>';
   var rulesDiv = document.getElementById('lateral-rules');
   rulesDiv.innerHTML = html;
@@ -1444,6 +1482,89 @@ function submitDoor() {
   }
 
   document.getElementById('continue-door').classList.remove('hidden');
+}
+
+// ============================================================
+//  HELPER 6 – BATTERY BACKUP
+// ============================================================
+
+var BATTERY_COMPOUNDS = [
+  { name: 'Acidic',    drops: 5, timing: 'within 2 s'       },
+  { name: 'Saturated', drops: 3, timing: 'in 1 s intervals' },
+  { name: 'Corrosive', drops: 2, timing: 'within 1 s'       },
+  { name: 'Residues',  drops: 2, timing: 'in 2 s intervals' },
+  { name: 'Viscous',   drops: 5, timing: 'in 1 s intervals' },
+  { name: 'Undiluted', drops: 3, timing: 'within 1 s'       },
+  { name: 'Alkaline',  drops: 4, timing: 'in 1 s intervals' }
+];
+
+var batteryCompound = null;
+
+function startBattery() {
+  showScreen('screen-battery');
+  batteryNext();
+}
+
+function batteryNext() {
+  batteryCompound = BATTERY_COMPOUNDS[Math.floor(Math.random() * BATTERY_COMPOUNDS.length)];
+
+  var others = BATTERY_COMPOUNDS.filter(function(c) { return c.name !== batteryCompound.name; });
+
+  // Fisher-Yates shuffle of distractors
+  var oi, oj, otmp;
+  for (oi = others.length - 1; oi > 0; oi--) {
+    oj = Math.floor(Math.random() * (oi + 1));
+    otmp = others[oi]; others[oi] = others[oj]; others[oj] = otmp;
+  }
+
+  // 3 distractors + correct, shuffled
+  var options = others.slice(0, 3).concat([batteryCompound]);
+  var pi, pj, ptmp;
+  for (pi = options.length - 1; pi > 0; pi--) {
+    pj = Math.floor(Math.random() * (pi + 1));
+    ptmp = options[pi]; options[pi] = options[pj]; options[pj] = ptmp;
+  }
+
+  document.getElementById('battery-compound').textContent = batteryCompound.name;
+
+  var grid = document.getElementById('battery-answer-grid');
+  grid.innerHTML = '';
+  options.forEach(function(opt) {
+    var btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.setAttribute('data-name', opt.name);
+    btn.innerHTML = opt.drops + ' drops &nbsp;<span style="color:#7090b0;">&middot;</span>&nbsp; ' + opt.timing;
+    btn.onclick = (function(name) {
+      return function() { checkBatteryAnswer(name); };
+    })(opt.name);
+    grid.appendChild(btn);
+  });
+
+  var fb = document.getElementById('feedback-battery');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+  document.getElementById('continue-battery').classList.add('hidden');
+}
+
+function checkBatteryAnswer(chosenName) {
+  var correctName = batteryCompound.name;
+  var fb = document.getElementById('feedback-battery');
+
+  document.querySelectorAll('#battery-answer-grid .answer-btn').forEach(function(btn) {
+    btn.disabled = true;
+    var n = btn.getAttribute('data-name');
+    if (n === correctName) { btn.classList.add('correct'); }
+    if (n === chosenName && chosenName !== correctName) { btn.classList.add('wrong'); }
+  });
+
+  if (chosenName === correctName) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    fb.textContent = 'Incorrect \u2014 ' + batteryCompound.drops + ' drops, ' + batteryCompound.timing;
+    fb.className = 'feedback-text wrong';
+  }
+  document.getElementById('continue-battery').classList.remove('hidden');
 }
 </script>
 </body>
