@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operation Tango – Learning Helper</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Shared ── */
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 560px;
+      width: 100%;
+      padding: 24px 16px;
+    }
+    .screen.active { display: flex; }
+
+    h1 { font-size: 1.8rem; letter-spacing: 0.05em; color: #c8d8e8; }
+    h2 { font-size: 1.3rem; color: #5bc8f5; letter-spacing: 0.04em; }
+
+    .entry-btn {
+      background: #5bc8f5;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.02em;
+    }
+    .entry-btn:hover  { background: #38b6e8; }
+    .entry-btn:active { transform: scale(0.97); }
+
+    .action-btn {
+      background: #5bc8f5;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px 36px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .action-btn:hover  { background: #38b6e8; }
+    .action-btn:active { transform: scale(0.97); }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #7090b0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-decoration: underline;
+    }
+    .back-btn:hover { color: #a0c0e0; }
+
+    /* ── Helper 1: Recognize ── */
+    #pattern-img {
+      max-width: 340px;
+      width: 100%;
+      border: 3px solid #334;
+      border-radius: 10px;
+      background: #111;
+      display: block;
+    }
+
+    #answer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+
+    .answer-btn {
+      background: #2a2a4a;
+      color: #e0e0e0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 18px 0;
+      border: 2px solid #445;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s, transform 0.1s;
+    }
+    .answer-btn:hover:not(:disabled) { background: #3a3a6a; border-color: #5bc8f5; }
+    .answer-btn:active:not(:disabled) { transform: scale(0.96); }
+    .answer-btn:disabled { cursor: default; opacity: 0.6; }
+    .answer-btn.correct { background: #1a5c2a !important; border-color: #3ddc5a !important; color: #3ddc5a !important; opacity: 1 !important; }
+    .answer-btn.wrong   { background: #5c1a1a !important; border-color: #dc3d3d !important; color: #dc3d3d !important; opacity: 1 !important; }
+
+    /* ── Helper 3: Firewall ── */
+    #firewall-img {
+      width: 300px;
+      height: 300px;
+      object-fit: fill;
+      border: 3px solid #334;
+      border-radius: 10px;
+      display: block;
+    }
+
+    #firewall-answer-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    /* ── Helper 2: Draw ── */
+    #draw-grid-wrap {
+      background: #f5f0e8;
+      border-radius: 10px;
+      padding: 8px;
+      border: 3px solid #334;
+      line-height: 0;
+    }
+    #draw-grid-wrap svg { display: block; }
+
+    /* ── Feedback ── */
+    .feedback-text {
+      font-size: 1.15rem;
+      font-weight: 600;
+      min-height: 1.5em;
+      text-align: center;
+    }
+    .feedback-text.correct { color: #3ddc5a; }
+    .feedback-text.wrong   { color: #dc3d3d; }
+
+    .hidden { display: none !important; }
+
+    /* ── Helper 4: Lateral Compensator ── */
+    #lateral-connectors {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .connector-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .connector-wrap:hover { border-color: #445; }
+    .connector-wrap.selected { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+
+    .connector-star {
+      font-size: 2.8rem;
+      line-height: 1;
+    }
+    .connector-label {
+      font-size: 0.72rem;
+      color: #a0b0c0;
+      letter-spacing: 0.02em;
+    }
+
+    #lateral-slider-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    #lateral-slider-label { font-size: 1rem; color: #c0d0e0; }
+    #lateral-slider { width: 100%; cursor: pointer; accent-color: #5bc8f5; }
+
+    #lateral-rules {
+      width: 100%;
+      background: #1e2a3a;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    #lateral-rules h3 {
+      font-size: 0.8rem;
+      color: #7090b0;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    #lateral-rules ol { padding-left: 1.4em; margin: 0; }
+    #lateral-rules li { margin-bottom: 6px; }
+    .rule-highlight { color: #3ddc5a; font-weight: bold; }
+
+    #lateral-mode-wrap { width: 100%; }
+    #lateral-mode-label {
+      font-size: 0.8rem;
+      color: #7090b0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    #lateral-mode-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+    .lateral-mode-random { grid-column: 1 / -1; }
+
+    #lateral-game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+    #lateral-game.hidden { display: none !important; }
+
+    .change-mode-btn {
+      background: #243040;
+      color: #7090b0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border: 1px solid #334;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .change-mode-btn:hover { color: #a0c0e0; border-color: #556; }
+
+    .slider-legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-top: 1px solid #2a3a4a;
+      padding-top: 10px;
+    }
+
+    /* ── Menu mission groups ── */
+    .mission-group {
+      width: 100%;
+      border: 1px solid #2a3a4a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .mission-header {
+      background: #1e2a3a;
+      padding: 8px 16px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #5bc8f5;
+    }
+    .mission-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mission-btns .entry-btn {
+      border-radius: 0;
+      border-top: 1px solid #1e2a3a;
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 1rem;
+    }
+    .mission-btns .entry-btn:first-child { border-top: none; }
+
+    .mission-group--locked { opacity: 0.45; }
+    .mission-group--locked .entry-btn { cursor: default; background: #445; }
+    .mission-group--locked .entry-btn:hover { background: #445; transform: none; }
+
+    /* ── Helper 5: Door Colour Sequence ── */
+    #door-phase-wrap { width: 100%; }
+    #door-phase-label {
+      font-size: 0.8rem;
+      color: #7090b0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    #door-phase-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+    #door-game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+    #door-game.hidden { display: none !important; }
+    #door-panel {
+      width: 90px;
+      height: 180px;
+      border: 3px solid #00ff88;
+      border-radius: 6px;
+      box-shadow: 0 0 16px #00ff88, 0 0 32px #00ff8844;
+      background: #0a1a10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff88;
+    }
+    #door-sequence-wrap {
+      background: #1a1a2e;
+      border: 1px solid #2a3a4a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .door-seq-label {
+      font-size: 0.72rem;
+      color: #7090b0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    #door-entered-tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      min-height: 44px;
+    }
+    .door-color-tile {
+      width: 50px;
+      height: 44px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    #door-color-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 90px);
+      grid-template-rows: repeat(3, 58px);
+      gap: 6px;
+    }
+    .door-color-btn {
+      width: 90px;
+      height: 58px;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,0.15);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .door-color-btn:active { transform: scale(0.93); }
+    .door-color-btn:hover:not(:disabled) { box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+    .door-color-btn:disabled { cursor: default; opacity: 0.5; }
+    .door-color-btn--empty { background: transparent !important; border: none !important; cursor: default; pointer-events: none; }
+    .door-color-btn--back { background: #2a2a4a; color: #e0e0e0; font-size: 1.2rem; }
+    #door-correct-seq {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== MAIN MENU ==================== -->
+<div id="screen-menu" class="screen active">
+  <h1>Operation Tango</h1>
+
+  <div class="mission-group">
+    <div class="mission-header">Mission 1 &mdash; A Viral Heist</div>
+    <div class="mission-btns">
+      <button class="entry-btn" onclick="startRecognize()">Safes patterns recognition</button>
+      <button class="entry-btn" onclick="startDraw()">Draw the pattern</button>
+    </div>
+  </div>
+
+  <div class="mission-group">
+    <div class="mission-header">Mission 2 &mdash; A High-Tech Target</div>
+    <div class="mission-btns">
+      <button class="entry-btn" onclick="startFirewall()">Firewall recognition</button>
+    </div>
+  </div>
+
+  <div class="mission-group">
+    <div class="mission-header">Mission 3 &mdash; Business on the Go</div>
+    <div class="mission-btns">
+      <button class="entry-btn" onclick="startLateral()">Lateral compensator</button>
+    </div>
+  </div>
+
+  <div class="mission-group">
+    <div class="mission-header">Mission 4 &mdash; Digital Dive</div>
+    <div class="mission-btns">
+      <button class="entry-btn" onclick="startDoor()">Door colour sequence</button>
+    </div>
+  </div>
+
+  <div class="mission-group mission-group--locked">
+    <div class="mission-header">Mission 5 &mdash; Institutional Cleanup</div>
+    <div class="mission-btns">
+      <button class="entry-btn" disabled>Coming soon</button>
+    </div>
+  </div>
+
+  <div class="mission-group mission-group--locked">
+    <div class="mission-header">Mission 6 &mdash; Big Bang Theory</div>
+    <div class="mission-btns">
+      <button class="entry-btn" disabled>Coming soon</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== HELPER 1: RECOGNIZE ==================== -->
+<div id="screen-recognize" class="screen">
+  <h2>Safes Patterns Recognition</h2>
+  <img id="pattern-img" src="" alt="Pattern" />
+  <div id="answer-grid">
+    <button class="answer-btn" onclick="checkAnswer('1')">1</button>
+    <button class="answer-btn" onclick="checkAnswer('2')">2</button>
+    <button class="answer-btn" onclick="checkAnswer('3')">3</button>
+    <button class="answer-btn" onclick="checkAnswer('4')">4</button>
+    <button class="answer-btn" onclick="checkAnswer('5')">5</button>
+    <button class="answer-btn" onclick="checkAnswer('6')">6</button>
+    <button class="answer-btn" onclick="checkAnswer('7')">7</button>
+    <button class="answer-btn" onclick="checkAnswer('8')">8</button>
+  </div>
+  <div id="feedback-recognize" class="feedback-text"></div>
+  <button id="continue-recognize" class="action-btn hidden" onclick="recognizeNext()">Continue</button>
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<!-- ==================== HELPER 3: FIREWALL ==================== -->
+<div id="screen-firewall" class="screen">
+  <h2>Firewall Recognition</h2>
+  <img id="firewall-img" src="" alt="Firewall Pattern" />
+  <div id="firewall-answer-grid">
+    <button class="answer-btn" onclick="checkFirewallAnswer('1')">1</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('2')">2</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('3')">3</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('4')">4</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('5')">5</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('6')">6</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('7')">7</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('8')">8</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('9')">9</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('10')">10</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('11')">11</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('12')">12</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('13')">13</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('14')">14</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('15')">15</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('16')">16</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('17')">17</button>
+    <button class="answer-btn" onclick="checkFirewallAnswer('18')">18</button>
+  </div>
+  <div id="feedback-firewall" class="feedback-text"></div>
+  <button id="continue-firewall" class="action-btn hidden" onclick="firewallNext()">Continue</button>
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<!-- ==================== HELPER 4: LATERAL COMPENSATOR ==================== -->
+<div id="screen-lateral" class="screen">
+  <h2>Lateral Compensator</h2>
+
+  <!-- Mode picker -->
+  <div id="lateral-mode-wrap">
+    <div id="lateral-mode-label">Choose number of connectors:</div>
+    <div id="lateral-mode-grid">
+      <button class="answer-btn" onclick="startLateralMode(3)">3</button>
+      <button class="answer-btn" onclick="startLateralMode(4)">4</button>
+      <button class="answer-btn" onclick="startLateralMode(5)">5</button>
+      <button class="answer-btn" onclick="startLateralMode(6)">6</button>
+      <button class="answer-btn lateral-mode-random" onclick="startLateralMode(0)">Random (3&#8211;6)</button>
+    </div>
+  </div>
+
+  <!-- Game area -->
+  <div id="lateral-game" class="hidden">
+    <div id="lateral-active-mode"></div>
+    <div id="lateral-connectors"></div>
+    <div id="lateral-slider-wrap">
+      <div id="lateral-slider-label">Slider: <span id="lateral-slider-val">50</span>%</div>
+      <input type="range" id="lateral-slider" min="0" max="100" step="1" value="50"
+             oninput="document.getElementById('lateral-slider-val').textContent = this.value" />
+    </div>
+    <button id="lateral-confirm" class="action-btn" onclick="confirmLateral()" disabled>Confirm</button>
+    <div id="feedback-lateral" class="feedback-text"></div>
+    <div id="lateral-rules" class="hidden"></div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;">
+      <button id="continue-lateral" class="action-btn hidden" onclick="lateralNext()">Continue</button>
+      <button class="change-mode-btn" onclick="showLateralModePick()">&#8592; Change mode</button>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<!-- ==================== HELPER 5: DOOR COLOUR SEQUENCE ==================== -->
+<div id="screen-door" class="screen">
+  <h2>Door Colour Sequence</h2>
+
+  <!-- Phase picker -->
+  <div id="door-phase-wrap">
+    <div id="door-phase-label">Choose phase:</div>
+    <div id="door-phase-grid">
+      <button class="answer-btn" onclick="startDoorPhase(1)">Phase 1</button>
+      <button class="answer-btn" onclick="startDoorPhase(2)">Phase 2</button>
+    </div>
+  </div>
+
+  <!-- Game area -->
+  <div id="door-game" class="hidden">
+    <div id="door-panel"><span id="door-number">?</span></div>
+
+    <div id="door-sequence-wrap">
+      <div class="door-seq-label">Your sequence</div>
+      <div id="door-entered-tiles"></div>
+    </div>
+
+    <!-- Cross layout: Pink top-center, Yellow left, &#9003; center, Blue right, Green bottom -->
+    <div id="door-color-buttons">
+      <div class="door-color-btn door-color-btn--empty"></div>
+      <button class="door-color-btn" id="door-btn-P" style="background:#d020a0;color:#fff;" onclick="doorAddColor('P')">Pink</button>
+      <div class="door-color-btn door-color-btn--empty"></div>
+      <button class="door-color-btn" id="door-btn-Y" style="background:#f5d040;color:#222;" onclick="doorAddColor('Y')">Yellow</button>
+      <button class="door-color-btn door-color-btn--back" onclick="doorBackspace()">&#9003;</button>
+      <button class="door-color-btn" id="door-btn-B" style="background:#1a5fff;color:#fff;" onclick="doorAddColor('B')">Blue</button>
+      <div class="door-color-btn door-color-btn--empty"></div>
+      <button class="door-color-btn" id="door-btn-G" style="background:#3ddc5a;color:#222;" onclick="doorAddColor('G')">Green</button>
+      <div class="door-color-btn door-color-btn--empty"></div>
+    </div>
+
+    <button id="door-submit" class="action-btn" onclick="submitDoor()">Submit</button>
+    <div id="feedback-door" class="feedback-text"></div>
+    <div id="door-correct-seq" class="hidden"></div>
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;">
+      <button id="continue-door" class="action-btn hidden" onclick="doorNext()">Continue</button>
+      <button class="change-mode-btn" onclick="showDoorPhasePick()">&#8592; Change phase</button>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<!-- ==================== HELPER 2: DRAW ==================== -->
+<div id="screen-draw" class="screen">
+  <h2 id="draw-title">Draw pattern #?</h2>
+  <div id="draw-grid-wrap">
+    <svg id="draw-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div id="feedback-draw" class="feedback-text"></div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <button id="submit-draw" class="action-btn" onclick="submitDraw()">Submit</button>
+    <button id="continue-draw" class="action-btn hidden" onclick="drawNext()">Continue</button>
+  </div>
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
+</div>
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+var PATTERNS = [
+  {
+    key: "1", image: "trezor_patterns/1.png",
+    drawing: [[[0,2],[1,3]], [[1,3],[2,2]], [[2,1],[2,2]], [[2,3],[2,4]], [[2,4],[1,4]]]
+  },
+  {
+    key: "2", image: "trezor_patterns/2.png",
+    drawing: [[[0,2],[1,3]], [[1,3],[2,2]], [[1,3],[2,4]], [[2,0],[2,1]], [[3,2],[4,2]]]
+  },
+  {
+    key: "3", image: "trezor_patterns/3.png",
+    drawing: [[[1,2],[2,2]], [[2,1],[2,2]], [[2,2],[2,3]], [[3,1],[4,2]], [[4,2],[3,3]]]
+  },
+  {
+    key: "4", image: "trezor_patterns/4.png",
+    drawing: [[[0,3],[1,4]], [[2,0],[2,1]], [[2,1],[3,2]], [[3,2],[4,2]], [[4,3],[3,4]]]
+  },
+  {
+    key: "5", image: "trezor_patterns/5.png",
+    drawing: [[[1,1],[1,2]], [[1,2],[2,3]], [[2,1],[3,1]], [[3,1],[2,2]], [[2,2],[3,2]]]
+  },
+  {
+    key: "6", image: "trezor_patterns/6.png",
+    drawing: [[[2,0],[1,1]], [[1,1],[1,2]], [[2,2],[3,2]], [[3,2],[2,3]], [[2,3],[3,4]]]
+  },
+  {
+    key: "7", image: "trezor_patterns/7.png",
+    drawing: [[[1,1],[2,2]], [[2,1],[2,2]], [[3,0],[2,1]], [[3,3],[3,4]], [[3,3],[4,3]]]
+  },
+  {
+    key: "8", image: "trezor_patterns/8.png",
+    drawing: [[[1,2],[2,3]], [[2,1],[3,1]], [[2,3],[3,2]], [[4,1],[4,2]], [[3,2],[4,2]]]
+  }
+];
+
+// ============================================================
+//  SCREEN MANAGEMENT
+// ============================================================
+function showMenu() {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screen-menu').classList.add('active');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
+// ============================================================
+//  HELPER 1 – RECOGNIZE
+// ============================================================
+var recognizePattern = null;
+
+function startRecognize() {
+  showScreen('screen-recognize');
+  recognizeNext();
+}
+
+function recognizeNext() {
+  recognizePattern = PATTERNS[Math.floor(Math.random() * PATTERNS.length)];
+  document.getElementById('pattern-img').src = recognizePattern.image;
+
+  var fb = document.getElementById('feedback-recognize');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+  document.getElementById('continue-recognize').classList.add('hidden');
+
+  document.querySelectorAll('.answer-btn').forEach(function(btn) {
+    btn.disabled = false;
+    btn.classList.remove('correct', 'wrong');
+  });
+}
+
+function checkAnswer(chosen) {
+  var correct = recognizePattern.key;
+  var fb = document.getElementById('feedback-recognize');
+
+  document.querySelectorAll('.answer-btn').forEach(function(btn) {
+    btn.disabled = true;
+    if (btn.textContent.trim() === correct) { btn.classList.add('correct'); }
+    if (btn.textContent.trim() === chosen && chosen !== correct) { btn.classList.add('wrong'); }
+  });
+
+  if (chosen === correct) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    fb.textContent = 'Incorrect \u2014 it was #' + correct;
+    fb.className = 'feedback-text wrong';
+  }
+  document.getElementById('continue-recognize').classList.remove('hidden');
+}
+
+// ============================================================
+//  HELPER 3 – FIREWALL
+// ============================================================
+var FIREWALL_PATTERNS = (function() {
+  var arr = [];
+  for (var i = 1; i <= 18; i++) {
+    arr.push({ key: String(i), image: 'firewall_patterns/' + i + '.png' });
+  }
+  return arr;
+}());
+
+var firewallPattern = null;
+
+function startFirewall() {
+  showScreen('screen-firewall');
+  firewallNext();
+}
+
+function firewallNext() {
+  firewallPattern = FIREWALL_PATTERNS[Math.floor(Math.random() * FIREWALL_PATTERNS.length)];
+  document.getElementById('firewall-img').src = firewallPattern.image;
+
+  var fb = document.getElementById('feedback-firewall');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+  document.getElementById('continue-firewall').classList.add('hidden');
+
+  document.querySelectorAll('#firewall-answer-grid .answer-btn').forEach(function(btn) {
+    btn.disabled = false;
+    btn.classList.remove('correct', 'wrong');
+  });
+}
+
+function checkFirewallAnswer(chosen) {
+  var correct = firewallPattern.key;
+  var fb = document.getElementById('feedback-firewall');
+
+  document.querySelectorAll('#firewall-answer-grid .answer-btn').forEach(function(btn) {
+    btn.disabled = true;
+    if (btn.textContent.trim() === correct) { btn.classList.add('correct'); }
+    if (btn.textContent.trim() === chosen && chosen !== correct) { btn.classList.add('wrong'); }
+  });
+
+  if (chosen === correct) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    fb.textContent = 'Incorrect \u2014 it was #' + correct;
+    fb.className = 'feedback-text wrong';
+  }
+  document.getElementById('continue-firewall').classList.remove('hidden');
+}
+
+// ============================================================
+//  HELPER 2 – DRAW
+// ============================================================
+
+// ── Grid constants ──
+var GRID_SIZE = 5;
+var CELL_PX   = 60;
+var MARGIN    = 20;
+var SVG_SIZE  = MARGIN * 2 + CELL_PX * (GRID_SIZE - 1);
+
+var COLOR_LINE    = '#5bc8f5';
+var COLOR_CORRECT = '#3ddc5a';
+var COLOR_EXTRA   = '#dc3d3d';
+var COLOR_MISSING = '#e8920a';
+var COLOR_DOT     = '#444';
+
+var drawPattern = null;
+var drawnSegs   = [];   // normalised key strings
+var submitted   = false;
+
+// ── Utilities ──
+function ptX(c) { return MARGIN + c * CELL_PX; }
+function ptY(r) { return MARGIN + r * CELL_PX; }
+
+function normSeg(a, b) {
+  var ka = a[0] * 10 + a[1];
+  var kb = b[0] * 10 + b[1];
+  return ka <= kb
+    ? a[0] + ',' + a[1] + '-' + b[0] + ',' + b[1]
+    : b[0] + ',' + b[1] + '-' + a[0] + ',' + a[1];
+}
+
+function segFromKey(k) {
+  var parts = k.split('-');
+  return [parts[0].split(',').map(Number), parts[1].split(',').map(Number)];
+}
+
+function makeSvgEl(tag, attrs) {
+  var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  Object.keys(attrs).forEach(function(k) { el.setAttribute(k, attrs[k]); });
+  return el;
+}
+
+// ── Build static grid (called once per session entry) ──
+// Creates four layers: bg (dashed grid), segs (active lines), hits (click areas), dots
+function buildGrid(svg) {
+  svg.setAttribute('width',  SVG_SIZE);
+  svg.setAttribute('height', SVG_SIZE);
+
+  var id = svg.id;
+  var layerBg   = makeSvgEl('g', { id: id + '-bg'   });
+  var layerSegs = makeSvgEl('g', { id: id + '-segs' });
+  var layerHits = makeSvgEl('g', { id: id + '-hits' });
+  var layerDots = makeSvgEl('g', { id: id + '-dots' });
+  svg.appendChild(layerBg);
+  svg.appendChild(layerSegs);
+  svg.appendChild(layerHits);
+  svg.appendChild(layerDots);
+
+  var BG_DASH = { stroke: '#999', 'stroke-width': '1', 'stroke-dasharray': '3 4' };
+
+  // Horizontal background lines
+  for (var r = 0; r < GRID_SIZE; r++) {
+    layerBg.appendChild(makeSvgEl('line', Object.assign({
+      x1: ptX(0), y1: ptY(r), x2: ptX(GRID_SIZE - 1), y2: ptY(r)
+    }, BG_DASH)));
+  }
+  // Vertical background lines
+  for (var c = 0; c < GRID_SIZE; c++) {
+    layerBg.appendChild(makeSvgEl('line', Object.assign({
+      x1: ptX(c), y1: ptY(0), x2: ptX(c), y2: ptY(GRID_SIZE - 1)
+    }, BG_DASH)));
+  }
+  // \ diagonal background lines (r - c = offset)
+  for (var offset = -(GRID_SIZE - 1); offset <= (GRID_SIZE - 1); offset++) {
+    var c1 = Math.max(0, -offset);
+    var c2 = Math.min(GRID_SIZE - 1, GRID_SIZE - 1 - offset);
+    var r1 = c1 + offset;
+    var r2 = c2 + offset;
+    if (c1 === c2 && r1 === r2) { continue; }
+    layerBg.appendChild(makeSvgEl('line', Object.assign({
+      x1: ptX(c1), y1: ptY(r1), x2: ptX(c2), y2: ptY(r2)
+    }, BG_DASH)));
+  }
+  // / diagonal background lines (r + c = sum)
+  for (var sum = 0; sum <= 2 * (GRID_SIZE - 1); sum++) {
+    var c1s = Math.max(0, sum - (GRID_SIZE - 1));
+    var r1s = sum - c1s;
+    var c2s = Math.min(GRID_SIZE - 1, sum);
+    var r2s = sum - c2s;
+    if (c1s === c2s && r1s === r2s) { continue; }
+    if (r1s >= GRID_SIZE || r2s >= GRID_SIZE || r1s < 0 || r2s < 0) { continue; }
+    layerBg.appendChild(makeSvgEl('line', Object.assign({
+      x1: ptX(c1s), y1: ptY(r1s), x2: ptX(c2s), y2: ptY(r2s)
+    }, BG_DASH)));
+  }
+
+  // Invisible hit areas — one per unit segment (H, V, \, /)
+  function addHit(a, b) {
+    var key = normSeg(a, b);
+    var hit = makeSvgEl('line', {
+      x1: ptX(a[1]), y1: ptY(a[0]),
+      x2: ptX(b[1]), y2: ptY(b[0]),
+      stroke: 'transparent', 'stroke-width': '16', cursor: 'pointer'
+    });
+    hit.addEventListener('click', (function(k) {
+      return function() { onSegClick(k); };
+    })(key));
+    layerHits.appendChild(hit);
+  }
+
+  for (var hr = 0; hr < GRID_SIZE; hr++) {            // H
+    for (var hc = 0; hc < GRID_SIZE - 1; hc++) { addHit([hr, hc], [hr, hc + 1]); }
+  }
+  for (var vr = 0; vr < GRID_SIZE - 1; vr++) {        // V
+    for (var vc = 0; vc < GRID_SIZE; vc++) { addHit([vr, vc], [vr + 1, vc]); }
+  }
+  for (var dr = 0; dr < GRID_SIZE - 1; dr++) {        // \ diagonal
+    for (var dc = 0; dc < GRID_SIZE - 1; dc++) { addHit([dr, dc], [dr + 1, dc + 1]); }
+  }
+  for (var fr = 0; fr < GRID_SIZE - 1; fr++) {        // / diagonal
+    for (var fc = 1; fc < GRID_SIZE; fc++) { addHit([fr, fc], [fr + 1, fc - 1]); }
+  }
+
+  // Dots (above hits visually; pointer-events:none so clicks pass through)
+  for (var dotr = 0; dotr < GRID_SIZE; dotr++) {
+    for (var dotc = 0; dotc < GRID_SIZE; dotc++) {
+      layerDots.appendChild(makeSvgEl('circle', {
+        cx: ptX(dotc), cy: ptY(dotr), r: 4,
+        fill: COLOR_DOT, 'pointer-events': 'none'
+      }));
+    }
+  }
+}
+
+// ── Segment layer helpers ──
+function segLayer() { return document.getElementById('draw-svg-segs'); }
+
+function addSeg(key) {
+  if (drawnSegs.indexOf(key) !== -1) { return; }
+  drawnSegs.push(key);
+  var pts  = segFromKey(key);
+  var line = makeSvgEl('line', {
+    x1: ptX(pts[0][1]), y1: ptY(pts[0][0]),
+    x2: ptX(pts[1][1]), y2: ptY(pts[1][0]),
+    stroke: COLOR_LINE, 'stroke-width': '4', 'stroke-linecap': 'round',
+    'pointer-events': 'none'
+  });
+  line.setAttribute('data-seg', key);
+  segLayer().appendChild(line);
+}
+
+function removeSeg(key) {
+  drawnSegs = drawnSegs.filter(function(k) { return k !== key; });
+  var layer = segLayer();
+  var children = layer.childNodes;
+  for (var i = children.length - 1; i >= 0; i--) {
+    if (children[i].getAttribute && children[i].getAttribute('data-seg') === key) {
+      children[i].remove();
+      break;
+    }
+  }
+}
+
+// ── Click handler ──
+function onSegClick(key) {
+  if (submitted) { return; }
+  if (drawnSegs.indexOf(key) !== -1) {
+    removeSeg(key);
+  } else {
+    addSeg(key);
+  }
+}
+
+// ── Clear only the segs layer (re-uses static grid) ──
+function clearSegs() {
+  var layer = segLayer();
+  while (layer.firstChild) { layer.removeChild(layer.firstChild); }
+  drawnSegs = [];
+  submitted = false;
+}
+
+// ── Submit ──
+function submitDraw() {
+  if (submitted) { return; }
+  submitted = true;
+
+  var layer = segLayer();
+  while (layer.firstChild) { layer.removeChild(layer.firstChild); }
+
+  var expectedKeys = {};
+  drawPattern.drawing.forEach(function(seg) {
+    expectedKeys[normSeg(seg[0], seg[1])] = true;
+  });
+
+  var drawnSet = {};
+  drawnSegs.forEach(function(k) { drawnSet[k] = true; });
+
+  function addColorSeg(key, color) {
+    var pts  = segFromKey(key);
+    var line = makeSvgEl('line', {
+      x1: ptX(pts[0][1]), y1: ptY(pts[0][0]),
+      x2: ptX(pts[1][1]), y2: ptY(pts[1][0]),
+      stroke: color, 'stroke-width': '4', 'stroke-linecap': 'round',
+      'pointer-events': 'none'
+    });
+    layer.appendChild(line);
+  }
+
+  var missing = 0;
+  var extra   = 0;
+
+  Object.keys(drawnSet).forEach(function(key) {
+    if (expectedKeys[key]) {
+      addColorSeg(key, COLOR_CORRECT);
+    } else {
+      addColorSeg(key, COLOR_EXTRA);
+      extra++;
+    }
+  });
+  Object.keys(expectedKeys).forEach(function(key) {
+    if (!drawnSet[key]) {
+      addColorSeg(key, COLOR_MISSING);
+      missing++;
+    }
+  });
+
+  var fb = document.getElementById('feedback-draw');
+  if (missing === 0 && extra === 0) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    var parts = [];
+    if (missing > 0) { parts.push(missing + ' missing'); }
+    if (extra > 0)   { parts.push(extra + ' extra'); }
+    fb.textContent = parts.join(', ');
+    fb.className = 'feedback-text wrong';
+  }
+
+  document.getElementById('submit-draw').classList.add('hidden');
+  document.getElementById('continue-draw').classList.remove('hidden');
+}
+
+// ── Flow ──
+function startDraw() {
+  showScreen('screen-draw');
+  var svg = document.getElementById('draw-svg');
+  svg.innerHTML = '';
+  buildGrid(svg);
+  drawNext();
+}
+
+function drawNext() {
+  clearSegs();
+
+  var fb = document.getElementById('feedback-draw');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+
+  document.getElementById('submit-draw').classList.remove('hidden');
+  document.getElementById('continue-draw').classList.add('hidden');
+
+  drawPattern = PATTERNS[Math.floor(Math.random() * PATTERNS.length)];
+  document.getElementById('draw-title').textContent = 'Draw pattern #' + drawPattern.key;
+}
+
+// ============================================================
+//  HELPER 4 – LATERAL COMPENSATOR
+// ============================================================
+
+var LATERAL_COLORS = {
+  Red:   { css: '#ff4444', slider: 25 },
+  White: { css: '#e8e8e8', slider: 33 },
+  Blue:  { css: '#5bc8f5', slider: 50 },
+  Green: { css: '#3ddc5a', slider: 75 },
+  Black: { css: '#aaaaaa', slider: 95 }
+};
+var LATERAL_COLOR_NAMES = ['Red', 'White', 'Blue', 'Green', 'Black'];
+
+function lcCount(colors, name) {
+  var n = 0; colors.forEach(function(c) { if (c === name) n++; }); return n;
+}
+function lcFirst(colors, name) {
+  for (var i = 0; i < colors.length; i++) { if (colors[i] === name) return i; } return -1;
+}
+function lcLast(colors, name) {
+  for (var i = colors.length - 1; i >= 0; i--) { if (colors[i] === name) return i; } return -1;
+}
+
+var LATERAL_RULES = {
+  3: [
+    {
+      text: 'If there are no red connectors, activate the 2nd connector.',
+      test: function(c) { return lcCount(c, 'Red') === 0; },
+      answer: function(c) { return 1; }
+    },
+    {
+      text: 'If the first connector is white, activate the last connector.',
+      test: function(c) { return c[0] === 'White'; },
+      answer: function(c) { return c.length - 1; }
+    },
+    {
+      text: 'If there is more than one blue connector, activate the last blue connector.',
+      test: function(c) { return lcCount(c, 'Blue') > 1; },
+      answer: function(c) { return lcLast(c, 'Blue'); }
+    },
+    {
+      text: 'Otherwise, activate the last connector.',
+      test: function(c) { return true; },
+      answer: function(c) { return c.length - 1; }
+    }
+  ],
+  4: [
+    {
+      text: 'If there is more than one red connector, activate the last red connector.',
+      test: function(c) { return lcCount(c, 'Red') > 1; },
+      answer: function(c) { return lcLast(c, 'Red'); }
+    },
+    {
+      text: 'If the last connector is not green, activate the first connector.',
+      test: function(c) { return c[c.length - 1] !== 'Green'; },
+      answer: function(c) { return 0; }
+    },
+    {
+      text: 'If there is a single blue connector, activate the green connector.',
+      test: function(c) { return lcCount(c, 'Blue') === 1; },
+      answer: function(c) { return lcLast(c, 'Green'); }  // last IS green since rule 1 didn't fire
+    },
+    {
+      text: 'Otherwise, activate the 2nd connector.',
+      test: function(c) { return true; },
+      answer: function(c) { return 1; }
+    }
+  ],
+  5: [
+    {
+      text: 'If the 4th connector is black, activate the blue connector.',
+      test: function(c) { return c[3] === 'Black'; },
+      answer: function(c) { return lcFirst(c, 'Blue'); }  // -1 if none; generator retries
+    },
+    {
+      text: 'If there is more than one green connector and there is a single red connector, activate the first green connector.',
+      test: function(c) { return lcCount(c, 'Green') > 1 && lcCount(c, 'Red') === 1; },
+      answer: function(c) { return lcFirst(c, 'Green'); }
+    },
+    {
+      text: 'If there are no black connectors, activate the 2nd connector.',
+      test: function(c) { return lcCount(c, 'Black') === 0; },
+      answer: function(c) { return 1; }
+    },
+    {
+      text: 'Otherwise, activate the 5th connector.',
+      test: function(c) { return true; },
+      answer: function(c) { return 4; }
+    }
+  ],
+  6: [
+    {
+      text: 'If there are no green connectors, activate the 3rd connector.',
+      test: function(c) { return lcCount(c, 'Green') === 0; },
+      answer: function(c) { return 2; }
+    },
+    {
+      text: 'If there are at least two white connectors, activate the 4th connector.',
+      test: function(c) { return lcCount(c, 'White') >= 2; },
+      answer: function(c) { return 3; }
+    },
+    {
+      text: 'If there are no red connectors, activate the first blue connector.',
+      test: function(c) { return lcCount(c, 'Red') === 0; },
+      answer: function(c) { return lcFirst(c, 'Blue'); }  // -1 if none; generator retries
+    },
+    {
+      text: 'Otherwise, activate the 6th connector.',
+      test: function(c) { return true; },
+      answer: function(c) { return 5; }
+    }
+  ]
+};
+
+function computeLateralAnswer(n, colors) {
+  var rules = LATERAL_RULES[n];
+  for (var i = 0; i < rules.length; i++) {
+    if (rules[i].test(colors)) {
+      return { ruleIdx: i, connectorIdx: rules[i].answer(colors) };
+    }
+  }
+  return null;
+}
+
+var lateralCounters  = { 3: [0,0,0,0], 4: [0,0,0,0], 5: [0,0,0,0], 6: [0,0,0,0] };
+var lateralState     = null;
+var lateralSelected  = -1;
+var lateralConfirmed = false;
+var lateralFixedN    = 0;  // 0 = random, 3/4/5/6 = fixed
+
+function generateLateral() {
+  var n = lateralFixedN !== 0 ? lateralFixedN : (3 + Math.floor(Math.random() * 4));
+  var counters = lateralCounters[n];
+  var minCount = Math.min.apply(null, counters);
+  var targetRule = counters.indexOf(minCount);
+
+  var colors = null;
+  var result = null;
+
+  // Try to hit the least-exercised rule branch
+  for (var i = 0; i < 60; i++) {
+    var cand = [];
+    for (var j = 0; j < n; j++) {
+      cand.push(LATERAL_COLOR_NAMES[Math.floor(Math.random() * LATERAL_COLOR_NAMES.length)]);
+    }
+    var res = computeLateralAnswer(n, cand);
+    if (res && res.ruleIdx === targetRule && res.connectorIdx >= 0 && res.connectorIdx < n) {
+      colors = cand; result = res; break;
+    }
+  }
+
+  // Fallback: any valid combo
+  if (colors === null) {
+    for (var k = 0; k < 200; k++) {
+      var cand2 = [];
+      for (var l = 0; l < n; l++) {
+        cand2.push(LATERAL_COLOR_NAMES[Math.floor(Math.random() * LATERAL_COLOR_NAMES.length)]);
+      }
+      var res2 = computeLateralAnswer(n, cand2);
+      if (res2 && res2.connectorIdx >= 0 && res2.connectorIdx < n) {
+        colors = cand2; result = res2; break;
+      }
+    }
+  }
+
+  lateralCounters[n][result.ruleIdx]++;
+  lateralState = { n: n, colors: colors, ruleIdx: result.ruleIdx, connectorIdx: result.connectorIdx };
+}
+
+function startLateral() {
+  showScreen('screen-lateral');
+  showLateralModePick();
+}
+
+function showLateralModePick() {
+  document.getElementById('lateral-mode-wrap').classList.remove('hidden');
+  document.getElementById('lateral-game').classList.add('hidden');
+}
+
+function startLateralMode(n) {
+  lateralFixedN = n;
+  document.getElementById('lateral-mode-wrap').classList.add('hidden');
+  document.getElementById('lateral-game').classList.remove('hidden');
+  var lbl = document.getElementById('lateral-active-mode');
+  lbl.textContent = n === 0 ? 'Mode: Random (3–6 connectors)' : 'Mode: ' + n + ' connectors';
+  lbl.style.cssText = 'font-size:0.78rem;color:#7090b0;text-transform:uppercase;letter-spacing:0.05em;';
+  lateralNext();
+}
+
+function lateralNext() {
+  generateLateral();
+  lateralSelected  = -1;
+  lateralConfirmed = false;
+
+  var wrap = document.getElementById('lateral-connectors');
+  wrap.innerHTML = '';
+  lateralState.colors.forEach(function(color, idx) {
+    var div   = document.createElement('div');
+    div.className = 'connector-wrap';
+    div.setAttribute('data-idx', String(idx));
+    div.onclick = (function(i) { return function() { selectConnector(i); }; })(idx);
+
+    var star = document.createElement('div');
+    star.className = 'connector-star';
+    star.style.color = LATERAL_COLORS[color].css;
+    star.textContent = '\u2726';  // ✦
+
+    var lbl = document.createElement('div');
+    lbl.className = 'connector-label';
+    lbl.textContent = color;
+
+    div.appendChild(star);
+    div.appendChild(lbl);
+    wrap.appendChild(div);
+  });
+
+  var slider = document.getElementById('lateral-slider');
+  slider.value = 50;
+  slider.disabled = false;
+  document.getElementById('lateral-slider-val').textContent = '50';
+  document.getElementById('lateral-confirm').disabled = true;
+
+  var fb = document.getElementById('feedback-lateral');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+  document.getElementById('lateral-rules').classList.add('hidden');
+  document.getElementById('continue-lateral').classList.add('hidden');
+}
+
+function selectConnector(idx) {
+  if (lateralConfirmed) { return; }
+  lateralSelected = idx;
+  document.querySelectorAll('#lateral-connectors .connector-wrap').forEach(function(w) {
+    if (parseInt(w.getAttribute('data-idx')) === idx) {
+      w.classList.add('selected');
+    } else {
+      w.classList.remove('selected');
+    }
+  });
+  document.getElementById('lateral-confirm').disabled = false;
+}
+
+function confirmLateral() {
+  if (lateralConfirmed) { return; }
+  lateralConfirmed = true;
+
+  var sliderVal    = parseInt(document.getElementById('lateral-slider').value);
+  var correctIdx   = lateralState.connectorIdx;
+  var correctColor = lateralState.colors[correctIdx];
+  var correctSlider = LATERAL_COLORS[correctColor].slider;
+
+  var connectorOk = lateralSelected === correctIdx;
+  var sliderOk    = Math.abs(sliderVal - correctSlider) <= 1;
+
+  document.getElementById('lateral-confirm').disabled = true;
+  document.getElementById('lateral-slider').disabled  = true;
+
+  var fb = document.getElementById('feedback-lateral');
+  if (connectorOk && sliderOk) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    var parts = ['Incorrect'];
+    if (!connectorOk) { parts.push('wrong connector (correct was #' + (correctIdx + 1) + ')'); }
+    if (!sliderOk)    { parts.push('wrong slider (expected ' + correctSlider + '% \u2014 ' + correctColor + ')'); }
+    fb.textContent = parts.join(' \u2014 ');
+    fb.className = 'feedback-text wrong';
+    renderLateralRules(lateralState.n, lateralState.ruleIdx);
+  }
+  document.getElementById('continue-lateral').classList.remove('hidden');
+}
+
+function renderLateralRules(n, correctRuleIdx) {
+  var rules = LATERAL_RULES[n];
+  var html  = '<h3>' + n + ' connectors</h3><ol>';
+  rules.forEach(function(rule, i) {
+    if (i === correctRuleIdx) {
+      html += '<li><span class="rule-highlight">' + rule.text + '</span></li>';
+    } else {
+      html += '<li>' + rule.text + '</li>';
+    }
+  });
+  html += '</ol>';
+  html += '<div class="slider-legend">'
+        + '<span style="color:#ff4444">Red=25%</span>'
+        + '<span style="color:#e8e8e8">White=33%</span>'
+        + '<span style="color:#5bc8f5">Blue=50%</span>'
+        + '<span style="color:#3ddc5a">Green=75%</span>'
+        + '<span style="color:#aaaaaa">Black=95%</span>'
+        + '</div>';
+  var rulesDiv = document.getElementById('lateral-rules');
+  rulesDiv.innerHTML = html;
+  rulesDiv.classList.remove('hidden');
+}
+
+// ============================================================
+//  HELPER 5 – DOOR COLOUR SEQUENCE
+// ============================================================
+
+var DOOR_ANSWERS = {
+  1: {
+    1: 'BGB',
+    2: 'YBYP',
+    3: 'GPB',
+    4: 'GPBB',
+    5: 'YBPY',
+    6: 'BGYP',
+    7: 'YGY',
+    8: 'PYP'
+  },
+  2: {
+    1: 'GYBGBG',
+    2: 'BGYPGYGP',
+    3: 'YGGYPB',
+    4: 'PYGBBGYP',
+    5: 'PYGBBGYP',
+    6: 'GBPGPBGY',
+    7: 'PBBPBP',
+    8: 'YGYPYB'
+  }
+};
+
+var DOOR_COLOR_CSS = {
+  B: { bg: '#1a5fff', color: '#fff',  label: 'Blue'   },
+  G: { bg: '#3ddc5a', color: '#222',  label: 'Green'  },
+  Y: { bg: '#f5d040', color: '#222',  label: 'Yellow' },
+  P: { bg: '#d020a0', color: '#fff',  label: 'Pink'   }
+};
+
+var doorPhase   = 1;
+var doorDoorNum = 1;
+var doorEntered = [];
+var doorDone    = false;
+
+function startDoor() {
+  showScreen('screen-door');
+  showDoorPhasePick();
+}
+
+function showDoorPhasePick() {
+  document.getElementById('door-phase-wrap').classList.remove('hidden');
+  document.getElementById('door-game').classList.add('hidden');
+}
+
+function startDoorPhase(phase) {
+  doorPhase = phase;
+  document.getElementById('door-phase-wrap').classList.add('hidden');
+  document.getElementById('door-game').classList.remove('hidden');
+  doorNext();
+}
+
+function doorNext() {
+  doorDoorNum = Math.ceil(Math.random() * 8);
+  doorEntered = [];
+  doorDone    = false;
+
+  document.getElementById('door-number').textContent = String(doorDoorNum);
+  renderDoorEntered();
+
+  var fb = document.getElementById('feedback-door');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+
+  var corr = document.getElementById('door-correct-seq');
+  corr.innerHTML = '';
+  corr.classList.add('hidden');
+
+  document.getElementById('door-submit').classList.remove('hidden');
+  document.getElementById('door-submit').disabled = false;
+  document.getElementById('continue-door').classList.add('hidden');
+
+  ['B','G','Y','P'].forEach(function(c) {
+    var btn = document.getElementById('door-btn-' + c);
+    if (btn !== null) { btn.disabled = false; }
+  });
+}
+
+function renderDoorEntered() {
+  var wrap = document.getElementById('door-entered-tiles');
+  wrap.innerHTML = '';
+  doorEntered.forEach(function(c) {
+    var tile = document.createElement('div');
+    tile.className = 'door-color-tile';
+    tile.style.background = DOOR_COLOR_CSS[c].bg;
+    tile.style.color       = DOOR_COLOR_CSS[c].color;
+    tile.textContent       = DOOR_COLOR_CSS[c].label;
+    wrap.appendChild(tile);
+  });
+}
+
+function doorAddColor(c) {
+  if (doorDone) { return; }
+  doorEntered.push(c);
+  renderDoorEntered();
+}
+
+function doorBackspace() {
+  if (doorDone) { return; }
+  doorEntered.pop();
+  renderDoorEntered();
+}
+
+function submitDoor() {
+  if (doorDone) { return; }
+  doorDone = true;
+
+  var correct = DOOR_ANSWERS[doorPhase][doorDoorNum];
+  var entered  = doorEntered.join('');
+
+  ['B','G','Y','P'].forEach(function(c) {
+    var btn = document.getElementById('door-btn-' + c);
+    if (btn !== null) { btn.disabled = true; }
+  });
+  document.getElementById('door-submit').classList.add('hidden');
+
+  var fb = document.getElementById('feedback-door');
+  if (entered === correct) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    fb.textContent = 'Incorrect \u2014 correct sequence:';
+    fb.className = 'feedback-text wrong';
+    var corrWrap = document.getElementById('door-correct-seq');
+    corrWrap.innerHTML = '';
+    for (var i = 0; i < correct.length; i++) {
+      var ch = correct[i];
+      var tile = document.createElement('div');
+      tile.className = 'door-color-tile';
+      tile.style.background = DOOR_COLOR_CSS[ch].bg;
+      tile.style.color       = DOOR_COLOR_CSS[ch].color;
+      tile.textContent       = DOOR_COLOR_CSS[ch].label;
+      corrWrap.appendChild(tile);
+    }
+    corrWrap.classList.remove('hidden');
+  }
+
+  document.getElementById('continue-door').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
