@@ -1622,12 +1622,23 @@ var PORT_RULES = [
   }
 ];
 
-var portCounters = [0, 0, 0, 0];
-var portState    = null;
+var portBag   = [];
+var portState = null;
+
+function portBagNext() {
+  if (portBag.length === 0) {
+    portBag = [0, 1, 2, 3];
+    // Fisher-Yates shuffle
+    for (var i = portBag.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = portBag[i]; portBag[i] = portBag[j]; portBag[j] = tmp;
+    }
+  }
+  return portBag.pop();
+}
 
 function generatePortPuzzle() {
-  var minCount  = Math.min.apply(null, portCounters);
-  var targetIdx = portCounters.indexOf(minCount);
+  var targetIdx = portBagNext();
 
   function randDistinct4() {
     var vals = [];
@@ -1663,7 +1674,6 @@ function generatePortPuzzle() {
     }
   }
 
-  portCounters[ruleIdx]++;
   portState = { ports: ports, ruleIdx: ruleIdx };
 }
 
