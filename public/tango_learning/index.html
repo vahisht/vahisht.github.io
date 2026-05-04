@@ -432,6 +432,64 @@
       gap: 6px;
       justify-content: center;
     }
+
+    /* ── Helper 7: Port to Colours ── */
+    #port-display {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+    .port-card {
+      background: #1e2a3a;
+      border: 1px solid #2a3a4a;
+      border-radius: 8px;
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .port-card-label {
+      font-size: 0.7rem;
+      color: #7090b0;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .port-card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #c8d8e8;
+      line-height: 1;
+    }
+    #port-answer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+    }
+    #port-answer-grid .answer-btn {
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 16px 0;
+    }
+    #port-rules {
+      width: 100%;
+      background: #1e2a3a;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    #port-rules h3 {
+      font-size: 0.8rem;
+      color: #7090b0;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    #port-rules ol { padding-left: 1.4em; margin: 0; }
+    #port-rules li { margin-bottom: 6px; }
   </style>
 </head>
 <body>
@@ -477,13 +535,38 @@
     </div>
   </div>
 
-  <div class="mission-group mission-group--locked">
+  <div class="mission-group">
     <div class="mission-header">Mission 6 &mdash; Big Bang Theory</div>
     <div class="mission-btns">
-      <button class="entry-btn" disabled>Coming soon</button>
+      <button class="entry-btn" onclick="startPort()">Port to colours <span class="entry-btn-role">Hacker</span></button>
     </div>
   </div>
 
+</div>
+
+<!-- ==================== HELPER 7: PORT TO COLOURS ==================== -->
+<div id="screen-port" class="screen">
+  <h2>Port to Colours</h2>
+
+  <div id="port-display">
+    <div class="port-card"><div class="port-card-label">Port 1</div><div class="port-card-value" id="port-val-0">—</div></div>
+    <div class="port-card"><div class="port-card-label">Port 2</div><div class="port-card-value" id="port-val-1">—</div></div>
+    <div class="port-card"><div class="port-card-label">Port 3</div><div class="port-card-value" id="port-val-2">—</div></div>
+    <div class="port-card"><div class="port-card-label">Port 4</div><div class="port-card-value" id="port-val-3">—</div></div>
+  </div>
+
+  <div id="port-answer-grid">
+    <button class="answer-btn" style="background:#5c1a1a;border-color:#dc3d3d;color:#ff8888;" onclick="checkPortAnswer(0)">Red</button>
+    <button class="answer-btn" style="background:#1a2a5c;border-color:#1a5fff;color:#7ab0ff;" onclick="checkPortAnswer(1)">Blue</button>
+    <button class="answer-btn" style="background:#1a3a20;border-color:#3ddc5a;color:#7af5a0;" onclick="checkPortAnswer(2)">Green</button>
+    <button class="answer-btn" style="background:#3a3010;border-color:#f5d040;color:#f5d040;" onclick="checkPortAnswer(3)">Yellow</button>
+  </div>
+
+  <div id="feedback-port" class="feedback-text"></div>
+  <div id="port-rules" class="hidden"></div>
+
+  <button id="continue-port" class="action-btn hidden" onclick="portNext()">Continue</button>
+  <button class="back-btn" onclick="showMenu()">&#8592; Back to menu</button>
 </div>
 
 <!-- ==================== HELPER 1: RECOGNIZE ==================== -->
@@ -1509,7 +1592,143 @@ function submitDoor() {
 }
 
 // ============================================================
-//  HELPER 6 – BATTERY BACKUP
+//  HELPER 7 – PORT TO COLOURS
+// ============================================================
+
+var PORT_RULES = [
+  {
+    color: 'Red',
+    css:   '#dc3d3d',
+    text:  'Port 1 has the lowest value.',
+    test:  function(p) { return p[0] < p[1] && p[0] < p[2] && p[0] < p[3]; }
+  },
+  {
+    color: 'Blue',
+    css:   '#1a5fff',
+    text:  'Port 2 has the highest value.',
+    test:  function(p) { return p[1] > p[0] && p[1] > p[2] && p[1] > p[3]; }
+  },
+  {
+    color: 'Green',
+    css:   '#3ddc5a',
+    text:  'Port 3 is the only odd number.',
+    test:  function(p) { return (p[2]%2 !== 0) && (p[0]%2 === 0) && (p[1]%2 === 0) && (p[3]%2 === 0); }
+  },
+  {
+    color: 'Yellow',
+    css:   '#f5d040',
+    text:  'Port 4 is the only even number.',
+    test:  function(p) { return (p[3]%2 === 0) && (p[0]%2 !== 0) && (p[1]%2 !== 0) && (p[2]%2 !== 0); }
+  }
+];
+
+var portCounters = [0, 0, 0, 0];
+var portState    = null;
+
+function generatePortPuzzle() {
+  var minCount  = Math.min.apply(null, portCounters);
+  var targetIdx = portCounters.indexOf(minCount);
+
+  function randDistinct4() {
+    var vals = [];
+    while (vals.length < 4) {
+      var v = 1 + Math.floor(Math.random() * 99);
+      if (vals.indexOf(v) === -1) { vals.push(v); }
+    }
+    return vals;
+  }
+
+  function matchedRule(p) {
+    var matched = [];
+    for (var r = 0; r < PORT_RULES.length; r++) {
+      if (PORT_RULES[r].test(p)) { matched.push(r); }
+    }
+    return matched.length === 1 ? matched[0] : -1;  // only accept unambiguous combos
+  }
+
+  var ports = null;
+  var ruleIdx = -1;
+
+  for (var i = 0; i < 400; i++) {
+    var cand = randDistinct4();
+    var r = matchedRule(cand);
+    if (r === targetIdx) { ports = cand; ruleIdx = r; break; }
+  }
+
+  if (ports === null) {
+    for (var k = 0; k < 1000; k++) {
+      var cand2 = randDistinct4();
+      var r2 = matchedRule(cand2);
+      if (r2 >= 0) { ports = cand2; ruleIdx = r2; break; }
+    }
+  }
+
+  portCounters[ruleIdx]++;
+  portState = { ports: ports, ruleIdx: ruleIdx };
+}
+
+function startPort() {
+  showScreen('screen-port');
+  portNext();
+}
+
+function portNext() {
+  generatePortPuzzle();
+
+  for (var i = 0; i < 4; i++) {
+    document.getElementById('port-val-' + i).textContent = String(portState.ports[i]);
+  }
+
+  document.querySelectorAll('#port-answer-grid .answer-btn').forEach(function(btn) {
+    btn.disabled = false;
+    btn.classList.remove('correct', 'wrong');
+  });
+
+  var fb = document.getElementById('feedback-port');
+  fb.textContent = '';
+  fb.className = 'feedback-text';
+
+  document.getElementById('port-rules').classList.add('hidden');
+  document.getElementById('port-rules').innerHTML = '';
+  document.getElementById('continue-port').classList.add('hidden');
+}
+
+function checkPortAnswer(chosenIdx) {
+  var correctIdx = portState.ruleIdx;
+
+  document.querySelectorAll('#port-answer-grid .answer-btn').forEach(function(btn, i) {
+    btn.disabled = true;
+    if (i === correctIdx) { btn.classList.add('correct'); }
+    if (i === chosenIdx && chosenIdx !== correctIdx) { btn.classList.add('wrong'); }
+  });
+
+  var fb = document.getElementById('feedback-port');
+  if (chosenIdx === correctIdx) {
+    fb.textContent = 'Correct!';
+    fb.className = 'feedback-text correct';
+  } else {
+    fb.textContent = 'Incorrect — should be ' + PORT_RULES[correctIdx].color;
+    fb.className = 'feedback-text wrong';
+    renderPortRules(correctIdx);
+  }
+
+  document.getElementById('continue-port').classList.remove('hidden');
+}
+
+function renderPortRules(correctIdx) {
+  var html = '<h3>Rules (checked in order)</h3><ol>';
+  PORT_RULES.forEach(function(rule, i) {
+    if (i === correctIdx) {
+      html += '<li><span class="rule-highlight">' + rule.text + '</span></li>';
+    } else {
+      html += '<li>' + rule.text + '</li>';
+    }
+  });
+  html += '</ol>';
+  var el = document.getElementById('port-rules');
+  el.innerHTML = html;
+  el.classList.remove('hidden');
+}
 // ============================================================
 
 var BATTERY_COMPOUNDS = [
