@@ -1119,7 +1119,8 @@ var LATERAL_RULES = {
     {
       text: 'If there is a single blue connector, activate the green connector.',
       test: function(c) { return lcCount(c, 'Blue') === 1; },
-      answer: function(c) { return lcLast(c, 'Green'); }  // last IS green since rule 1 didn't fire
+      answer: function(c) { return lcLast(c, 'Green'); },
+      validate: function(c) { return lcCount(c, 'Green') === 1; }  // "the green connector" must be unambiguous
     },
     {
       text: 'Otherwise, activate the 2nd connector.',
@@ -1131,7 +1132,8 @@ var LATERAL_RULES = {
     {
       text: 'If the 4th connector is black, activate the blue connector.',
       test: function(c) { return c[3] === 'Black'; },
-      answer: function(c) { return lcFirst(c, 'Blue'); }  // -1 if none; generator retries
+      answer: function(c) { return lcFirst(c, 'Blue'); },
+      validate: function(c) { return lcCount(c, 'Blue') === 1; }   // "the blue connector" must be unambiguous
     },
     {
       text: 'If there is more than one green connector and there is a single red connector, activate the first green connector.',
@@ -1189,6 +1191,13 @@ var lateralSelected  = -1;
 var lateralConfirmed = false;
 var lateralFixedN    = 0;  // 0 = random, 3/4/5/6 = fixed
 
+function isLateralValid(n, cand, res) {
+  if (res.connectorIdx < 0 || res.connectorIdx >= n) { return false; }
+  var rule = LATERAL_RULES[n][res.ruleIdx];
+  if (rule.validate && !rule.validate(cand)) { return false; }
+  return true;
+}
+
 function generateLateral() {
   var n = lateralFixedN !== 0 ? lateralFixedN : (3 + Math.floor(Math.random() * 4));
   var counters = lateralCounters[n];
@@ -1205,7 +1214,7 @@ function generateLateral() {
       cand.push(LATERAL_COLOR_NAMES[Math.floor(Math.random() * LATERAL_COLOR_NAMES.length)]);
     }
     var res = computeLateralAnswer(n, cand);
-    if (res && res.ruleIdx === targetRule && res.connectorIdx >= 0 && res.connectorIdx < n) {
+    if (res && res.ruleIdx === targetRule && isLateralValid(n, cand, res)) {
       colors = cand; result = res; break;
     }
   }
@@ -1218,7 +1227,7 @@ function generateLateral() {
         cand2.push(LATERAL_COLOR_NAMES[Math.floor(Math.random() * LATERAL_COLOR_NAMES.length)]);
       }
       var res2 = computeLateralAnswer(n, cand2);
-      if (res2 && res2.connectorIdx >= 0 && res2.connectorIdx < n) {
+      if (res2 && isLateralValid(n, cand2, res2)) {
         colors = cand2; result = res2; break;
       }
     }
