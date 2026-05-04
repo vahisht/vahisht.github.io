@@ -280,11 +280,26 @@
     .mission-btns .entry-btn {
       border-radius: 0;
       border-top: 1px solid #1e2a3a;
-      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 14px 20px;
       font-size: 1rem;
     }
     .mission-btns .entry-btn:first-child { border-top: none; }
+
+    .entry-btn--agent { background: #d4762a; }
+    .entry-btn--agent:hover  { background: #bf6520; }
+
+    .entry-btn-role {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
 
     .mission-group--locked { opacity: 0.45; }
     .mission-group--locked .entry-btn { cursor: default; background: #445; }
@@ -428,30 +443,30 @@
   <div class="mission-group">
     <div class="mission-header">Mission 1 &mdash; A Viral Heist</div>
     <div class="mission-btns">
-      <button class="entry-btn" onclick="startRecognize()">Safes patterns recognition</button>
-      <button class="entry-btn" onclick="startDraw()">Draw the pattern</button>
+      <button class="entry-btn entry-btn--agent" onclick="startRecognize()">Safes patterns recognition <span class="entry-btn-role">Agent</span></button>
+      <button class="entry-btn" onclick="startDraw()">Drawing safe pattern <span class="entry-btn-role">Hacker</span></button>
     </div>
   </div>
 
   <div class="mission-group">
     <div class="mission-header">Mission 2 &mdash; A High-Tech Target</div>
     <div class="mission-btns">
-      <button class="entry-btn" onclick="startFirewall()">Firewall recognition</button>
+      <button class="entry-btn" onclick="startFirewall()">Firewall recognition <span class="entry-btn-role">Hacker</span></button>
     </div>
   </div>
 
   <div class="mission-group">
     <div class="mission-header">Mission 3 &mdash; Business on the Go</div>
     <div class="mission-btns">
-      <button class="entry-btn" onclick="startLateral()">Lateral compensator</button>
-      <button class="entry-btn" onclick="startBattery()">Battery backup</button>
+      <button class="entry-btn entry-btn--agent" onclick="startLateral()">Lateral compensator <span class="entry-btn-role">Agent</span></button>
+      <button class="entry-btn entry-btn--agent" onclick="startBattery()">Battery backup <span class="entry-btn-role">Agent</span></button>
     </div>
   </div>
 
   <div class="mission-group">
     <div class="mission-header">Mission 4 &mdash; Digital Dive</div>
     <div class="mission-btns">
-      <button class="entry-btn" onclick="startDoor()">Door colour sequence</button>
+      <button class="entry-btn entry-btn--agent" onclick="startDoor()">Door colour sequence <span class="entry-btn-role">Agent</span></button>
     </div>
   </div>
 
