@@ -34,6 +34,9 @@
     </div>
     <p class="text-1xl font-bold text-gray-300">{speedrun.game} - {speedrun.category}</p>
     <p class="text-base text-gray-300">{speedrun.event_name}</p>
+    {#if speedrun.runner}
+        <p class="text-sm text-gray-400">Runner: {Array.isArray(speedrun.runner) ? speedrun.runner.join(', ') : speedrun.runner.split(',').map(r => r.trim()).join(', ')}</p>
+    {/if}
 </div>
 
 <style>
