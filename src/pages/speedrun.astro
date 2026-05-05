@@ -8,36 +8,36 @@ import NoResultsMessage from "../components/speedrun/NoResultsMessage.svelte"
 
 <Layout title="Speedruns">
 
-    <section class="min-w-screen min-h-screen bg-gray-600 flex flex-col gap-6 p-6">
-        
-        <SeriesSelect 
-            client:load 
-        />
+    <div style="background: #020617;">
 
-        <Section 
-            client:load
-            sectionTitle="My Marathon Runs"
-            section="speedrun"
-        />
+        <!-- Filter bar -->
+        <div class="w-full mx-auto px-4 py-6" style="max-width: 1400px;">
+            <SeriesSelect client:load />
+            <NoResultsMessage client:load />
+        </div>
 
-        <Section 
-            client:load
-            sectionTitle="Marathon Runs With Me On Commentary"
-            section="commentary"
-        />
+        <!-- My runs band -->
+        <div class="w-full py-8" style="background: #020617;">
+            <div class="w-full mx-auto px-4" style="max-width: 1400px;">
+                <Section client:load sectionTitle="My Marathon Runs" section="speedrun" />
+            </div>
+        </div>
 
-        <NoResultsMessage client:load />
+        <!-- Commentary band -->
+        <div class="w-full py-8" style="background: rgb(97, 108, 124);">
+            <div class="w-full mx-auto px-4" style="max-width: 1400px;">
+                <Section client:load sectionTitle="Marathon Runs With Me On Commentary" section="commentary" />
+            </div>
+        </div>
 
         <!-- 
-            If you want to add more section just add another <Section/> component.
+            If you want to add more section just add another band + <Section/> component.
             "sectionTitle" refers to the Title of the section.
             "section" refers to the type in the .json file so it filters them correctly.
         -->
 
-        <DialogBox 
-            client:load 
-        />
+        <DialogBox client:load />
 
-    </section>
+    </div>
 
 </Layout>

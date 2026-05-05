@@ -365,6 +365,19 @@
             "important": true
         },
         {
+            "game": "No One Lives Forever 2: A Spy in H.A.R.M.'s Way",
+            "category": "Moderniser%",
+            "event_line": "SoB",
+            "event_name": "Sum of Besties 1.5",
+            "year": 2025,
+            "month": 3,
+            "video": "",
+            "description": "Temporary",
+            "game_series": "No One Lives Forever",
+            "type": "speedrun",
+            "thumbnail": "/speedruns/thumbnail.jpg"
+        },
+        {
             "game": "Fast and Furious: Showdown",
             "category": "NG+ Coop",
             "event_line": "SoB",
@@ -503,7 +516,7 @@
             "month": 10,
             "description": "Temporary",
             "game_series": "Deus Ex",
-            "video": "",
+            "video": "https://youtu.be/1XvL1_y-JrI?si=Ah0NLo0jsyidWwrC&t=155",
             "type": "speedrun",
             "thumbnail": "/speedruns/thumbnail.jpg"
         },

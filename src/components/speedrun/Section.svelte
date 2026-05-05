@@ -39,13 +39,23 @@
 </script>
 
 {#if results.length > 0}
-    <div class="flex flex-col gap-2">
-        <h1 class="text-4xl text-gray-300">{sectionTitle}</h1>
-        <hr/>
-        <div class="flex flex-wrap justify-around gap-3">
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+            <span class="text-sm font-bold uppercase tracking-widest text-white">{sectionTitle}</span>
+            <div style="flex:1; height:1px; background: rgba(255,255,255,0.15);"></div>
+        </div>
+        <div class="card-grid">
             {#each results as speedrun}
                 <Game speedrun={speedrun} />
             {/each}
         </div>
     </div>
 {/if}
+
+<style>
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 1.25rem;
+    }
+</style>
