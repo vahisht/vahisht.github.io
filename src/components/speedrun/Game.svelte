@@ -51,6 +51,7 @@
         "Josefin Sans":  "1.3rem",
         "Titillium Web": "1.3rem",
         "Audiowide":     "1.05rem",
+        "Rajdhani":      "1.4rem",
     };
     $: gameFont = gameFonts[speedrun.game_series] || 'Exo 2';
     $: gameFontSize = gameFontSizes[gameFont] || '1.15rem';
@@ -134,6 +135,14 @@
         isolation: isolate;
         width: 100%;
         border-radius: var(--card-radius);
+    }
+
+    .gold-shine {
+        z-index: 1;
+    }
+
+    .glow-wrapper:hover {
+        z-index: 2;
     }
 
     .card {
@@ -320,6 +329,8 @@
         display: flex;
         flex-direction: column;
         gap: 1px;
+        height: 1.75rem;
+        overflow: hidden;
     }
 
     .event-line {

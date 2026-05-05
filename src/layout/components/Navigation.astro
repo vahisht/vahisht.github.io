@@ -3,24 +3,22 @@ import { Image } from "astro:assets";
 import MobileNav from "../components/MobileNav.svelte"
 ---
 
-<nav class="flex justify-between w-full h-20 bg-gray-700">
+<nav class="flex w-full h-[5vh] bg-gray-900 justify-center">
+    <div class="flex justify-between items-center w-full px-8" style="max-width: 1600px;">
 
-    <Image src={"/logo.png"} alt="Logo" width={64} height={64} />
+    <div class="flex items-center gap-6">
+        <Image src={"/logo.png"} alt="Logo" width={64} height={64} />
 
-    <div class="hidden sm:flex items-center text-gray-300 gap-2">
-        <a href={"/"}>
-            <p class="text-xl p-2">Home</p>
-        </a>
-        <a href={"/speedrun"}>
-            <p class="text-xl p-2">Speedrun</p>
-        </a>
-        <a href={"/research"}>
-            <p class="text-xl p-2">Research</p>
-        </a>
-        <a href={"/portfolio"}>
-            <p class="text-xl p-2">Portfolio</p>
-        </a>
+        <div class="hidden sm:flex items-center gap-4" style="font-family: 'Titillium Web', sans-serif;">
+            <a href={"/"}>
+                <p class="text-xl p-2 text-gray-300 hover:text-white transition-colors">Home</p>
+            </a>
+            <a href={"/speedrun"}>
+                <p class="text-xl p-2 text-gray-300 hover:text-white transition-colors">Speedruns</p>
+            </a>
+        </div>
     </div>
 
     <MobileNav client:visible />
-</nav>  
+    </div>
+</nav>
