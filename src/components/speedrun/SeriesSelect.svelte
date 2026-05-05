@@ -5,6 +5,10 @@
     const AllSeriesForFiltering = [
         "Deus Ex",
         "Jedi Knight",
+        "Borderlands",
+        "Mirror's Edge",
+        "Fast and Furious",
+        "Sewer Rave",
     ]
 
     // ### Global state from the sharedStore file
@@ -45,6 +49,21 @@
             {series}
         </button>
     {/each}
+
+    <button
+        class={`p-2 border rounded-md text-gray-300  
+            ${seriesFilter.includes("Other") === true 
+                ? "bg-gray-600" 
+                : "bg-gray-800 sm:hover:bg-gray-600 hover:cursor-pointer"
+            }`}
+        on:click={
+            () => seriesFilter.includes("Other") ==! true
+                ? addSeries("Other")
+                : removeSeries("Other")
+        }
+    >
+        Other
+    </button>
 
     <button 
         class="p-2 border rounded-md text-gray-300 bg-gray-800 sm:hover:bg-gray-600 hover:cursor-pointer" 

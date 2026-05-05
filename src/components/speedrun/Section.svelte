@@ -11,6 +11,10 @@
     export let sectionTitle
     export let section
 
+    // ### The named series that have their own filter button.
+    // ### "Other" will match anything not in this list.
+    const namedSeries = ["Deus Ex", "Jedi Knight", "Borderlands", "Mirror's Edge", "Fast and Furious", "Sewer Rave"];
+
     // ### Function to filter the speedruns based on type and/or game_series
     function FilteredSeries() {
 
@@ -19,7 +23,11 @@
         if (seriesFilter.length > 0) {
             filteredSpeedruns = speedruns
             .filter((speedrun) => speedrun.type === section)
-            .filter((speedrun) => seriesFilter.includes(speedrun.game_series))
+            .filter((speedrun) => {
+                if (seriesFilter.includes(speedrun.game_series)) return true;
+                if (seriesFilter.includes("Other") && !namedSeries.includes(speedrun.game_series)) return true;
+                return false;
+            })
         } else {
             filteredSpeedruns = speedruns.filter((speedrun) => speedrun.type === section)
         }
