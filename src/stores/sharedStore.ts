@@ -6,6 +6,10 @@ export const speedrunDialogbox = writable({ isOpen: false})
 
 export const selectedSeries = writable([])
 
+export const selectedEvent = writable([])
+
+export const visibleRunCounts = writable({ speedrun: 0, commentary: 0 })
+
 export const currentGame = writable({
     "game": "",
     "category": "",

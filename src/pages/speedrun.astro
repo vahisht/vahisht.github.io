@@ -3,6 +3,7 @@ import Layout from "../layout/Layout.astro";
 import Section from "../components/speedrun/Section.svelte";
 import SeriesSelect from "../components/speedrun/SeriesSelect.svelte"
 import DialogBox from "../components/speedrun/DialogBox.svelte"
+import NoResultsMessage from "../components/speedrun/NoResultsMessage.svelte"
 ---
 
 <Layout title="Speedruns">
@@ -15,15 +16,17 @@ import DialogBox from "../components/speedrun/DialogBox.svelte"
 
         <Section 
             client:load
-            sectionTitle="My Speedruns"
+            sectionTitle="My Marathon Runs"
             section="speedrun"
         />
 
         <Section 
             client:load
-            sectionTitle="My Commentaries"
+            sectionTitle="Marathon Runs With Me On Commentary"
             section="commentary"
         />
+
+        <NoResultsMessage client:load />
 
         <!-- 
             If you want to add more section just add another <Section/> component.

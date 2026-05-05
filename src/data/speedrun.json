@@ -6,7 +6,7 @@
             "event_name": "Hekathon 2023",
             "year": 2023,
             "month": 5,
-            "video": "https://youtu.be/HJPLMQjnLEc ",
+            "video": "https://www.youtube.com/watch?v=HJPLMQjnLEc",
             "description": "Temporary",
             "game_series": "Jedi Knight",
             "type": "speedrun",
@@ -430,6 +430,19 @@
             "thumbnail": "/speedruns/thumbnail.jpg"
         },
         {
+            "game": "Hitman 3",
+            "category": "Roulette Run Invalid",
+            "event_line": "ESA",
+            "event_name": "ESA Summer 2025",
+            "year": 2025,
+            "month": 7,
+            "video": "https://www.youtube.com/watch?v=mrcU5hTKowY",
+            "description": "Temporary",
+            "game_series": "Hitman",
+            "type": "speedrun",
+            "thumbnail": "/speedruns/thumbnail.jpg"
+        },
+        {
             "game": "Deus Ex",
             "category": "Any% Coop",
             "event_line": "NSG",
@@ -439,6 +452,19 @@
             "description": "Temporary",
             "game_series": "Deus Ex",
             "video": "https://youtu.be/dKOnEUN4IUY?si=jD1bdTDgaPmUWAEj",
+            "type": "speedrun",
+            "thumbnail": "/speedruns/thumbnail.jpg"
+        },
+        {
+            "game": "Sewer Rave",
+            "category": "2v2 Relay Race",
+            "event_line": "NSG",
+            "event_name": "NSG Fall 2025",
+            "year": 2025,
+            "month": 9,
+            "description": "Temporary",
+            "game_series": "Sewer Rave",
+            "video": "https://www.youtube.com/watch?v=rjH4Xm7_MvY",
             "type": "speedrun",
             "thumbnail": "/speedruns/thumbnail.jpg"
         },
@@ -756,6 +782,20 @@
             "description": "Temporary",
             "game_series": "Deus Ex",
             "runner": "Sui_VT",
+            "type": "commentary",
+            "thumbnail": "/speedruns/thumbnail.jpg"
+        },
+        {
+            "game": "Sewer Rave",
+            "category": "8-Player Any% Tournament",
+            "event_line": "ESA",
+            "event_name": "ESA Winter 2026",
+            "year": 2026,
+            "month": 2,
+            "video": "https://www.youtube.com/watch?v=qkHBOvclKuY",
+            "description": "Temporary",
+            "game_series": "Sewer Rave",
+            "runner": ["lurven_", "mrLaay"],
             "type": "commentary",
             "thumbnail": "/speedruns/thumbnail.jpg"
         },

@@ -1,47 +1,51 @@
 <script>
     import speedruns from "../../data/speedrun.json"
     import Game from "./Game.svelte"
-    import { selectedSeries } from "../../stores/sharedStore";
-
-    // ### Global state from the sharedStore file
-    let seriesFilter;
-    $: selectedSeries.subscribe((value) => (seriesFilter = value));
+    import { selectedSeries, selectedEvent, visibleRunCounts } from "../../stores/sharedStore";
 
     // ### Props from the Parent in speedrun.astro
     export let sectionTitle
     export let section
 
-    // ### The named series that have their own filter button.
-    // ### "Other" will match anything not in this list.
+    // ### The named series/events that have their own filter button.
+    // ### "Other" will match anything not in these lists.
     const namedSeries = ["Deus Ex", "Jedi Knight", "Borderlands", "Mirror's Edge", "Fast and Furious", "Sewer Rave"];
+    const namedEvents = ["Hekathon", "ESA", "NSG", "GDQ", "SoB"];
 
-    // ### Function to filter the speedruns based on type and/or game_series
-    function FilteredSeries() {
+    $: results = (() => {
+        let filtered = speedruns.filter((s) => s.type === section);
 
-        let filteredSpeedruns
-
-        if (seriesFilter.length > 0) {
-            filteredSpeedruns = speedruns
-            .filter((speedrun) => speedrun.type === section)
-            .filter((speedrun) => {
-                if (seriesFilter.includes(speedrun.game_series)) return true;
-                if (seriesFilter.includes("Other") && !namedSeries.includes(speedrun.game_series)) return true;
+        if ($selectedSeries.length > 0) {
+            filtered = filtered.filter((s) => {
+                if ($selectedSeries.includes(s.game_series)) return true;
+                if ($selectedSeries.includes("Other") && !namedSeries.includes(s.game_series)) return true;
                 return false;
-            })
-        } else {
-            filteredSpeedruns = speedruns.filter((speedrun) => speedrun.type === section)
+            });
         }
 
-        return filteredSpeedruns
-    }
+        if ($selectedEvent.length > 0) {
+            filtered = filtered.filter((s) => {
+                if ($selectedEvent.includes(s.event_line)) return true;
+                if ($selectedEvent.includes("Other") && !namedEvents.includes(s.event_line)) return true;
+                return false;
+            });
+        }
+
+        return filtered.reverse();
+    })();
+
+    $: anyFilterActive = $selectedSeries.length > 0 || $selectedEvent.length > 0;
+    $: visibleRunCounts.update((counts) => ({ ...counts, [section]: results.length }));
 </script>
 
-<div class="flex flex-col gap-2">
-    <h1 class="text-4xl text-gray-300">{sectionTitle}</h1>
-    <hr/>
-    <div class="flex flex-wrap justify-around gap-3">
-        {#each FilteredSeries().reverse() as speedrun}
-            <Game speedrun={speedrun} />
-        {/each}
+{#if results.length > 0}
+    <div class="flex flex-col gap-2">
+        <h1 class="text-4xl text-gray-300">{sectionTitle}</h1>
+        <hr/>
+        <div class="flex flex-wrap justify-around gap-3">
+            {#each results as speedrun}
+                <Game speedrun={speedrun} />
+            {/each}
+        </div>
     </div>
-</div>
+{/if}
