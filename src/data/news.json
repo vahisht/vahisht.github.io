@@ -8,32 +8,19 @@
             "color2": "#EDDEB2",
             "text": "#1A1506"
         },
-        "description": "A countdown of the top 10 moms of speedrunners, featuring some of the most iconic and memorable moms in the speedrunning community.",
+        "description": "<p>Four teams of speedrunners competing to glitch hunt, route and run a game none of them have ever played before.</p><p>What speed tech will each team be able to find? Who will set the fastest time and win this Run Invalid season?</p>",
         "link": "https://www.youtube.com/watch?v=zut_fT-9DKE"
     },
     {
-        "title": "Who was the GOAT of 2024",
-        "category": "Upcoming run",
+        "title": "Borderlands 4 Co-Op at ESA Winter 26",
+        "category": "Last marathon run",
         "style": {
-            "type": "tech",
+            "type": "none",
             "color": "#000011",
-            "color2": "#00FFFF",
-            "text": "#FFFFFF"
+            "text": "#FFFFFF",
+            "bgImage": "backgrounds/bl4_terminus.jpg"
         },
-        "description": "Who do you think will be the GOAT of 2024? Will it be a new challenger or a returning champion? Find out in our upcoming run where we will crown the GOAT of 2024.",
-        "image": "news/cute.jpg",
-        "imageAnchor": "bottom"
-    },
-    {
-        "title": "Who was not the GOAT of 2024",
-        "category": "Upcoming run",
-        "style": {
-            "type": "glitch",
-            "color": "#222222",
-            "color2": "#ff0000",
-            "text": "#FFFF00"
-        },
-        "image": "news/mom.jpg",
-        "description": "Who do you think will be the GOAT of 2024? Will it be a new challenger or a returning champion? Find out in our upcoming run where we will crown the GOAT of 2024."
+        "description": "<p>Vahisht, Havrd and a 6 hour estimate.</p><p>Will Steam maintenance stop them from finishing a run before the speedtech gets patched out?</p>",
+        "link": "https://www.youtube.com/watch?v=oUipVe-4HgM"
     }
 ]

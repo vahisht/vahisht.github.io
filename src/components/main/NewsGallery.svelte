@@ -1,24 +1,77 @@
 <script>
     import { onMount, onDestroy } from "svelte"
+    import { fade } from "svelte/transition"
     import news from "../../data/news.json"
 
-    let newsIndex = $state(Math.floor(Math.random() * news.length))
+    let newsIndex = $state(0)
+    let hovered = $state(false)
+    let progress = $state(0)  // 0 = full bar, 1 = drained
 
-    let timer
-    function resetTimer() {
-        clearInterval(timer)
-        timer = setInterval(nextNews, 7000)
+    const DURATION = 7000
+    let rafId
+    let switchTimeout
+    let startTime
+    let pausedAt = null
+    let pausedElapsed = 0
+
+    function startSlide() {
+        clearTimeout(switchTimeout)
+        cancelAnimationFrame(rafId)
+        startTime = performance.now()
+        pausedElapsed = 0
+        progress = 0
+        if (hovered) {
+            pausedAt = performance.now()
+            return
+        }
+        pausedAt = null
+        function tick() {
+            const elapsed = performance.now() - startTime - pausedElapsed
+            progress = Math.min(elapsed / DURATION, 1)
+            if (elapsed < DURATION) rafId = requestAnimationFrame(tick)
+        }
+        rafId = requestAnimationFrame(tick)
+        switchTimeout = setTimeout(() => nextNews(), DURATION)
     }
 
-    onMount(() => { timer = setInterval(nextNews, 7000) })
-    onDestroy(() => clearInterval(timer))
+    function pause() {
+        hovered = true
+        pausedAt = performance.now()
+        clearTimeout(switchTimeout)
+        cancelAnimationFrame(rafId)
+    }
+
+    function resume() {
+        hovered = false
+        const now = performance.now()
+        if (pausedAt !== null) {
+            pausedElapsed += now - pausedAt
+            pausedAt = null
+        }
+        const remaining = Math.max(0, DURATION - (now - startTime - pausedElapsed))
+        function tick() {
+            const elapsed = performance.now() - startTime - pausedElapsed
+            progress = Math.min(elapsed / DURATION, 1)
+            if (elapsed < DURATION) rafId = requestAnimationFrame(tick)
+        }
+        rafId = requestAnimationFrame(tick)
+        switchTimeout = setTimeout(() => nextNews(), remaining)
+    }
+
+    onMount(() => {
+        newsIndex = Math.floor(Math.random() * news.length)
+        startSlide()
+    })
+    onDestroy(() => { clearTimeout(switchTimeout); if (typeof cancelAnimationFrame !== 'undefined') cancelAnimationFrame(rafId) })
 
     function nextNews() {
         newsIndex = (newsIndex + 1) % news.length
+        startSlide()
     }
 
     function prevNews() {
         newsIndex = (newsIndex - 1 + news.length) % news.length
+        startSlide()
     }
 
     function getYoutubeThumbnail(url) {
@@ -104,10 +157,15 @@
     })
 </script>
 
-<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'}; --color2: ${item.style.color2 ?? '#ffffff'}; --color: ${item.style.color};`}>
+<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'};${item.style.color2 ? ` --color2: ${item.style.color2}; --color: ${item.style.color};` : ''}${item.style.bgImage ? ` --bg-image: url('/${item.style.bgImage}');` : ''}`} onmouseenter={pause} onmouseleave={resume}>
+
+    {#if item.style.bgImage}
+        <div class="bg-image" aria-hidden="true" transition:fade={{ duration: 500 }}></div>
+        <div class="bg-tint" aria-hidden="true" style="background: {item.style.color};" transition:fade={{ duration: 500 }}></div>
+    {/if}
 
     {#if item.style.type === 'tech'}
-        <div class="tech-bg" aria-hidden="true">
+        <div class="tech-bg" aria-hidden="true" transition:fade={{ duration: 500 }}>
             {#each triangles as tri}
                 <svg
                     class="tri"
@@ -115,42 +173,43 @@
                     viewBox="0 0 100 100"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    <polygon points="50,4 3,97 97,97" fill="none" stroke="var(--color2)" stroke-width="6"/>
+                    <polygon points="50,4 3,97 97,97" fill="none" stroke="{item.style.color2}" stroke-width="6"/>
                 </svg>
             {/each}
         </div>
     {/if}
 
     {#if item.style.type === 'grunge'}
-        <div class="grunge-bg" aria-hidden="true">
+        <div class="grunge-bg" aria-hidden="true" transition:fade={{ duration: 500 }}>
             {#each waves as w}
                 <div
                     class="wave"
-                    style="top: {w.top}%; animation-duration: {w.duration}s; animation-delay: {w.delay}s; --wave-opacity: {w.opacity}; --dx: {w.dx}px;"
+                    style="top: {w.top}%; background: {item.style.color2}; animation-duration: {w.duration}s; animation-delay: {w.delay}s; --wave-opacity: {w.opacity}; --dx: {w.dx}px;"
                 ></div>
             {/each}
         </div>
     {/if}
 
     {#if item.style.type === 'glitch'}
-        <div class="glitch-bg" aria-hidden="true">
+        <div class="glitch-bg" aria-hidden="true" transition:fade={{ duration: 500 }}>
             {#each glitchStrips as gs}
                 <div class="glitch-strip" style="top: {gs.top}%; height: {gs.h}%; animation-duration: {gs.duration}s; animation-delay: {gs.delay}s; --strip-color: {gs.color};"></div>
             {/each}
         </div>
     {/if}
+
     {#if item.style.type === 'hex'}
-        <div class="hex-bg" aria-hidden="true">
+        <div class="hex-bg" aria-hidden="true" transition:fade={{ duration: 500 }}>
             <svg width="100%" height="100%">
                 {#each hexGrid as h}
-                    <polygon points={hexPoints(h.x, h.y, 38)} fill="none" stroke-width="1.5" class="hex-cell" style="stroke: var(--color2); animation-duration: {h.dur}s; animation-delay: {h.delay}s;"/>
+                    <polygon points={hexPoints(h.x, h.y, 38)} fill="none" stroke-width="1.5" class="hex-cell" style="stroke: {item.style.color2}; animation-duration: {h.dur}s; animation-delay: {h.delay}s;"/>
                 {/each}
             </svg>
         </div>
     {/if}
 
     {#if item.style.type === 'static'}
-        <div class="static-bg" aria-hidden="true">
+        <div class="static-bg" aria-hidden="true" transition:fade={{ duration: 500 }}>
             <svg width="100%" height="100%">
                 <defs>
                     <filter id="noise-filter" x="0" y="0" width="100%" height="100%">
@@ -168,7 +227,21 @@
         <div class="carousel">
 
             {#if news.length > 1}
-                <button class="nav-arrow" onclick={() => { prevNews(); resetTimer() }} aria-label="Previous">
+                <div class="slide-nav" style="--timer-scale: {1 - progress}">
+                    {#each news as n, i}
+                        <button
+                            class="slide-nav-item {newsIndex === i ? 'active' : ''}"
+                            onclick={() => { newsIndex = i; startSlide() }}
+                        >
+                            <span class="slide-nav-category">{n.category}</span>
+                            <span class="slide-nav-title">{n.title}</span>
+                        </button>
+                    {/each}
+                </div>
+            {/if}
+
+            {#if news.length > 1}
+                <button class="nav-arrow" onclick={() => { prevNews() }} aria-label="Previous">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"/>
                     </svg>
@@ -184,7 +257,7 @@
                             <div class="text-side" style="color: {n.style.text ?? '#ffffff'}">
                                 <span class="category-label">{n.category}</span>
                                 <h1 class="title">{n.title}</h1>
-                                <p class="description">{n.description}</p>
+                                <div class="description">{@html n.description}</div>
                             </div>
 
                             {#if n.link && thumb}
@@ -213,7 +286,7 @@
             </div>
 
             {#if news.length > 1}
-                <button class="nav-arrow" onclick={() => { nextNews(); resetTimer() }} aria-label="Next">
+                <button class="nav-arrow" onclick={() => { nextNews() }} aria-label="Next">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"/>
                     </svg>
@@ -221,18 +294,6 @@
             {/if}
 
         </div>
-
-        {#if news.length > 1}
-            <div class="dots">
-                {#each news as _, i}
-                    <button
-                        class="dot {newsIndex === i ? 'active' : ''}"
-                        onclick={() => { newsIndex = i; resetTimer() }}
-                        aria-label={`Go to slide ${i + 1}`}
-                    ></button>
-                {/each}
-            </div>
-        {/if}
 
     </div>
 
@@ -255,6 +316,8 @@
         padding: 0 2rem;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 1;
     }
 
     /* ── Carousel ── */
@@ -313,7 +376,6 @@
         font-weight: 800;
         line-height: 1.1;
         color: currentColor;
-        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
         margin: 0;
     }
 
@@ -324,6 +386,14 @@
         color: currentColor;
         opacity: 0.75;
         margin: 0;
+    }
+
+    .description :global(p) {
+        margin: 0 0 0.75em;
+    }
+
+    .description :global(p:last-child) {
+        margin-bottom: 0;
     }
 
     /* ── Thumbnail side ── */
@@ -393,31 +463,104 @@
         opacity: 1;
     }
 
-    /* ── Dot navigation ── */
-    .dots {
-        position: absolute;
-        bottom: 0.5rem;
-        left: 50%;
-        transform: translateX(-50%);
+    /* ── Slide navigation panel ── */
+    .slide-nav {
         display: flex;
-        gap: 0.5rem;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.1rem;
+        flex-shrink: 0;
+        width: 220px;
     }
 
-    .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: currentColor;
-        opacity: 0.4;
+    .slide-nav-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background: none;
         border: none;
+        padding: 0.4rem 0.8rem;
         cursor: pointer;
-        padding: 0;
-        transition: opacity 0.2s, transform 0.2s;
+        text-align: left;
+        opacity: 0.45;
+        transition: opacity 0.2s;
+        color: currentColor;
     }
 
-    .dot.active {
-        opacity: 0.95;
-        transform: scale(1.35);
+    /* static dim track bar */
+    .slide-nav-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: currentColor;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    /* animated timer bar */
+    .slide-nav-item::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: currentColor;
+        transform: scaleY(0);
+        transform-origin: top;
+    }
+
+    .slide-nav-item:hover {
+        opacity: 0.75;
+    }
+
+    .slide-nav-item.active {
+        opacity: 1;
+    }
+
+    .slide-nav-item.active::before {
+        opacity: 0.25;
+    }
+
+    .slide-nav-item.active::after {
+        transform: scaleY(var(--timer-scale, 1));
+        transform-origin: top;
+    }
+
+    .slide-nav.paused .slide-nav-item.active::after {
+        animation-play-state: paused;
+    }
+
+    @keyframes timer-drain {
+        from { transform: scaleY(1); }
+        to   { transform: scaleY(0); }
+    }
+
+    .slide-nav-category {
+        font-family: 'Titillium Web', sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        opacity: 0.7;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        margin-bottom: 0.2rem;
+    }
+
+    .slide-nav-title {
+        font-family: 'Titillium Web', sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.3;
+        font-weight: 700;
+        max-height: calc(0.9rem * 1.3 * 2);
+        overflow: hidden;
+        width: 100%;
     }
 
     /* ── Nav arrows ── */
@@ -442,6 +585,23 @@
     .nav-arrow svg {
         width: 2rem;
         height: 2rem;
+    }
+
+    /* ── Background image ── */
+    .bg-image {
+        position: absolute;
+        inset: 0;
+        background-image: var(--bg-image);
+        background-size: cover;
+        background-position: center;
+        pointer-events: none;
+    }
+
+    .bg-tint {
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        pointer-events: none;
     }
 
     /* ── Tech background triangles ── */
@@ -478,18 +638,20 @@
     .wave {
         position: absolute;
         left: -30%;
+        top: 0;
         width: 160%;
         height: 80%;
         border-radius: 50%;
         background: var(--color2);
-        opacity: var(--wave-opacity, 0.3);
+        opacity: 0;
         animation: wave-drift ease-in-out infinite alternate;
-        will-change: transform;
+        animation-fill-mode: both;
+        will-change: transform, opacity;
     }
 
     @keyframes wave-drift {
-        from { transform: translateX(0) rotate(-1.5deg) scaleX(1);   }
-        to   { transform: translateX(var(--dx)) rotate(1.5deg) scaleX(1.05); }
+        from { transform: translateX(0) rotate(-1.5deg) scaleX(1);    opacity: var(--wave-opacity, 0.3); }
+        to   { transform: translateX(var(--dx)) rotate(1.5deg) scaleX(1.05); opacity: var(--wave-opacity, 0.3); }
     }
 
     /* ── Circuit background ── */
