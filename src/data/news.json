@@ -4,9 +4,9 @@
         "category": "Latest Video",
         "style": {
             "type": "grunge",
-            "color": "#ff0000",
-            "color2": "#00ff00",
-            "text": "#000000"
+            "color": "#b0a994",
+            "color2": "#EDDEB2",
+            "text": "#1A1506"
         },
         "description": "A countdown of the top 10 moms of speedrunners, featuring some of the most iconic and memorable moms in the speedrunning community.",
         "link": "https://www.youtube.com/watch?v=zut_fT-9DKE"
@@ -17,7 +17,7 @@
         "style": {
             "type": "tech",
             "color": "#000011",
-            "color2": "#00ff00",
+            "color2": "#00FFFF",
             "text": "#FFFFFF"
         },
         "description": "Who do you think will be the GOAT of 2024? Will it be a new challenger or a returning champion? Find out in our upcoming run where we will crown the GOAT of 2024.",
@@ -28,9 +28,9 @@
         "title": "Who was not the GOAT of 2024",
         "category": "Upcoming run",
         "style": {
-            "type": "tech",
+            "type": "glitch",
             "color": "#222222",
-            "color2": "#00ff00",
+            "color2": "#ff0000",
             "text": "#FFFF00"
         },
         "image": "news/mom.jpg",

@@ -212,7 +212,7 @@
     .tint-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(8, 12, 28, 0.3);
+        background: rgba(8, 12, 28, 0.1);
         transition: opacity 0.35s ease;
         pointer-events: none;
     }

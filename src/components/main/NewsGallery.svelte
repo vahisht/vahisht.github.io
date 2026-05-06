@@ -2,7 +2,7 @@
     import { onMount, onDestroy } from "svelte"
     import news from "../../data/news.json"
 
-    let newsIndex = $state(0)
+    let newsIndex = $state(Math.floor(Math.random() * news.length))
 
     let timer
     function resetTimer() {
@@ -27,9 +27,141 @@
     }
 
     let item = $derived(news[newsIndex])
+
+    const triangles = [
+        { x:  5, y: 20, size: 30, duration: 12, delay:  -3, opacity: 0.35, dx:  40, dy: -25 },
+        { x: 15, y: 65, size: 18, duration:  9, delay:  -7, opacity: 0.45, dx: -30, dy:  20 },
+        { x: 25, y: 40, size: 45, duration: 15, delay:  -5, opacity: 0.25, dx:  55, dy:  30 },
+        { x: 35, y: 75, size: 22, duration: 11, delay:  -1, opacity: 0.40, dx: -25, dy: -35 },
+        { x: 45, y: 15, size: 35, duration: 13, delay: -10, opacity: 0.28, dx:  60, dy:  15 },
+        { x: 55, y: 55, size: 20, duration: 10, delay:  -4, opacity: 0.45, dx: -45, dy: -20 },
+        { x: 65, y: 30, size: 40, duration: 16, delay:  -8, opacity: 0.25, dx:  35, dy:  40 },
+        { x: 72, y: 70, size: 25, duration:  8, delay:  -2, opacity: 0.40, dx: -35, dy: -15 },
+        { x: 82, y: 45, size: 15, duration: 14, delay:  -6, opacity: 0.50, dx:  40, dy:  25 },
+        { x: 90, y: 20, size: 50, duration: 11, delay:  -9, opacity: 0.20, dx: -55, dy:  30 },
+        { x: 48, y: 80, size: 28, duration: 17, delay: -13, opacity: 0.35, dx:  20, dy: -40 },
+        { x: 10, y: 50, size: 55, duration: 20, delay: -16, opacity: 0.18, dx: -30, dy:  20 },
+    ]
+
+    const waves = [
+        { top: -15, dx:  50, duration: 14, delay:  -2, opacity: 0.30 },
+        { top:   0, dx: -60, duration: 19, delay:  -8, opacity: 0.30 },
+        { top:  15, dx:  45, duration: 12, delay:  -5, opacity: 0.32 },
+        { top:  30, dx: -50, duration: 17, delay: -12, opacity: 0.30 },
+        { top:  45, dx:  55, duration: 22, delay:  -3, opacity: 0.32 },
+        { top:  60, dx: -40, duration: 15, delay: -16, opacity: 0.30 },
+        { top:  75, dx:  35, duration: 13, delay:  -9, opacity: 0.35 },
+        { top:  90, dx: -45, duration: 20, delay:  -6, opacity: 0.35 },
+    ]
+
+    // ── Static
+    function makeHexGrid() {
+        const s = 40
+        const cw = Math.sqrt(3) * s
+        const rh = 1.5 * s
+        const cols = 25, rows = 9
+        const grid = []
+        for (let r = -1; r < rows; r++) {
+            for (let c = -1; c < cols; c++) {
+                const x = c * cw + (r % 2 !== 0 ? cw / 2 : 0)
+                const y = r * rh
+                const delay = -((c * 3 + r * 7) % 19)
+                const dur = 3 + ((c * 2 + r * 5) % 4)
+                grid.push({ x, y, delay, dur })
+            }
+        }
+        return grid
+    }
+    function hexPoints(cx, cy, sz) {
+        return Array.from({ length: 6 }, (_, i) => {
+            const a = (Math.PI / 3) * i + Math.PI / 6
+            return `${cx + sz * Math.cos(a)},${cy + sz * Math.sin(a)}`
+        }).join(' ')
+    }
+    const hexGrid = makeHexGrid()
+
+    // ── Glitch — each strip has an R, G, or B channel color
+    const glitchStrips = [
+        { top:  8, h: 2, duration: 5.0, delay: -1.0, color: '#ff0000' },
+        { top: 22, h: 4, duration: 7.3, delay: -3.2, color: '#00ff00' },
+        { top: 41, h: 2, duration: 4.1, delay: -0.4, color: '#0000ff' },
+        { top: 57, h: 5, duration: 6.8, delay: -5.1, color: '#ff0000' },
+        { top: 73, h: 3, duration: 8.2, delay: -2.7, color: '#0000ff' },
+        { top: 88, h: 4, duration: 5.5, delay: -4.3, color: '#00ff00' },
+    ]
+
+    // ── Static
+    let staticTimer
+    $effect(() => {
+        if (item.style.type === 'static') {
+            let seed = 0
+            staticTimer = setInterval(() => {
+                seed = (seed + 1) % 1000
+                document.getElementById('noise-turbulence')?.setAttribute('seed', String(seed))
+            }, 60)
+            return () => clearInterval(staticTimer)
+        }
+    })
 </script>
 
-<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'};`}>
+<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'}; --color2: ${item.style.color2 ?? '#ffffff'}; --color: ${item.style.color};`}>
+
+    {#if item.style.type === 'tech'}
+        <div class="tech-bg" aria-hidden="true">
+            {#each triangles as tri}
+                <svg
+                    class="tri"
+                    style="left: {tri.x}%; top: {tri.y}%; width: {tri.size}px; height: {tri.size}px; animation-duration: {tri.duration}s; animation-delay: {tri.delay}s; --tri-opacity: {tri.opacity}; --dx: {tri.dx}px; --dy: {tri.dy}px;"
+                    viewBox="0 0 100 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <polygon points="50,4 3,97 97,97" fill="none" stroke="var(--color2)" stroke-width="6"/>
+                </svg>
+            {/each}
+        </div>
+    {/if}
+
+    {#if item.style.type === 'grunge'}
+        <div class="grunge-bg" aria-hidden="true">
+            {#each waves as w}
+                <div
+                    class="wave"
+                    style="top: {w.top}%; animation-duration: {w.duration}s; animation-delay: {w.delay}s; --wave-opacity: {w.opacity}; --dx: {w.dx}px;"
+                ></div>
+            {/each}
+        </div>
+    {/if}
+
+    {#if item.style.type === 'glitch'}
+        <div class="glitch-bg" aria-hidden="true">
+            {#each glitchStrips as gs}
+                <div class="glitch-strip" style="top: {gs.top}%; height: {gs.h}%; animation-duration: {gs.duration}s; animation-delay: {gs.delay}s; --strip-color: {gs.color};"></div>
+            {/each}
+        </div>
+    {/if}
+    {#if item.style.type === 'hex'}
+        <div class="hex-bg" aria-hidden="true">
+            <svg width="100%" height="100%">
+                {#each hexGrid as h}
+                    <polygon points={hexPoints(h.x, h.y, 38)} fill="none" stroke-width="1.5" class="hex-cell" style="stroke: var(--color2); animation-duration: {h.dur}s; animation-delay: {h.delay}s;"/>
+                {/each}
+            </svg>
+        </div>
+    {/if}
+
+    {#if item.style.type === 'static'}
+        <div class="static-bg" aria-hidden="true">
+            <svg width="100%" height="100%">
+                <defs>
+                    <filter id="noise-filter" x="0" y="0" width="100%" height="100%">
+                        <feTurbulence id="noise-turbulence" type="turbulence" baseFrequency="0.85" numOctaves="1" seed="0" stitchTiles="stitch"/>
+                        <feColorMatrix type="saturate" values="0"/>
+                    </filter>
+                </defs>
+                <rect width="100%" height="100%" filter="url(#noise-filter)" opacity="0.12"/>
+            </svg>
+        </div>
+    {/if}
 
     <div class="inner">
 
@@ -310,5 +442,107 @@
     .nav-arrow svg {
         width: 2rem;
         height: 2rem;
+    }
+
+    /* ── Tech background triangles ── */
+    .tech-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .tri {
+        position: absolute;
+        overflow: visible;
+        opacity: var(--tri-opacity, 0.3);
+        animation: float-around ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    @keyframes float-around {
+        0%   { transform: translate(0, 0) rotate(0deg); }
+        33%  { transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * -0.8)) rotate(80deg); }
+        66%  { transform: translate(calc(var(--dx) * -0.4), calc(var(--dy) * 0.5)) rotate(160deg); }
+        100% { transform: translate(var(--dx), var(--dy)) rotate(240deg); }
+    }
+
+    /* ── Grunge background waves ── */
+    .grunge-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .wave {
+        position: absolute;
+        left: -30%;
+        width: 160%;
+        height: 80%;
+        border-radius: 50%;
+        background: var(--color2);
+        opacity: var(--wave-opacity, 0.3);
+        animation: wave-drift ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    @keyframes wave-drift {
+        from { transform: translateX(0) rotate(-1.5deg) scaleX(1);   }
+        to   { transform: translateX(var(--dx)) rotate(1.5deg) scaleX(1.05); }
+    }
+
+    /* ── Circuit background ── */
+    /* removed */
+
+    /* ── Hex background ── */
+    .hex-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .hex-cell {
+        animation: hex-breathe ease-in-out infinite alternate;
+        opacity: 0.06;
+    }
+    @keyframes hex-breathe {
+        from { opacity: 0.04; }
+        to   { opacity: 0.45; }
+    }
+
+    /* ── Static background ── */
+    .static-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    /* ── Glitch background ── */
+    .glitch-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .glitch-strip {
+        position: absolute;
+        left: -5%;
+        width: 110%;
+        background: var(--strip-color);
+        mix-blend-mode: screen;
+        opacity: 0;
+        animation: glitch-fire linear infinite;
+    }
+
+    @keyframes glitch-fire {
+        0%, 91%, 100% { opacity: 0;    transform: translateX(0); }
+        92%           { opacity: 0.55; transform: translateX(-12px); }
+        93%           { opacity: 0.40; transform: translateX(8px); }
+        94%           { opacity: 0.50; transform: translateX(-4px); }
+        95%           { opacity: 0;    transform: translateX(0); }
     }
 </style>
