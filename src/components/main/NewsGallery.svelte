@@ -29,7 +29,7 @@
     let item = $derived(news[newsIndex])
 </script>
 
-<section class="news-section" style={`background: ${item.style.color};`}>
+<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'};`}>
 
     <div class="inner">
 
@@ -49,7 +49,7 @@
                         {@const thumb = n.link ? getYoutubeThumbnail(n.link) : null}
                         <div class="slide">
 
-                            <div class="text-side">
+                            <div class="text-side" style="color: {n.style.text ?? '#ffffff'}">
                                 <span class="category-label">{n.category}</span>
                                 <h1 class="title">{n.title}</h1>
                                 <p class="description">{n.description}</p>
@@ -171,7 +171,8 @@
         font-size: 0.8rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.6);
+        color: currentColor;
+        opacity: 0.6;
     }
 
     .title {
@@ -179,7 +180,7 @@
         font-size: clamp(1.4rem, 1.9vw, 2rem);
         font-weight: 800;
         line-height: 1.1;
-        color: #ffffff;
+        color: currentColor;
         text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
         margin: 0;
     }
@@ -188,7 +189,8 @@
         font-family: 'Titillium Web', sans-serif;
         font-size: 1rem;
         line-height: 1.7;
-        color: rgba(255, 255, 255, 0.75);
+        color: currentColor;
+        opacity: 0.75;
         margin: 0;
     }
 
@@ -273,15 +275,16 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.4);
+        background: currentColor;
+        opacity: 0.4;
         border: none;
         cursor: pointer;
         padding: 0;
-        transition: background 0.2s, transform 0.2s;
+        transition: opacity 0.2s, transform 0.2s;
     }
 
     .dot.active {
-        background: rgba(255, 255, 255, 0.95);
+        opacity: 0.95;
         transform: scale(1.35);
     }
 
@@ -293,14 +296,15 @@
         flex-shrink: 0;
         background: none;
         border: none;
-        color: rgba(255, 255, 255, 0.5);
+        color: currentColor;
+        opacity: 0.5;
         cursor: pointer;
         padding: 0 0.5rem;
-        transition: color 0.2s;
+        transition: opacity 0.2s;
     }
 
     .nav-arrow:hover {
-        color: #fff;
+        opacity: 1;
     }
 
     .nav-arrow svg {
