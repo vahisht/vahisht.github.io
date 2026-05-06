@@ -340,7 +340,7 @@
         {
             "game": "Deus Ex",
             "category": "Any%",
-            "event_line": "MA",
+            "event_line": "NSG",
             "event_name": "Marathon Alliance 24 / NSG",
             "year": 2024,
             "month": 11,
@@ -363,6 +363,19 @@
             "type": "speedrun",
             "thumbnail": "/speedruns/thumbnail.jpg",
             "important": true
+        },
+        {
+            "game": "Deus Ex",
+            "category": "Any% Coop",
+            "event_line": "Germench",
+            "event_name": "Germench FFM25",
+            "year": 2025,
+            "month": 2,
+            "video": "https://www.youtube.com/watch?v=Rhs6DUiP1pU",
+            "description": "Temporary",
+            "game_series": "Deus Ex",
+            "type": "speedrun",
+            "thumbnail": "/speedruns/thumbnail.jpg"
         },
         {
             "game": "No One Lives Forever 2: A Spy in H.A.R.M.'s Way",
@@ -391,13 +404,26 @@
             "thumbnail": "/speedruns/thumbnail.jpg"
         },
         {
+            "game": "No One Lives Forever 2: A Spy in H.A.R.M.'s Way",
+            "category": "Moderniser%",
+            "event_line": "NSG",
+            "event_name": "NSG Spring 2025",
+            "year": 2025,
+            "month": 4,
+            "video": "https://www.youtube.com/watch?v=v05cyNZJlyg",
+            "description": "Temporary",
+            "game_series": "No One Lives Forever",
+            "type": "speedrun",
+            "thumbnail": "/speedruns/thumbnail.jpg"
+        },
+        {
             "game": "Deus Ex Mankind Divided",
             "category": "Any%",
             "event_line": "SoB",
             "event_name": "Sum of Besties: Deus Ex Anniversary",
             "year": 2025,
             "month": 6,
-            "video": "",
+            "video": "https://www.youtube.com/watch?v=-8I5s2UypJ8",
             "description": "Temporary",
             "game_series": "Deus Ex",
             "type": "speedrun",
@@ -410,7 +436,7 @@
             "event_name": "Sum of Besties: Deus Ex Anniversary",
             "year": 2025,
             "month": 6,
-            "video": "",
+            "video": "https://www.youtube.com/watch?v=7hZXwvikvVI",
             "description": "Temporary",
             "game_series": "Deus Ex",
             "type": "speedrun",
@@ -849,6 +875,20 @@
             "description": "Temporary",
             "game_series": "Deus Ex",
             "runner": "Sui_VT",
+            "type": "commentary",
+            "thumbnail": "/speedruns/thumbnail.jpg"
+        },
+        {
+            "game": "Jedi Academy",
+            "category": "Any% No SL",
+            "event_line": "NSG",
+            "event_name": "NSG Fall 2025",
+            "year": 2025,
+            "month": 9,
+            "video": "https://www.youtube.com/watch?v=WT6JySSgNBM",
+            "description": "Temporary",
+            "game_series": "Jedi Knight",
+            "runner": "MrLaay",
             "type": "commentary",
             "thumbnail": "/speedruns/thumbnail.jpg"
         },

@@ -9,7 +9,7 @@
 
     // ### The named series/events that have their own filter button.
     // ### "Other" will match anything not in these lists.
-    const namedSeries = ["Deus Ex", "Jedi Knight", "Borderlands", "Mirror's Edge", "Fast and Furious", "Sewer Rave"];
+    const namedSeries = ["Deus Ex", "Jedi Knight", "Borderlands", "Mirror's Edge", "Fast and Furious", "Sewer Rave", "No One Lives Forever"];
     const namedEvents = ["Hekathon", "ESA", "NSG", "GDQ", "SoB"];
 
     $: results = (() => {

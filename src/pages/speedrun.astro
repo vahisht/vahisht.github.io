@@ -1,40 +1,23 @@
 ---
 import Layout from "../layout/Layout.astro";
-import Section from "../components/speedrun/Section.svelte";
+import SpeedrunBands from "../components/speedrun/SpeedrunBands.svelte";
 import SeriesSelect from "../components/speedrun/SeriesSelect.svelte"
 import DialogBox from "../components/speedrun/DialogBox.svelte"
-import NoResultsMessage from "../components/speedrun/NoResultsMessage.svelte"
 ---
 
 <Layout title="Speedruns">
 
-    <div style="background: #020617;">
+    <div style="display: flex; flex-direction: column;">
 
-        <!-- Filter bar -->
-        <div class="w-full mx-auto px-4 py-6" style="max-width: 1400px;">
-            <SeriesSelect client:load />
-            <NoResultsMessage client:load />
-        </div>
-
-        <!-- My runs band -->
-        <div class="w-full py-8" style="background: #020617;">
-            <div class="w-full mx-auto px-4" style="max-width: 1400px;">
-                <Section client:load sectionTitle="My Marathon Runs" section="speedrun" />
+        <!-- Filter bar — always dark blue -->
+        <div style="background: #020617;">
+            <div class="w-full mx-auto px-4 py-6" style="max-width: 1400px;">
+                <SeriesSelect client:load />
             </div>
         </div>
 
-        <!-- Commentary band -->
-        <div class="w-full py-8" style="background: rgb(97, 108, 124);">
-            <div class="w-full mx-auto px-4" style="max-width: 1400px;">
-                <Section client:load sectionTitle="Marathon Runs With Me On Commentary" section="commentary" />
-            </div>
-        </div>
-
-        <!-- 
-            If you want to add more section just add another band + <Section/> component.
-            "sectionTitle" refers to the Title of the section.
-            "section" refers to the type in the .json file so it filters them correctly.
-        -->
+        <!-- Reactive bands: runs + commentary, backgrounds controlled by Svelte -->
+        <SpeedrunBands client:load />
 
         <DialogBox client:load />
 

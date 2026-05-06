@@ -3,12 +3,13 @@
     import { slide } from "svelte/transition";
 
     const AllSeriesForFiltering = [
-        "Deus Ex",
-        "Jedi Knight",
-        "Borderlands",
-        "Mirror's Edge",
-        "Fast and Furious",
-        "Sewer Rave",
+        { value: "Deus Ex",              label: "Deus Ex" },
+        { value: "Jedi Knight",          label: "Jedi Knight" },
+        { value: "Borderlands",          label: "Borderlands" },
+        { value: "Mirror's Edge",        label: "Mirror's Edge" },
+        { value: "Fast and Furious",     label: "Fast and Furious" },
+        { value: "Sewer Rave",           label: "Sewer Rave" },
+        { value: "No One Lives Forever", label: "NOLF" },
     ]
 
     const AllEventsForFiltering = [
@@ -58,10 +59,10 @@
                 <div class="flex flex-wrap gap-2">
                     {#each AllSeriesForFiltering as series}
                         <button
-                            title={series}
-                            class={`px-3 py-1 border rounded-md text-sm text-gray-300 ${$selectedSeries.includes(series) ? "bg-gray-600" : "bg-gray-800 sm:hover:bg-gray-600 hover:cursor-pointer"}`}
-                            on:click={() => toggleFilter($selectedSeries, series, selectedSeries)}
-                        >{series}</button>
+                            title={series.value}
+                            class={`px-3 py-1 border rounded-md text-sm text-gray-300 ${$selectedSeries.includes(series.value) ? "bg-gray-600" : "bg-gray-800 sm:hover:bg-gray-600 hover:cursor-pointer"}`}
+                            on:click={() => toggleFilter($selectedSeries, series.value, selectedSeries)}
+                        >{series.label}</button>
                     {/each}
                     <button
                         title="Other"
