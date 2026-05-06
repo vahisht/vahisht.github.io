@@ -1,0 +1,48 @@
+{
+    "education": [
+        {
+            "current": false,
+            "degree": "Doctor of Philosophy (PhD)",
+            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "end": "2024",
+            "faculty": "Faculty of Electrical Engineering",
+            "field": "Computer Graphics",
+            "institution": "Czech Technical University in Prague",
+            "logo": "icons/lev2017.png",
+            "start": "2019"
+        },
+        {
+            "current": false,
+            "degree": "Master's degree",
+            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "end": "2018",
+            "faculty": "Faculty of Electrical Engineering",
+            "field": "Computer Graphics",
+            "institution": "Czech Technical University in Prague",
+            "logo": "icons/lev2017.png",
+            "start": "2016"
+        },
+        {
+            "current": false,
+            "degree": "Bachelor's degree",
+            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "end": "2016",
+            "faculty": "Faculty of Information Technology",
+            "field": "Web and Multimedia",
+            "institution": "Czech Technical University in Prague",
+            "logo": "icons/lev2017.png",
+            "start": "2013"
+        },
+        {
+            "current": false,
+            "degree": "Secondary School",
+            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "end": "2013",
+            "faculty": null,
+            "field": "Programming",
+            "institution": "Gymnázium, Praha 6, Arabská 14",
+            "logo": null,
+            "start": "2009"
+        }
+    ]
+}

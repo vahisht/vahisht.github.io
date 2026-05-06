@@ -1,0 +1,124 @@
+{
+    "work_experience": [
+        {
+            "company": "Urus Entertainment Inc.",
+            "logo": null,
+            "recommendation": null,
+            "roles": [
+                {
+                    "current": true,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "8 months",
+                    "end": null,
+                    "location": "Remote",
+                    "start": "2025-10",
+                    "title": "Rendering Research Lead",
+                    "type": "full-time"
+                },
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "1 year 8 months",
+                    "end": "2025-10",
+                    "location": "Remote",
+                    "start": "2024-03",
+                    "title": "Rendering Research Engineer",
+                    "type": "full-time"
+                },
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "8 months",
+                    "end": "2024-03",
+                    "location": "Remote",
+                    "start": "2023-08",
+                    "title": "Rendering Research Engineer",
+                    "type": "part-time"
+                }
+            ],
+            "total_duration": "2 years 10 months"
+        },
+        {
+            "company": "Google",
+            "logo": "icons/logo-google.png",
+            "recommendation": "documents/dominik_google_internship.pdf",
+            "roles": [
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "3 years 3 months",
+                    "end": "2023-08",
+                    "location": "Prague, Czech Republic",
+                    "start": "2020-06",
+                    "title": "Student Researcher",
+                    "type": "part-time"
+                },
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "5 months",
+                    "end": "2020-06",
+                    "location": "Greater New York City Area, USA",
+                    "start": "2020-02",
+                    "title": "Engineering Intern",
+                    "type": "internship"
+                }
+            ],
+            "total_duration": "3 years 7 months"
+        },
+        {
+            "company": "Czech Technical University in Prague",
+            "logo": "icons/lev2017.png",
+            "recommendation": null,
+            "roles": [
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "6 months",
+                    "end": "2019-04",
+                    "location": "Prague, Czech Republic",
+                    "start": "2018-11",
+                    "title": "Researcher",
+                    "type": "full-time"
+                }
+            ],
+            "total_duration": "6 months"
+        },
+        {
+            "company": "Snap Inc.",
+            "logo": "icons/snapchat_PNG63.png",
+            "recommendation": "documents/Salesin_pre_google.pdf",
+            "roles": [
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "4 months",
+                    "end": "2018-10",
+                    "location": "Greater Los Angeles Area, USA",
+                    "start": "2018-07",
+                    "title": "Research Intern",
+                    "type": "internship"
+                }
+            ],
+            "total_duration": "4 months"
+        },
+        {
+            "company": "Neit Consulting s.r.o.",
+            "logo": null,
+            "recommendation": null,
+            "roles": [
+                {
+                    "current": false,
+                    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+                    "duration": "1 year 4 months",
+                    "end": "2017-11",
+                    "location": "Prague, Czech Republic",
+                    "start": "2016-08",
+                    "title": "Consultant",
+                    "type": "part-time"
+                }
+            ],
+            "total_duration": "1 year 4 months"
+        }
+    ]
+}
