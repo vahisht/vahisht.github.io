@@ -177,7 +177,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         <h1 class="text-3xl font-light text-slate-200 mb-16 tracking-wide">Career at a Glance</h1>
 
             <!-- outer wrapper: margin-left makes room for WORK/EDU labels -->
-            <div class="relative" style="margin-left: 2.5rem;">
+            <div class="relative" style="margin-left: 2.5rem;" id="tl-container">
 
                 <!-- WORK/EDU labels: siblings to tl-reveal so they can fade in separately -->
                 <span id="tl-label-work" class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 0; height: 28px; display: flex; align-items: center;">WORK</span>
@@ -664,6 +664,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     /* Timeline sweep-in animation */
     #tl-reveal {
         clip-path: inset(0 100% 0 0);
+        will-change: clip-path;
     }
 </style>
 
@@ -729,7 +730,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                 observer.disconnect();
             }
         }, { threshold: 0.2 });
-        observer.observe(tlReveal);
+        observer.observe(document.getElementById('tl-container') ?? tlReveal);
 
         replayBtn?.addEventListener('click', () => {
             tlReveal!.style.clipPath = 'inset(0 100% 0 0)';
