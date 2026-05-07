@@ -28,6 +28,10 @@ function formatDuration(months: number): string {
     return parts.join(" ");
 }
 
+function slugify(s: string): string {
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 const now = new Date();
 
 const companies = workData.work_experience.map((company) => {
@@ -36,8 +40,46 @@ const companies = workData.work_experience.map((company) => {
     const minStart = starts.reduce((a, b) => a < b ? a : b);
     const maxEnd   = ends.reduce((a, b) => a > b ? a : b);
     const totalMonths = diffMonths(minStart, maxEnd);
-    return { ...company, computedDuration: formatDuration(totalMonths) };
+    return { ...company, computedDuration: formatDuration(totalMonths), tlStart: minStart, tlEnd: maxEnd };
 });
+
+// Horizontal timeline
+const tlMinDate = new Date(2009, 0, 1);
+const tlTotalMs = now.getTime() - tlMinDate.getTime();
+function tlPct(date: Date): number {
+    return Math.max(0, Math.min(100, ((date.getTime() - tlMinDate.getTime()) / tlTotalMs) * 100));
+}
+const WORK_COLORS = ["#7c3aed","#2563eb","#dc2626","#b45309","#475569"];
+const companyTimeline = companies.map((c, i) => {
+    const startY = c.tlStart.getFullYear();
+    const endY   = c.tlEnd <= now ? c.tlEnd.getFullYear() : null;
+    const tooltip = `${c.company} · ${startY}–${endY ?? "present"}`;
+    return {
+        label: c.company,
+        shortLabel: c.company.includes("Czech Technical") ? "CTU" : c.company.split(/[\s,]+/)[0],
+        tooltip,
+        left: tlPct(c.tlStart),
+        right: 100 - tlPct(c.tlEnd),
+        color: WORK_COLORS[i] ?? "#475569",
+        anchor: `work-${slugify(c.company)}`,
+    };
+});
+function shortDegree(degree: string): string {
+    if (degree.includes("Doctor") || degree.includes("PhD")) return "PhD";
+    if (degree.includes("Master")) return "MSc";
+    if (degree.includes("Bachelor")) return "BSc";
+    return "HS";
+}
+const EDU_COLORS = ["#059669","#10b981","#34d399","#6b7280"];
+const eduTimeline = eduData.education.map((e, i) => {
+    const startYear = parseInt(e.start);
+    const endYear   = parseInt(e.end);
+    const start = new Date(startYear, 6, 1);  // mid-year
+    const end   = e.current ? now : new Date(endYear, 6, 1);  // mid-year
+    const tooltip = `${e.institution} · ${e.degree} · ${e.field} · ${startYear}–${e.current ? "present" : endYear}`;
+    return { label: e.degree, shortLabel: shortDegree(e.degree), tooltip, left: tlPct(start), right: 100 - tlPct(end), color: EDU_COLORS[i] ?? "#6b7280", anchor: `edu-${slugify(e.institution)}` };
+});
+const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 ---
 
 <Layout title="Hire Me">
@@ -50,6 +92,66 @@ const companies = workData.work_experience.map((company) => {
         </div>
     </nav>
 
+    <!-- Horizontal Timeline -->
+    <section class="w-full py-10 px-8" style="background: #020617;">
+        <div class="mx-auto" style="max-width: 1400px;">
+
+            <!-- outer wrapper: margin-left makes room for WORK/EDU labels -->
+            <div class="relative" style="margin-left: 2.5rem;">
+
+                <!-- Background grid lines (aligned with bars) -->
+                <div class="absolute inset-0 pointer-events-none">
+                    {tlTickYears.map(y => {
+                        const pct = tlPct(new Date(y, 0, 1));
+                        return <div class="absolute top-0 bottom-0 w-px" style={`left: ${pct}%; background: rgba(255,255,255,0.04);`}></div>;
+                    })}
+                </div>
+
+                <!-- WORK row -->
+                <div class="relative" style="height: 28px; margin-bottom: 8px;">
+                    <span class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 50%; transform: translateY(-50%);">WORK</span>
+                    {companyTimeline.map((c) => (
+                        <a
+                            href={`#${c.anchor}`}
+                            class="tl-bar absolute inset-y-0 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-75"
+                            style={`left: ${c.left}%; right: ${c.right}%; background: ${c.color}; border-radius: 4px; overflow: hidden;`}
+                            data-tooltip={c.tooltip}
+                            title={c.tooltip}
+                        >
+                            <span style="font-size: 0.6rem; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;">{c.shortLabel}</span>
+                        </a>
+                    ))}
+                </div>
+
+                <!-- Axis row -->
+                <div class="relative" style="height: 16px;">
+                    <div class="absolute left-0 right-0" style="top: 50%; height: 2px; background: #475569; transform: translateY(-50%);"></div>
+                    {tlTickYears.map(y => {
+                        const pct = tlPct(new Date(y, 0, 1));
+                        return <span class="absolute text-slate-300 -translate-x-1/2 -translate-y-1/2 px-0.5" style={`left: ${pct}%; top: 50%; font-size: 0.65rem; background: #020617;`}>{y}</span>;
+                    })}
+                </div>
+
+                <!-- EDU row -->
+                <div class="relative" style="height: 28px; margin-top: 8px;">
+                    <span class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 50%; transform: translateY(-50%);">EDU</span>
+                    {eduTimeline.map((e) => (
+                        <a
+                            href={`#${e.anchor}`}
+                            class="tl-bar absolute inset-y-0 flex items-center justify-center cursor-pointer transition-opacity hover:opacity-75"
+                            style={`left: ${e.left}%; right: ${e.right}%; background: ${e.color}; border-radius: 4px; overflow: hidden;`}
+                            data-tooltip={e.tooltip}
+                            title={e.tooltip}
+                        >
+                            <span style="font-size: 0.6rem; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;">{e.shortLabel}</span>
+                        </a>
+                    ))}
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- Work Experience -->
     <section id="work-experience" class="w-full min-h-screen py-16 px-4 md:px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
@@ -61,7 +163,7 @@ const companies = workData.work_experience.map((company) => {
                 <div class="absolute top-2 bottom-2 w-px bg-slate-700 hidden md:block" style="left: 4rem;"></div>
 
                 {companies.map((company) => (
-                    <div class="flex flex-col md:flex-row md:items-stretch">
+                    <div id={`work-${slugify(company.company)}`} class="flex flex-col md:flex-row md:items-stretch">
 
                         <div class="flex-none hidden md:block" style="width: 4rem;"></div>
 
@@ -136,7 +238,7 @@ const companies = workData.work_experience.map((company) => {
                 <div class="absolute top-2 bottom-2 w-px bg-slate-700 hidden md:block" style="left: 4rem;"></div>
 
                 {eduData.education.map((entry) => (
-                    <div class="flex flex-col md:flex-row md:items-center">
+                    <div id={`edu-${slugify(entry.institution)}`} class="flex flex-col md:flex-row md:items-center">
 
                         <div class="flex-none hidden md:block" style="width: 4rem;"></div>
 
@@ -182,5 +284,37 @@ const companies = workData.work_experience.map((company) => {
 <style>
     .description p + p {
         margin-top: 0.75rem;
+    }
+
+    /* Timeline tooltip */
+    .tl-bar::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e293b;
+        color: #cbd5e1;
+        font-size: 0.65rem;
+        white-space: nowrap;
+        padding: 3px 8px;
+        border-radius: 4px;
+        border: 1px solid #334155;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+        z-index: 50;
+    }
+    .tl-bar:hover::after {
+        opacity: 1;
+    }
+
+    /* Hide label text if bar is too narrow (under ~40px visual width) */
+    .tl-bar .tl-label {
+        min-width: 0;
+    }
+    .tl-bar[style*="right: 9"] .tl-label,
+    .tl-bar[style*="right: 8"] .tl-label {
+        display: none;
     }
 </style>
