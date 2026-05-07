@@ -32,10 +32,4 @@
     <a href={"/speedrun"}>
         <p class="text-xl text-gray-300 p-4">Speedrun</p>
     </a>
-    <a href={"/research"}>
-        <p class="text-xl text-gray-300 p-4">Research</p>
-    </a>
-    <a href={"/portfolio"}>
-        <p class="text-xl text-gray-300 p-4">Portfolio</p>
-    </a>
 </div>
