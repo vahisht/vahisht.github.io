@@ -186,7 +186,10 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                             </div>
                             <span class="text-slate-600 mt-1 uppercase tracking-wider" style="font-size: 0.8rem; letter-spacing: 0.08em;">{company.computedDuration}</span>
                             {company.recommendation && (
-                                <a href={`/${company.recommendation}`} target="_blank" class="text-slate-500 text-xs mt-2 hover:text-slate-300 transition-colors underline underline-offset-2">Letter of Recommendation</a>
+                                <a href={`/${company.recommendation}`} target="_blank" class="inline-flex items-center gap-1.5 mt-3 px-3 py-1.5 rounded text-slate-300 hover:text-white hover:bg-slate-700 transition-colors border border-slate-700 hover:border-slate-500 self-start" style="font-size: 0.75rem;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                    Letter of Recommendation
+                                </a>
                             )}
                         </div>
 
