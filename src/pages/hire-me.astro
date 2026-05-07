@@ -87,17 +87,94 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 
 <Layout title="Hire Me">
 
+    <!-- Introduction -->
+    <section class="w-full py-16 px-8" style="background: #020617;">
+        <div class="mx-auto" style="max-width: 1400px;">
+            <h1 class="text-center text-4xl font-light text-white mb-10 tracking-wide">Name</h1>
+            <div class="flex flex-col md:flex-row gap-0 items-stretch">
+                <!-- Left: bio -->
+                <div class="flex-1 text-slate-400 leading-relaxed pr-0 md:pr-12" style="font-size: 0.95rem;">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
+                    <p class="mt-4">Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.</p>
+                    <p class="mt-4">Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.</p>
+                </div>
+                <!-- Right: photo placeholder -->
+                <div class="flex-1 flex items-center justify-center pl-0 md:pl-12">
+                    <div class="w-full flex items-center justify-center rounded-lg border border-slate-700" style="height: 280px; background: #0f172a;">
+                        <span class="text-slate-600 text-sm">Photo placeholder</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Quick-nav -->
-    <nav class="w-full py-6" style="background: #0f172a;">
-        <div class="mx-auto px-8 flex flex-col gap-3" style="max-width: 1400px;">
-            <a href="#work-experience" class="text-sm text-slate-400 hover:text-white transition-colors">Work Experience</a>
-            <a href="#education" class="text-sm text-slate-400 hover:text-white transition-colors">Education</a>
+    <nav class="w-full py-8 px-8" style="background: #0f172a; border-bottom: 1px solid #1e293b;">
+        <div class="mx-auto flex flex-col" style="max-width: 1400px;">
+            <a href="#bragging" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
+                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
+                <span class="text-sm tracking-wide">Highlights</span>
+            </a>
+            <a href="#career" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
+                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
+                <span class="text-sm tracking-wide">Career at a Glance</span>
+            </a>
+            <a href="#work-experience" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
+                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
+                <span class="text-sm tracking-wide">Work Experience</span>
+            </a>
+            <a href="#education" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
+                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
+                <span class="text-sm tracking-wide">Education</span>
+            </a>
+            <a href="#hire-me-quest" class="group flex items-center gap-4 py-3 text-indigo-400 hover:text-indigo-300 transition-colors duration-150">
+                <span class="w-5 h-px bg-indigo-700 group-hover:bg-indigo-400 group-hover:w-8 transition-all duration-200"></span>
+                <span class="text-sm tracking-wide font-medium">Contact Me</span>
+            </a>
         </div>
     </nav>
 
-    <!-- Horizontal Timeline -->
-    <section class="w-full py-10 px-8" style="background: #020617;">
+    <!-- Bragging One -->
+    <section id="bragging" class="w-full py-16 px-8" style="background: #0a1628;">
         <div class="mx-auto" style="max-width: 1400px;">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <!-- Left: text -->
+                <div class="flex-1">
+                    <h2 class="text-2xl font-semibold text-white mb-3">Bragging One</h2>
+                    <p class="text-slate-400 leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
+                    <p class="text-slate-400 leading-relaxed mt-3">Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                </div>
+                <!-- Right: image/video placeholder -->
+                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
+                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bragging Two -->
+    <section class="w-full py-16 px-8" style="background: #0d0d1f;">
+        <div class="mx-auto" style="max-width: 1400px;">
+            <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
+                <!-- Right (visually left due to row-reverse): text -->
+                <div class="flex-1">
+                    <h2 class="text-2xl font-semibold text-white mb-3">Bragging Two</h2>
+                    <p class="text-slate-400 leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
+                    <p class="text-slate-400 leading-relaxed mt-3">Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                </div>
+                <!-- Left: image/video placeholder -->
+                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
+                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Timeline -->
+    <section id="career" class="w-full py-10 px-8" style="background: #020617;">
+        <div class="mx-auto" style="max-width: 1400px;">
+
+        <h1 class="text-3xl font-light text-slate-200 mb-16 tracking-wide">Career at a Glance</h1>
 
             <!-- outer wrapper: margin-left makes room for WORK/EDU labels -->
             <div class="relative" style="margin-left: 2.5rem;">
@@ -303,11 +380,253 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         </div>
     </section>
 
+    <!-- Hire Me Quest -->
+    <section id="hire-me-quest" class="w-full py-16 px-8" style="background: #12101e;">
+        <div class="mx-auto" style="max-width: 1400px;">
+            <div class="flex justify-end">
+                <div class="quest-panel">
+
+                    <!-- Title bar -->
+                    <div class="quest-title-bar">
+                        <div class="quest-icon">
+                            <span style="font-size: 1.1rem; line-height:1;">⚔</span>
+                        </div>
+                        <h2 class="quest-title">Hire Me</h2>
+                    </div>
+                    <hr class="quest-hr" />
+
+                    <!-- Body -->
+                    <div class="quest-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+                        <p>Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.</p>
+                        <p>Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae.</p>
+
+                        <h3 class="quest-section-header">Objectives</h3>
+                        <ul class="quest-objectives">
+                            <li><span class="quest-check">&#9670;</span> Lorem ipsum dolor sit amet consectetur</li>
+                            <li><span class="quest-check">&#9670;</span> Pellentesque habitant morbi tristique senectus</li>
+                            <li><span class="quest-check">&#9670;</span> Donec eu libero sit amet quam egestas</li>
+                        </ul>
+
+                        <h3 class="quest-section-header">Rewards</h3>
+                        <div class="quest-reward-item">
+                            <div class="quest-reward-left">
+                                <div class="quest-reward-icon">&#129504;</div>
+                                <span>Lorem ipsum dolor</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="quest-footer-divider"></div>
+                    <div class="quest-buttons">
+                        <a href="mailto:" class="quest-btn quest-btn-accept">
+                            <span class="quest-btn-key">&#8617;</span> Accept
+                        </a>
+                        <button disabled class="quest-btn quest-btn-decline"><span class="quest-btn-key">Esc</span> Decline</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
 </Layout>
 
 <style>
     .description p + p {
         margin-top: 0.75rem;
+    }
+
+    /* ── Quest panel ── */
+    .quest-panel {
+        width: 580px;
+        background-color: #c8b084;
+        background-image: radial-gradient(ellipse at center, rgba(255,240,200,0.3) 0%, rgba(0,0,0,0.15) 100%);
+        border: 1px solid #8a6a3a;
+        border-radius: 4px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.35);
+        font-family: Georgia, 'Times New Roman', serif;
+        color: #1a0f00;
+        overflow: hidden;
+    }
+    .quest-title-bar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 22px 24px 18px;
+        background: transparent;
+    }
+    .quest-hr {
+        border: none;
+        border-top: 1px solid rgba(100,70,20,0.4);
+        margin: 0 24px 0;
+    }
+    .quest-icon {
+        width: 56px;
+        height: 56px;
+        background: radial-gradient(circle at 35% 35%, #e0c070, #a07830);
+        border: 2px solid #c8a020;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #2a1400;
+        font-size: 1.5rem;
+    }
+    .quest-title {
+        font-size: 1.65rem;
+        font-weight: bold;
+        color: #2a1a0a;
+        margin: 0;
+    }
+    .quest-body {
+        padding: 16px 24px 12px;
+        font-size: 0.97rem;
+        line-height: 1.7;
+        color: #1a0f00;
+        font-weight: 400;
+    }
+    .quest-body p {
+        margin: 0 0 13px 0;
+    }
+    .quest-body strong {
+        color: #8b2500;
+    }
+    .quest-section-header {
+        display: inline-block;
+        font-size: 13px;
+        font-weight: bold;
+        color: #2a1a00;
+        letter-spacing: 0.02em;
+        text-transform: none;
+        margin: 16px 0 9px;
+        padding: 3px 10px;
+        background: rgba(0,0,0,0.07);
+        border: 1px solid rgba(100,70,20,0.35);
+        border-radius: 2px;
+    }
+    .quest-objectives {
+        list-style: none;
+        margin: 0 0 8px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+    .quest-objectives li {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+    .quest-check {
+        color: #b8901a;
+        flex-shrink: 0;
+        font-size: 0.55rem;
+        margin-top: 4px;
+    }
+    .quest-reward-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+    .quest-reward-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .quest-reward-icon {
+        width: 40px;
+        height: 40px;
+        background: #1a1200;
+        border: 2px solid #c8a020;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+    .quest-reward-gold {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.95rem;
+        color: #7a5500;
+        font-weight: bold;
+    }
+    .quest-gold-icon {
+        font-size: 1.05rem;
+    }
+    .quest-gold-label {
+        font-size: 0.76rem;
+        color: #a07820;
+    }
+    .quest-footer-divider {
+        display: none;
+    }
+    .quest-buttons {
+        display: flex;
+        gap: 10px;
+        padding: 10px 24px 16px;
+        background: transparent;
+        border-top: 1px solid rgba(100,70,20,0.3);
+        margin-top: 12px;
+    }
+    .quest-btn {
+        flex: 1;
+        height: 42px;
+        padding: 0 14px;
+        font-family: Georgia, serif;
+        font-size: 0.82rem;
+        font-weight: bold;
+        border-radius: 3px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: filter 0.1s;
+        letter-spacing: 0.02em;
+    }
+    .quest-btn:hover:not(:disabled) {
+        filter: brightness(1.15);
+    }
+    .quest-btn-accept {
+        background: linear-gradient(180deg, #7a3535 0%, #5a2020 100%);
+        border: 1px solid #a05030;
+        color: #f0d080;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    }
+    .quest-btn-decline {
+        background: linear-gradient(180deg, #787878 0%, #585858 100%);
+        border: 1px solid #4a4a4a;
+        color: #aaa;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .quest-btn-key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 18px;
+        padding: 0 5px;
+        background: rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 2px;
+        font-size: 0.62rem;
+        color: #ccc;
+        font-family: sans-serif;
+        font-weight: normal;
+        letter-spacing: 0;
     }
 
     /* Timeline tooltip */

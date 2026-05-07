@@ -72,7 +72,12 @@
 
     function handleClick() {
         if (speedrun.video) {
-            window.open(speedrun.video, '_blank', 'noopener,noreferrer');
+            const isTouch = window.matchMedia('(hover: none)').matches;
+            if (isTouch) {
+                window.location.href = speedrun.video;
+            } else {
+                window.open(speedrun.video, '_blank', 'noopener,noreferrer');
+            }
         }
     }
 </script>
