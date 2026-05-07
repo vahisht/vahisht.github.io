@@ -10,4 +10,7 @@ import svelte from '@astrojs/svelte';
 export default defineConfig({
   integrations: [tailwind(), svelte()],
   site: 'https://vahisht.dev',
+  redirects: {
+    '/youtube': 'https://www.youtube.com/@VahishtHimself',
+  },
 });

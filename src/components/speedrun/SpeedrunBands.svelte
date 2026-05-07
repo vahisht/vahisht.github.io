@@ -79,7 +79,7 @@
     .commentary-band {
         flex: 1;
         width: 100%;
-        background: rgb(97, 108, 124);
+        background: rgb(113, 112, 121);
         padding: 2rem 0;
     }
 

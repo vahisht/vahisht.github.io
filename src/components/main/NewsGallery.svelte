@@ -155,9 +155,17 @@
             return () => clearInterval(staticTimer)
         }
     })
+
+    // ── Touch swipe support (mobile)
+    let touchStartX = 0
+    function onTouchStart(e) { touchStartX = e.touches[0].clientX }
+    function onTouchEnd(e) {
+        const dx = e.changedTouches[0].clientX - touchStartX
+        if (Math.abs(dx) > 40) { dx < 0 ? nextNews() : prevNews() }
+    }
 </script>
 
-<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'};${item.style.color2 ? ` --color2: ${item.style.color2}; --color: ${item.style.color};` : ''}${item.style.bgImage ? ` --bg-image: url('/${item.style.bgImage}');` : ''}`} onmouseenter={pause} onmouseleave={resume}>
+<section class="news-section" style={`background: ${item.style.color}; color: ${item.style.text ?? '#ffffff'};${item.style.color2 ? ` --color2: ${item.style.color2}; --color: ${item.style.color};` : ''}${item.style.bgImage ? ` --bg-image: url('/${item.style.bgImage}');` : ''}`} onmouseenter={pause} onmouseleave={resume} ontouchstart={onTouchStart} ontouchend={onTouchEnd}>
 
     {#if item.style.bgImage}
         <div class="bg-image" aria-hidden="true" transition:fade={{ duration: 500 }}></div>
@@ -706,5 +714,59 @@
         93%           { opacity: 0.40; transform: translateX(8px); }
         94%           { opacity: 0.50; transform: translateX(-4px); }
         95%           { opacity: 0;    transform: translateX(0); }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 767px) {
+        .news-section {
+            height: auto;
+            min-height: 40vh;
+        }
+
+        .inner {
+            padding: 0 0.75rem;
+        }
+
+        /* Hide the side-panel nav — too wide for small screens */
+        .slide-nav {
+            display: none;
+        }
+
+        /* Stack text above thumbnail */
+        .slide {
+            flex-direction: column;
+            gap: 0.75rem;
+            overflow: hidden;
+        }
+
+        .text-side {
+            padding-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .title {
+            font-size: clamp(1.1rem, 5vw, 1.4rem);
+        }
+
+        /* Thumbnail: smaller fixed height below text */
+        .thumb-link {
+            flex: unset;
+            width: 100%;
+        }
+
+        .thumb-wrapper {
+            max-height: 28vw;
+            border-radius: 4px;
+        }
+
+        .image-wrapper {
+            max-height: 28vw;
+        }
+
+        /* Keep arrows accessible but tighter */
+        .nav-arrow svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
     }
 </style>

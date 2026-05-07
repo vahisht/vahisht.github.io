@@ -443,4 +443,30 @@
     .gold-shine > .card.clickable:hover {
         animation: legendaryHover 1.5s ease-in-out infinite;
     }
+
+    /* ── Touch devices: disable hover transforms that overflow the page ── */
+    @media (hover: none) {
+        .glow-wrapper:hover {
+            z-index: 1;
+        }
+        .card.clickable:hover {
+            transform: none;
+            background-position: 0% 0%;
+        }
+        .card.clickable:hover .shine-overlay {
+            transform: translateY(-8%);
+        }
+        .card.clickable:hover .game-name-hover {
+            color: #e2e8f0;
+        }
+        .card.clickable:hover .card-meta {
+            color: #6b7280;
+        }
+        .gold-shine:hover::before {
+            animation: rotateRaysSmall 10s linear infinite;
+        }
+        .gold-shine > .card.clickable:hover {
+            animation: legendaryPulse 5s ease-in-out infinite;
+        }
+    }
 </style>
