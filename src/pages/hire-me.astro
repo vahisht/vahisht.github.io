@@ -88,7 +88,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 <Layout title="Hire Me">
 
     <!-- Introduction -->
-    <section class="w-full py-16 px-8" style="background: #020617;">
+    <section id="intro" class="w-full py-16 px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
             <h1 class="text-center text-4xl font-light text-white mb-10 tracking-wide">Name</h1>
             <div class="flex flex-col md:flex-row gap-0 items-stretch">
@@ -108,30 +108,32 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         </div>
     </section>
 
-    <!-- Quick-nav -->
-    <nav class="w-full py-8 px-8" style="background: #0f172a; border-bottom: 1px solid #1e293b;">
-        <div class="mx-auto flex flex-col" style="max-width: 1400px;">
-            <a href="#bragging" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
-                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
-                <span class="text-sm tracking-wide">Highlights</span>
-            </a>
-            <a href="#career" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
-                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
-                <span class="text-sm tracking-wide">Career at a Glance</span>
-            </a>
-            <a href="#work-experience" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
-                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
-                <span class="text-sm tracking-wide">Work Experience</span>
-            </a>
-            <a href="#education" class="group flex items-center gap-4 py-3 text-slate-500 hover:text-white transition-colors duration-150">
-                <span class="w-5 h-px bg-slate-700 group-hover:bg-white group-hover:w-8 transition-all duration-200"></span>
-                <span class="text-sm tracking-wide">Education</span>
-            </a>
-            <a href="#hire-me-quest" class="group flex items-center gap-4 py-3 text-indigo-400 hover:text-indigo-300 transition-colors duration-150">
-                <span class="w-5 h-px bg-indigo-700 group-hover:bg-indigo-400 group-hover:w-8 transition-all duration-200"></span>
-                <span class="text-sm tracking-wide font-medium">Contact Me</span>
-            </a>
-        </div>
+    <!-- Fixed left nav -->
+    <nav id="side-nav" aria-label="Page sections">
+        <a href="#intro" class="side-nav-item" data-section="intro">
+            <span class="side-nav-dot"></span>
+            <span class="side-nav-label">Intro</span>
+        </a>
+        <a href="#bragging" class="side-nav-item" data-section="bragging">
+            <span class="side-nav-dot"></span>
+            <span class="side-nav-label">Highlights</span>
+        </a>
+        <a href="#career" class="side-nav-item" data-section="career">
+            <span class="side-nav-dot"></span>
+            <span class="side-nav-label">Career</span>
+        </a>
+        <a href="#work-experience" class="side-nav-item" data-section="work-experience">
+            <span class="side-nav-dot"></span>
+            <span class="side-nav-label">Work</span>
+        </a>
+        <a href="#education" class="side-nav-item" data-section="education">
+            <span class="side-nav-dot"></span>
+            <span class="side-nav-label">Education</span>
+        </a>
+        <a href="#hire-me-quest" class="side-nav-item side-nav-contact" data-section="hire-me-quest">
+            <span class="side-nav-dot"></span>
+            <span class="side-nav-label">Contact</span>
+        </a>
     </nav>
 
     <!-- Bragging One -->
@@ -434,6 +436,75 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 </Layout>
 
 <style>
+    /* ── Fixed side nav ── */
+    :global(#side-nav) {
+        position: fixed;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    @media (max-width: 1700px) {
+        :global(#side-nav) {
+            display: none;
+        }
+    }
+    :global(.side-nav-item) {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 4px 0;
+    }
+    :global(.side-nav-dot) {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #475569;
+        flex-shrink: 0;
+        transition: background 0.2s, transform 0.2s;
+    }
+    :global(.side-nav-label) {
+        font-size: 0.7rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #475569;
+        white-space: nowrap;
+        transition: color 0.2s;
+        pointer-events: none;
+    }
+    :global(.side-nav-item:hover .side-nav-dot),
+    :global(.side-nav-item.active .side-nav-dot) {
+        background: #94a3b8;
+        transform: scale(1.4);
+    }
+    :global(.side-nav-item.active .side-nav-dot) {
+        background: #e2e8f0;
+    }
+    :global(.side-nav-item:hover .side-nav-label) {
+        color: #94a3b8;
+        opacity: 1;
+    }
+    :global(.side-nav-item.active .side-nav-label) {
+        color: #e2e8f0;
+        opacity: 1;
+    }
+    :global(.side-nav-contact .side-nav-dot) {
+        background: #4338ca;
+    }
+    :global(.side-nav-contact:hover .side-nav-dot),
+    :global(.side-nav-contact.active .side-nav-dot) {
+        background: #818cf8;
+    }
+    :global(.side-nav-contact:hover .side-nav-label),
+    :global(.side-nav-contact.active .side-nav-label) {
+        color: #818cf8;
+    }
+
     .description p + p {
         margin-top: 0.75rem;
     }
@@ -737,4 +808,26 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             runAnimation();
         });
     }
+
+    // ── Side nav active section tracking ──
+    const navItems = document.querySelectorAll<HTMLElement>('#side-nav .side-nav-item');
+    const sections = ['intro', 'bragging', 'career', 'work-experience', 'education', 'hire-me-quest']
+        .map(id => document.getElementById(id))
+        .filter(Boolean) as HTMLElement[];
+
+    function setActive(id: string) {
+        navItems.forEach(item => {
+            item.classList.toggle('active', item.dataset.section === id);
+        });
+    }
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+            if (entry.isIntersecting) {
+                setActive((entry.target as HTMLElement).id);
+            }
+        }
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(s => sectionObserver.observe(s));
 </script>
