@@ -41,7 +41,7 @@
             "faculty": null,
             "field": "Programming",
             "institution": "Gymnázium, Praha 6, Arabská 14",
-            "logo": null,
+            "logo": "icons/gyarab.png",
             "start": "2009"
         }
     ]
