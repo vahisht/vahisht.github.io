@@ -102,6 +102,12 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <!-- outer wrapper: margin-left makes room for WORK/EDU labels -->
             <div class="relative" style="margin-left: 2.5rem;">
 
+                <!-- WORK/EDU labels: siblings to tl-reveal so they can fade in separately -->
+                <span id="tl-label-work" class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 0; height: 28px; display: flex; align-items: center;">WORK</span>
+                <span id="tl-label-edu" class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 60px; height: 28px; display: flex; align-items: center;">EDU</span>
+
+                <div id="tl-reveal" class="relative">
+
                 <!-- Background grid lines (aligned with bars) -->
                 <div class="absolute inset-0 pointer-events-none">
                     {tlTickYears.map(y => {
@@ -112,7 +118,6 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 
                 <!-- WORK row -->
                 <div class="relative" style="height: 28px; margin-bottom: 8px;">
-                    <span class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 50%; transform: translateY(-50%);">WORK</span>
                     {companyTimeline.map((c) => (
                         <a
                             href={`#${c.anchor}`}
@@ -137,7 +142,6 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 
                 <!-- EDU row -->
                 <div class="relative" style="height: 28px; margin-top: 8px;">
-                    <span class="absolute text-slate-300 uppercase tracking-widest" style="font-size: 0.6rem; right: calc(100% + 6px); top: 50%; transform: translateY(-50%);">EDU</span>
                     {eduTimeline.map((e) => (
                         <a
                             href={`#${e.anchor}`}
@@ -149,6 +153,20 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                             <span style="font-size: 0.75rem; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;">{e.shortLabel}</span>
                         </a>
                     ))}
+                </div>
+                </div>
+
+                <!-- Cursor: sibling to tl-reveal so it is not clipped -->
+                <div id="tl-cursor" class="absolute pointer-events-none" style="top: 0; bottom: 0; left: 0; width: 2px; background: rgba(255,255,255,0.85); z-index: 30; opacity: 0;">
+                    <span id="tl-cursor-year" style="position: absolute; top: -28px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; font-weight: 600; color: white; white-space: nowrap; background: rgba(2,6,23,0.9); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.35);"></span>
+                </div>
+
+                <!-- Replay button: below timeline, flush right, fades in after animation -->
+                <div class="flex justify-end" style="margin-top: 6px;">
+                    <button id="tl-replay" title="Replay animation" style="display: flex; align-items: center; gap: 4px; font-size: 0.65rem; color: #94a3b8; background: none; border: 1px solid #334155; border-radius: 4px; padding: 2px 8px; cursor: pointer; opacity: 0; transition: color 0.15s, border-color 0.15s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.33"/></svg>
+                        replay
+                    </button>
                 </div>
 
             </div>
@@ -323,4 +341,80 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     .tl-bar[style*="right: 8"] .tl-label {
         display: none;
     }
+
+    /* Timeline sweep-in animation */
+    #tl-reveal {
+        clip-path: inset(0 100% 0 0);
+    }
 </style>
+
+<script>
+    const DURATION = 2600; // ← animation speed in ms, adjust to preference
+
+    const tlReveal    = document.getElementById('tl-reveal');
+    const cursor      = document.getElementById('tl-cursor') as HTMLElement | null;
+    const cursorYear  = document.getElementById('tl-cursor-year');
+    const replayBtn   = document.getElementById('tl-replay') as HTMLElement | null;
+    const labelWork   = document.getElementById('tl-label-work') as HTMLElement | null;
+    const labelEdu    = document.getElementById('tl-label-edu') as HTMLElement | null;
+
+    function fadeIn(el: HTMLElement | null, delay = 0) {
+        if (!el) return;
+        el.style.transition = `opacity 0.5s ${delay}ms`;
+        el.style.opacity = '1';
+    }
+
+    if (tlReveal && cursor && cursorYear) {
+        // Must match tlMinDate in frontmatter
+        const tlMin = new Date(2009, 0, 1).getTime();
+        const tlMax = Date.now();
+
+        function pctToYear(pct: number): number {
+            return new Date(tlMin + (pct / 100) * (tlMax - tlMin)).getFullYear();
+        }
+        function ease(t: number): number {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        function runAnimation() {
+            const start = performance.now();
+            cursor!.style.transition = '';
+            cursor!.style.opacity = '1';
+            // Hide replay while animating
+            if (replayBtn) { replayBtn.style.transition = 'none'; replayBtn.style.opacity = '0'; }
+
+            function frame(now: number) {
+                const raw = Math.min((now - start) / DURATION, 1);
+                const pct = ease(raw) * 100;
+
+                tlReveal!.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+                cursor!.style.left = `${pct}%`;
+                cursorYear!.textContent = String(pctToYear(pct));
+
+                if (raw < 1) {
+                    requestAnimationFrame(frame);
+                } else {
+                    // Fully reveal and fade out cursor, fade in labels + replay
+                    tlReveal!.style.clipPath = 'none';
+                    cursor!.style.transition = 'opacity 0.5s';
+                    cursor!.style.opacity = '0';
+                    fadeIn(replayBtn, 300);
+                }
+            }
+            requestAnimationFrame(frame);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                runAnimation();
+                observer.disconnect();
+            }
+        }, { threshold: 0.2 });
+        observer.observe(tlReveal);
+
+        replayBtn?.addEventListener('click', () => {
+            tlReveal!.style.clipPath = 'inset(0 100% 0 0)';
+            runAnimation();
+        });
+    }
+</script>
