@@ -49,7 +49,9 @@ const tlTotalMs = now.getTime() - tlMinDate.getTime();
 function tlPct(date: Date): number {
     return Math.max(0, Math.min(100, ((date.getTime() - tlMinDate.getTime()) / tlTotalMs) * 100));
 }
-const WORK_COLORS = ["#7c3aed","#2563eb","#dc2626","#b45309","#475569"];
+// 0=Urus, 1=Google, 2=CTU, 3=Snap, 4=Neit
+const WORK_COLORS =      ["#7c3aed", "#4285F4", "#003DA5", "#FFFC00", "#b8c99e"];
+const WORK_TEXT_COLORS = ["#ffffff", "#ffffff", "#ffffff", "#000000", "#000000"];
 const companyTimeline = companies.map((c, i) => {
     const startY = c.tlStart.getFullYear();
     const endY   = c.tlEnd <= now ? c.tlEnd.getFullYear() : null;
@@ -61,6 +63,7 @@ const companyTimeline = companies.map((c, i) => {
         left: tlPct(c.tlStart),
         right: 100 - tlPct(c.tlEnd),
         color: WORK_COLORS[i] ?? "#475569",
+        textColor: WORK_TEXT_COLORS[i] ?? "#ffffff",
         anchor: `work-${slugify(c.company)}`,
     };
 });
@@ -118,7 +121,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                             data-tooltip={c.tooltip}
                             title={c.tooltip}
                         >
-                            <span style="font-size: 0.6rem; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;">{c.shortLabel}</span>
+                            <span style={`font-size: 0.75rem; color: ${c.textColor}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;`}>{c.shortLabel}</span>
                         </a>
                     ))}
                 </div>
@@ -143,7 +146,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                             data-tooltip={e.tooltip}
                             title={e.tooltip}
                         >
-                            <span style="font-size: 0.6rem; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;">{e.shortLabel}</span>
+                            <span style="font-size: 0.75rem; color: rgba(255,255,255,0.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 4px;">{e.shortLabel}</span>
                         </a>
                     ))}
                 </div>
