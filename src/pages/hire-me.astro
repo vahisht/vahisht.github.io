@@ -126,19 +126,18 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <span class="side-nav-dot"></span>
             <span class="side-nav-label">Career</span>
         </a>
-        <a href="#work-experience" class="side-nav-item" data-section="work-experience">
-            <span class="side-nav-dot"></span>
-            <span class="side-nav-label">Work</span>
-        </a>
-        <a href="#education" class="side-nav-item" data-section="education">
-            <span class="side-nav-dot"></span>
-            <span class="side-nav-label">Education</span>
-        </a>
         <a href="#hire-me-quest" class="side-nav-item side-nav-contact" data-section="hire-me-quest">
             <span class="side-nav-dot"></span>
             <span class="side-nav-label">Contact</span>
         </a>
     </nav>
+
+    <!-- Highlights label: overlaps the intro→bragging transition -->
+    <div class="w-full" style="position: relative; height: 0; z-index: 10;">
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; transform: translateY(50%); display: flex; justify-content: center;">
+            <span style="font-size: 2rem; font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; color: #475569;">Highlights</span>
+        </div>
+    </div>
 
     <!-- Bragging One -->
     <section id="bragging" class="w-full py-16 px-8" style="background: #0a1628;">
@@ -158,7 +157,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </section>
 
     <!-- Bragging Two -->
-    <section class="w-full py-16 px-8" style="background: #0d0d1f;">
+    <section id="bragging-two" class="w-full py-16 px-8" style="background: #0d0d1f;">
         <div class="mx-auto" style="max-width: 1400px;">
             <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
                 <!-- Right (visually left due to row-reverse): text -->
@@ -926,13 +925,21 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 
     // ── Side nav active section tracking ──
     const navItems = document.querySelectorAll<HTMLElement>('#side-nav .side-nav-item');
-    const sections = ['intro', 'bragging', 'career', 'work-experience', 'education', 'hire-me-quest']
+    const sections = ['intro', 'bragging', 'bragging-two', 'career', 'work-experience', 'education', 'hire-me-quest']
         .map(id => document.getElementById(id))
         .filter(Boolean) as HTMLElement[];
 
+    // sections that map to a different nav item
+    const sectionToNav: Record<string, string> = {
+        'bragging-two': 'bragging',
+        'work-experience': 'career',
+        'education': 'career',
+    };
+
     function setActive(id: string) {
+        const navId = sectionToNav[id] ?? id;
         navItems.forEach(item => {
-            item.classList.toggle('active', item.dataset.section === id);
+            item.classList.toggle('active', item.dataset.section === navId);
         });
     }
 
