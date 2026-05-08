@@ -452,10 +452,11 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </section>
 
     <!-- Hire Me Quest -->
-    <section id="hire-me-quest" class="w-full py-16 px-8" style="background: #12101e;">
+    <section id="hire-me-quest" class="w-full pt-16 px-8" style="background: #12101e url('/backgrounds/wow.png') center center / cover no-repeat; overflow: hidden;">
         <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex justify-end">
-                <div class="quest-panel">
+            <div class="flex justify-end items-end gap-0">
+                <img src="/backgrounds/wow_chars.png" alt="" aria-hidden="true" style="height: 520px; width: auto; object-fit: contain; object-position: bottom; flex-shrink: 0; pointer-events: none; user-select: none;" />
+                <div class="quest-panel" style="margin-bottom: 4rem;">
 
                     <!-- Title bar -->
                     <div class="quest-title-bar">
@@ -514,6 +515,12 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         display: flex;
         flex-direction: column;
         gap: 6px;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 20px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255,255,255,0.05);
     }
     @media (max-width: 1700px) {
         :global(#side-nav) {
@@ -532,7 +539,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background: #475569;
+        background: #94a3b8;
         flex-shrink: 0;
         transition: background 0.2s, transform 0.2s;
     }
@@ -540,7 +547,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         font-size: 0.7rem;
         letter-spacing: 0.06em;
         text-transform: uppercase;
-        color: #475569;
+        color: #94a3b8;
         white-space: nowrap;
         transition: color 0.2s;
         pointer-events: none;
