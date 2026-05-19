@@ -140,17 +140,22 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </div>
 
     <!-- Bragging One -->
-    <section id="bragging" class="w-full py-16 px-8" style="background: #0a1628;">
-        <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex flex-col md:flex-row gap-12 items-center">
+    <section id="bragging" class="w-full px-8" style="position:relative; background-color: #0a1628;">
+        <div style="position:absolute;inset:0;background-image:url('/backgrounds/skyline.png');background-repeat:repeat-x;background-position:bottom;background-size:auto 35%;opacity:0.45;pointer-events:none;z-index:0;"></div>
+        <div class="mx-auto" style="max-width: 1400px; position:relative; z-index:1;">
+            <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
-                <div class="flex-1">
+                <div class="flex-1 flex flex-col py-16">
                     <h2 class="text-2xl font-semibold text-white mb-3">Industry Research, Big Tech Edition</h2>
                     <p class="text-slate-400 leading-relaxed">Google, Snapchat</p>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                        <div class="stack-icon"><img src="/icons/logo-google.png" alt="Google" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Google</span></div>
+                        <div class="stack-icon"><img src="/icons/snapchat_PNG63.png" alt="Snapchat" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Snapchat</span></div>
+                    </div>
                 </div>
                 <!-- Right: image/video placeholder -->
-                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
-                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                <div class="flex-none overflow-hidden" style="width: 420px; align-self: stretch;">
+                    <img src="/images/google-offices.png" alt="Live event" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" />
                 </div>
             </div>
         </div>
@@ -159,45 +164,163 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <!-- Bragging Two -->
     <section id="bragging-two" class="w-full py-16 px-8" style="background: #0d0d1f;">
         <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
+            <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually left due to row-reverse): text -->
-                <div class="flex-1">
+                <div class="flex-1 flex flex-col">
                     <h2 class="text-2xl font-semibold text-white mb-3">Rendering Research, from PhD to Production</h2>
                     <p class="text-slate-400 leading-relaxed">PhD in computer graphics, SIGGRAPH publication, NPR/stylization specialization, currently Rendering Research Lead managing a team</p>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                        <div class="stack-icon"><img src="/icons/ACM_SIGGRAPH_logo.svg.png" alt="SIGGRAPH" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">SIGGRAPH</span></div>
+                    </div>
                 </div>
-                <!-- Left: image/video placeholder -->
-                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
-                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                <!-- Left: lit sphere -->
+                <div class="flex-none flex items-center justify-center" style="width: 420px; height: 260px;">
+                    <img src="/icons/lit_sphere.png" alt="Lit sphere rendering" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Bragging Three -->
-    <section id="bragging" class="w-full py-16 px-8" style="background: #0a1628;">
+    <section id="bragging" class="w-full py-16 px-8" style="background-color: #1E1E1E; background-image: linear-gradient(rgba(0,0,0,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.4) 1px, transparent 1px); background-size: 32px 32px;">
         <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="flex flex-col md:flex-row gap-8 items-stretch">
                 <!-- Left: text -->
-                <div class="flex-1">
+                <div class="flex-1 flex flex-col">
                     <h2 class="text-2xl font-semibold text-white mb-3">The Stack</h2>
                     <p class="text-slate-400 leading-relaxed">C++, C#, Python, GLSL, TypeScript/JavaScript</p>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                        <div class="stack-icon"><img src="/icons/plus_logo_c_icon_214621.png" alt="C++" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">C++</span></div>
+                        <div class="stack-icon"><img src="/icons/csharp.png" alt="C#" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">C#</span></div>
+                        <div class="stack-icon"><img src="/icons/Python-logo-notext.svg.png" alt="Python" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Python</span></div>
+                        <div class="stack-icon"><img src="/icons/Opengl-logo.svg.png" alt="OpenGL" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">OpenGL</span></div>
+                        <div class="stack-icon"><img src="/icons/typescript.png" alt="TypeScript" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">TypeScript</span></div>
+                    </div>
                 </div>
-                <!-- Right: image/video placeholder -->
-                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
-                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                <!-- Blender Shader Graph -->
+                <div style="flex:1;min-width:0;height:286px;position:relative;overflow:hidden;">
+                    <div id="bc-stack" style="position:absolute;transform:scale(0.65);transform-origin:top left;top:8px;left:10px;width:1320px;height:818px;font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;user-select:none;cursor:default;">
+                        <svg id="wires-stack" style="position:absolute;top:0;left:0;width:1320px;height:818px;pointer-events:none;overflow:visible;" xmlns="http://www.w3.org/2000/svg"></svg>
+                        <!-- Mapping -->
+                        <div style="position:absolute;left:20px;top:62px;width:158px;border-radius:5px;overflow:visible;">
+                            <div style="background:#1F4A64;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Mapping</div>
+                            <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#E8E8E8;font-size:10.5px">Vector</span><span data-sid="stk_map_vec_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Location</span><span style="color:#555;font-size:9px;margin-left:auto">0, 0, 0</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Rotation</span><span style="color:#555;font-size:9px;margin-left:auto">0, 0, 0</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#888;font-size:10.5px">Scale</span><span style="color:#555;font-size:9px;margin-left:auto">1, 1, 1</span></div>
+                            </div>
+                        </div>
+                        <!-- Image Texture: Roughness -->
+                        <div style="position:absolute;left:270px;top:28px;width:192px;border-radius:5px;overflow:visible;">
+                            <div style="background:#1B4F6B;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Image Texture</div>
+                            <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:18px;background:#2E2E2E;display:flex;align-items:center;padding:0 6px;border-bottom:1px solid #222;"><span style="color:#777;font-size:9.5px">rock_roughness.png</span></div>
+                                <div style="height:82px;background:#555;position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background-image:repeating-conic-gradient(#656565 0% 25%,#454545 0% 50%);background-size:14px 14px;opacity:0.5;"></div></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_rgh_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span><span data-sid="stk_rgh_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#B0B0B0;font-size:10.5px">Alpha</span><span style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#A0A0A0;border:1.5px solid rgba(0,0,0,0.5)"></span></div>
+                            </div>
+                        </div>
+                        <!-- Image Texture: Normal -->
+                        <div style="position:absolute;left:270px;top:246px;width:192px;border-radius:5px;overflow:visible;">
+                            <div style="background:#1B4F6B;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Image Texture</div>
+                            <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:18px;background:#2E2E2E;display:flex;align-items:center;padding:0 6px;border-bottom:1px solid #222;gap:4px;"><span style="color:#777;font-size:9.5px">rock_normal.png</span><span style="margin-left:auto;background:#2A3A50;color:#6A9ABB;font-size:8.5px;padding:1px 4px;border-radius:2px">Non-Color</span></div>
+                                <div style="height:82px;background:#8080D0;position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background-image:repeating-conic-gradient(#9090DD 0% 25%,#7070C0 0% 50%);background-size:14px 14px;opacity:0.4;"></div></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_nrm_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span><span data-sid="stk_nrm_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#B0B0B0;font-size:10.5px">Alpha</span><span style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#A0A0A0;border:1.5px solid rgba(0,0,0,0.5)"></span></div>
+                            </div>
+                        </div>
+                        <!-- Normal Map -->
+                        <div style="position:absolute;left:498px;top:306px;width:156px;border-radius:5px;overflow:visible;">
+                            <div style="background:#1F4A64;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Normal Map</div>
+                            <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Strength</span><span style="color:#555;font-size:9px;margin-left:auto">1.000</span><span data-sid="stk_nm_nrm_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span data-sid="stk_nm_col_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span><span style="color:#E8E8E8;font-size:10.5px">Color</span></div>
+                            </div>
+                        </div>
+                        <!-- Principled BSDF -->
+                        <div style="position:absolute;left:705px;top:128px;width:214px;border-radius:5px;overflow:visible;outline:2px solid #FF7F00;">
+                            <div style="background:#1D5E3E;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Principled BSDF</div>
+                            <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_pb_base_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Base Color</span><span data-sid="stk_pb_bsdf_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#63C763;border:1.5px solid #3A8A3A"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Subsurface Weight</span><span style="color:#555;font-size:9px;margin-left:auto">0</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Metallic</span><span style="color:#555;font-size:9px;margin-left:auto">0.000</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Specular IOR Level</span><span style="color:#555;font-size:9px;margin-left:auto">0.5</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_pb_rgh_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#A0A0A0;border:1.5px solid #6A6A6A"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Roughness</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Anisotropic</span><span style="color:#555;font-size:9px;margin-left:auto">0</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Transmission Weight</span><span style="color:#555;font-size:9px;margin-left:auto">0</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Emission Color</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_pb_nrm_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Normal</span></div>
+                            </div>
+                        </div>
+                        <!-- Material Output -->
+                        <div style="position:absolute;left:965px;top:128px;width:162px;border-radius:5px;overflow:visible;">
+                            <div style="background:#282828;border:1px solid #3A3A3A;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Material Output</div>
+                            <div style="background:#3D3D3D;border:1px solid #2A2A2A;border-top:none;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_mo_surf_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#63C763;border:1.5px solid #3A8A3A"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Surface</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#63C763;border:1.5px solid rgba(0,0,0,0.4)"></span><span style="color:#888;font-size:10.5px">Volume</span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-radius:0 0 5px 5px;"><span style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid rgba(0,0,0,0.4)"></span><span style="color:#888;font-size:10.5px">Displacement</span></div>
+                            </div>
+                        </div>
+                        <div style="position:absolute;bottom:8px;right:14px;font-size:0;"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    <script is:inline>
+    (function(){
+        const CONNS = [
+            ['stk_map_vec_o','stk_rgh_vec_i', '#6363C7'],
+            ['stk_map_vec_o','stk_nrm_vec_i', '#6363C7'],
+            ['stk_rgh_col_o','stk_pb_rgh_i',  '#C7C729'],
+            ['stk_nrm_col_o','stk_nm_col_i',  '#C7C729'],
+            ['stk_nm_nrm_o', 'stk_pb_nrm_i', '#6363C7'],
+            ['stk_pb_bsdf_o','stk_mo_surf_i', '#63C763'],
+        ];
+        const SCALE = 0.65;
+        function draw(){
+            const canvas = document.getElementById('bc-stack');
+            const svg = document.getElementById('wires-stack');
+            if(!canvas||!svg) return;
+            const cr = canvas.getBoundingClientRect();
+            let paths = '';
+            for(const [a,b,col] of CONNS){
+                const ea = document.querySelector('[data-sid="'+a+'"]');
+                const eb = document.querySelector('[data-sid="'+b+'"]');
+                if(!ea||!eb) continue;
+                const ra = ea.getBoundingClientRect();
+                const rb = eb.getBoundingClientRect();
+                const x1 = (ra.left+ra.width/2-cr.left)/SCALE;
+                const y1 = (ra.top+ra.height/2-cr.top)/SCALE;
+                const x2 = (rb.left+rb.width/2-cr.left)/SCALE;
+                const y2 = (rb.top+rb.height/2-cr.top)/SCALE;
+                const cx = (x1+x2)/2;
+                paths += '<path d="M'+x1+','+y1+' C'+cx+','+y1+' '+cx+','+y2+' '+x2+','+y2+'" fill="none" stroke="'+col+'" stroke-width="2" opacity="0.85"/>';
+            }
+            svg.innerHTML = paths;
+        }
+        if(document.readyState==='complete') draw();
+        else window.addEventListener('load', draw);
+        setTimeout(draw, 100);
+        setTimeout(draw, 400);
+    })();
+    </script>
 
     <!-- Bragging Four -->
     <section class="w-full py-16 px-8" style="background: #0d0d1f;">
         <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
+            <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually left due to row-reverse): text -->
-                <div class="flex-1">
+                <div class="flex-1 flex flex-col">
                     <h2 class="text-2xl font-semibold text-white mb-3">Started with a Camera</h2>
                     <p class="text-slate-400 leading-relaxed">Filmmaking origin, VFX, graphics engineering. Blender + scripting, Adobe Suite, DaVinci Resolve, YouTube</p>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                        <div class="stack-icon"><img src="/icons/adobe-creative-cloud.png" alt="Adobe Creative Cloud" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Adobe Suite</span></div>
+                        <div class="stack-icon"><img src="/icons/davinci-resolve-12-logo-black-and-white.png" alt="DaVinci Resolve" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">DaVinci Resolve</span></div>
+                        <div class="stack-icon"><img src="/icons/Blender_logo_no_text.svg.png" alt="Blender" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Blender</span></div>
+                    </div>
                 </div>
                 <!-- Left: image/video placeholder -->
                 <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
@@ -210,11 +333,14 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <!-- Bragging Five -->
     <section id="bragging" class="w-full py-16 px-8" style="background: #0a1628;">
         <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
-                <div class="flex-1">
+                <div class="flex-1 flex flex-col">
                     <h2 class="text-2xl font-semibold text-white mb-3">Gamedev</h2>
                     <p class="text-slate-400 leading-relaxed">Unity, taught a university course, rendering knowledge from the inside, speedrunner's understanding of games, actively building personal projects</p>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                        <div class="stack-icon"><img src="/icons/Unity_Technologies_logo.svg.png" alt="Unity" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Unity</span></div>
+                    </div>
                 </div>
                 <!-- Right: image/video placeholder -->
                 <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
@@ -225,21 +351,114 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </section>
 
     <!-- Bragging Six -->
-    <section class="w-full py-16 px-8" style="background: #0d0d1f;">
-        <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
-                <!-- Right (visually left due to row-reverse): text -->
-                <div class="flex-1">
+    <section id="bragging-live" class="w-full py-6 px-8" style="position:relative; overflow:hidden; background-color:#1d1d4f;">
+        <!-- Blurred bg wrapper: section-sized; JS sets pixel-precise mask-image after layout -->
+        <div id="live-bg-wrapper" style="position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none;">
+            <img id="live-bg" src="/images/IMG_7386_full.JPG" alt="" aria-hidden="true"
+                 style="position:absolute; display:block; pointer-events:none; filter:blur(4px);" />
+        </div>
+        <!-- Sharp bg: clip-pathed to slot by JS, not masked -->
+        <img id="live-bg-sharp" src="/images/IMG_7386_full.JPG" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
+        <div class="mx-auto" style="max-width:1400px; position:relative; z-index:3;">
+            <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
+                <!-- Right (visually): text -->
+                <div class="flex-1 flex flex-col" style="position:relative; z-index:1;">
                     <h2 class="text-2xl font-semibold text-white mb-3">Live stuff</h2>
                     <p class="text-slate-400 leading-relaxed">GDQ (60k viewers), SIGGRAPH talk (~1000 in the room), live event tech production (audio, video, transitions, hardware, OBS)</p>
+                    <div style="display:flex; gap:2.5rem; align-items:center; margin-top:auto; padding-top:1.5rem; justify-content:center;">
+                        <div class="stack-icon"><img src="/icons/obs-studio-v04pu8ksuqcecv9lzkz7rb.png" alt="OBS" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">OBS Studio</span></div>
+                    </div>
                 </div>
-                <!-- Left: image/video placeholder -->
-                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
-                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                <!-- Left: AOI frame — image is scaled+positioned by JS so this slot frames the subject -->
+                <div id="live-slot" class="flex-none" style="align-self:stretch; position:relative; min-height:320px; box-shadow:0 0 0 9999px rgba(0,0,0,0.55);">
+                    <span style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:3px solid #fff;border-left:3px solid #fff;"></span>
+                    <span style="position:absolute;top:0;right:0;width:18px;height:18px;border-top:3px solid #fff;border-right:3px solid #fff;"></span>
+                    <span style="position:absolute;bottom:0;left:0;width:18px;height:18px;border-bottom:3px solid #fff;border-left:3px solid #fff;"></span>
+                    <span style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-bottom:3px solid #fff;border-right:3px solid #fff;"></span>
                 </div>
             </div>
         </div>
     </section>
+    <script is:inline>
+    (function () {
+        var AOI_X1 = 404,  AOI_Y1 = 758;
+        var AOI_X2 = 1370, AOI_Y2 = 1317;
+        var FADE_LEFT_PX  = 200; // px to fade in from the left visible image edge  — tune this
+        var FADE_RIGHT_PX = 800; // px to fade out before the right image edge      — tune this
+
+        var section   = document.getElementById('bragging-live');
+        var bg        = document.getElementById('live-bg');
+        var bgWrapper = document.getElementById('live-bg-wrapper');
+        var bgSharp   = document.getElementById('live-bg-sharp');
+        var slot      = document.getElementById('live-slot');
+
+        function positionAll() {
+            if (!section || !bg || !slot || !bg.naturalWidth) return;
+
+            var aoiW = AOI_X2 - AOI_X1;
+            var aoiH = AOI_Y2 - AOI_Y1;
+
+            // Slot width always derived from AOI aspect ratio (height is the baseline)
+            var slotH = slot.offsetHeight || 320;
+            slot.style.width = (slotH * aoiW / aoiH) + 'px';
+
+            var sr = section.getBoundingClientRect();
+            var fr = slot.getBoundingClientRect();
+            var scale = Math.max(fr.width / aoiW, fr.height / aoiH);
+
+            var imgW = bg.naturalWidth  * scale;
+            var imgH = bg.naturalHeight * scale;
+            var imgLeft = (fr.left - sr.left + fr.width  / 2) - (AOI_X1 + AOI_X2) / 2 * scale;
+            var imgTop  = (fr.top  - sr.top  + fr.height / 2) - (AOI_Y1 + AOI_Y2) / 2 * scale;
+
+            bg.style.width  = imgW + 'px';
+            bg.style.height = imgH + 'px';
+            bg.style.left   = imgLeft + 'px';
+            bg.style.top    = imgTop  + 'px';
+
+            // Mask: left fade anchored to slot left edge, right fade anchored to image right edge.
+            // This means FADE_LEFT_PX describes "px of fade ending at the slot" (not at screen edge),
+            // so at wide viewports there's no opaque blurred-bg patch left of the slot.
+            if (bgWrapper) {
+                var secW           = section.offsetWidth;
+                var imgRight       = imgLeft + imgW;
+                var slotLeft       = fr.left - sr.left;                     // slot left edge in section coords
+                var leftFadeStart  = Math.max(0, slotLeft - FADE_LEFT_PX);  // begin fade (capped at section left)
+                var leftFadeEnd    = slotLeft;                               // fully opaque at slot left edge
+                var rightFadeEnd   = Math.min(secW, imgRight);              // transparent at image/section right
+                var rightFadeStart = Math.max(leftFadeEnd, rightFadeEnd - FADE_RIGHT_PX);
+                var msk = 'linear-gradient(to right, transparent 0px, transparent ' + Math.round(leftFadeStart) + 'px, black ' + Math.round(leftFadeEnd) + 'px, black ' + Math.round(rightFadeStart) + 'px, transparent ' + Math.round(rightFadeEnd) + 'px)';
+                bgWrapper.style.maskImage = msk;
+                bgWrapper.style.webkitMaskImage = msk;
+            }
+
+            // Sharp image: same position, clip-path cuts it to exactly the slot area
+            if (bgSharp) {
+                bgSharp.style.width  = imgW + 'px';
+                bgSharp.style.height = imgH + 'px';
+                bgSharp.style.left   = imgLeft + 'px';
+                bgSharp.style.top    = imgTop  + 'px';
+                var cTop    = Math.max(0, (fr.top    - sr.top)    - imgTop);
+                var cLeft   = Math.max(0, (fr.left   - sr.left)   - imgLeft);
+                var cRight  = Math.max(0, (imgLeft   + imgW)      - (fr.right  - sr.left));
+                var cBottom = Math.max(0, (imgTop    + imgH)      - (fr.bottom - sr.top));
+                bgSharp.style.clipPath = 'inset(' + cTop + 'px ' + cRight + 'px ' + cBottom + 'px ' + cLeft + 'px)';
+            }
+
+        }
+
+        function init() {
+            positionAll();
+        }
+
+        if (bg.complete && bg.naturalWidth) {
+            init();
+        } else {
+            bg.addEventListener('load', init);
+        }
+        window.addEventListener('resize', positionAll);
+    })();
+    </script>
 
     <!-- Horizontal Timeline -->
     <section id="career" class="w-full py-10 px-8" style="background: #020617;">
@@ -505,6 +724,32 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 </Layout>
 
 <style>
+    .stack-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: default;
+    }
+    .stack-icon-label {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 15, 25, 0.92);
+        color: #e2e8f0;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(255,255,255,0.1);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .stack-icon:hover .stack-icon-label {
+        opacity: 1;
+    }
     /* ── Fixed side nav ── */
     :global(#side-nav) {
         position: fixed;
