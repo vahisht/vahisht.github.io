@@ -143,17 +143,24 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="bragging" class="w-full py-6 px-8" style="position:relative; overflow:hidden; background-color:#0a1628;">
         <!-- Blurred bg wrapper: JS sets pixel-precise mask-image after layout -->
         <div id="ir-bg-wrapper" style="position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none;">
-            <img id="ir-bg" src="/images/IMG_20200208_100355.jpg" alt="" aria-hidden="true"
+            <img id="ir-bg" src="/images/IMG_20200208_100355_opt.jpg" alt="" aria-hidden="true"
                  style="position:absolute; display:block; pointer-events:none; filter:blur(4px);" />
         </div>
         <!-- Sharp bg: clip-pathed to slot by JS, not masked -->
-        <img id="ir-bg-sharp" src="/images/IMG_20200208_100355.jpg" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
+        <img id="ir-bg-sharp" src="/images/IMG_20200208_100355_opt.jpg" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
         <div class="mx-auto" style="max-width:1400px; position:relative; z-index:3;">
             <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
                 <div class="flex-1 flex flex-col" style="position:relative; z-index:1;">
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">Industry Research, Big Tech Edition</h2>
-                    <p class="text-slate-400 leading-relaxed">Google, Snapchat</p>
+
+                    <p class="text-slate-300 leading-relaxed mb-4 text-justify">I started in Los Angeles joining Snapchat as a Research Intern right after I finished my Master's degree.</p>
+
+                    <p class="text-slate-300 leading-relaxed mb-4 text-justify">A while into my Ph.D., I joined Google in New York as an Engineering Intern, collaborating with one 
+                    of their research teams on computer graphics projects. It went well enough that they kept me on and I ended up working with Google 
+                    for over three more years.</p>
+
+                    <!-- <p class="text-slate-400 leading-relaxed">Google, Snapchat</p> -->
                     <div style="display:flex; gap:2.5rem; align-items:center; margin-top:auto; padding-top:1.5rem; justify-content:center;">
                         <div class="stack-icon"><img src="/icons/logo-google.png" alt="Google" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">Google</span></div>
                         <div class="stack-icon"><img src="/icons/snapchat_PNG63.png" alt="Snapchat" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">Snapchat</span></div>
@@ -171,8 +178,8 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </section>
     <script is:inline>
     (function () {
-        var AOI_X1 = 1983, AOI_Y1 = 2744;
-        var AOI_X2 = 2727, AOI_Y2 = 3218;
+        var AOI_X1 = 992, AOI_Y1 = 681;
+        var AOI_X2 = 1364, AOI_Y2 = 918;
         var FADE_LEFT_PX  = 1200; // px of fade from image left visible edge inward  — tune this
         var FADE_RIGHT_PX = 750;  // px of fade ending at slot right edge             — tune this
 
@@ -260,7 +267,13 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                 <!-- Right (visually left due to row-reverse): text -->
                 <div class="flex-1 flex flex-col">
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">Rendering Research, from PhD to Production</h2>
-                    <p class="text-slate-400 leading-relaxed">PhD in computer graphics, SIGGRAPH publication, NPR/stylization specialization, currently Rendering Research Lead managing a team</p>
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">I have a Ph.D. in computer graphics, specializing in Stylization and Non-Photorealistic Rendering. 
+                    During my studies I worked in the research team of prof. Daniel Sýkora, helping artists express themselves in animated content with fewer technical constraints. 
+                    We published several papers at some of the field's most prestigious venues, including SIGGRAPH.</p>
+
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">I've since taken that expertise into production, 
+                    working as a Rendering Research Engineer and eventually leading a team of engineers developing highly specialized rendering technology.</p>
+                    <!-- <p class="text-slate-400 leading-relaxed">PhD in computer graphics, SIGGRAPH publication, NPR/stylization specialization, currently Rendering Research Lead managing a team</p> -->
                     <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/ACM_SIGGRAPH_logo.svg.png" alt="SIGGRAPH" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">SIGGRAPH</span></div>
                     </div>
@@ -280,7 +293,13 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                 <!-- Left: text -->
                 <div class="flex-1 flex flex-col">
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">The Stack</h2>
-                    <p class="text-slate-400 leading-relaxed">C++, C#, Python, GLSL, TypeScript/JavaScript</p>
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">Between industry and academia, I've worked on a wide range of projects using both widely available technologies and heavily customized in-house tools.</p>
+
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">Picking up new technologies has never been a problem, whether that's C++ and GLSL for graphics programming, 
+                    C++ and C# for game development, Python for research, machine learning and scripting, or TypeScript and assorted web frameworks for online content. 
+                    And that's not even all of it.</p>
+
+                    <!-- <p class="text-slate-400 leading-relaxed">C++, C#, Python, GLSL, TypeScript/JavaScript</p> -->
                     <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/plus_logo_c_icon_214621.png" alt="C++" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">C++</span></div>
                         <div class="stack-icon"><img src="/icons/csharp.png" alt="C#" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">C#</span></div>
@@ -406,22 +425,33 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </script>
 
     <!-- Bragging Four -->
-    <section class="w-full py-16 px-8" style="background: rgb(218, 218, 218);">
+    <section class="w-full px-8" style="background: radial-gradient(ellipse at center, #f4f4f6 0%, #e8e8ea 40%, #d0d0d4 70%, #bdbdc2 100%);">
         <div class="mx-auto" style="max-width: 1400px;">
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually left due to row-reverse): text -->
-                <div class="flex-1 flex flex-col">
+                <div class="flex-1 flex flex-col py-16">
                     <h2 class="text-2xl font-semibold text-gray-900 mb-3 bragging-heading">Started with a Camera</h2>
-                    <p class="text-gray-700 leading-relaxed">Filmmaking origin, VFX, graphics engineering. Blender + scripting, Adobe Suite, DaVinci Resolve, YouTube</p>
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">My passion for computer graphics and VFX started early, watching creators like Film Riot and Video Copilot. 
+                    I started teaching myself video editing, beginning with Sony Vegas before moving on to a broader range of editors and compositors: Adobe Premiere, 
+                    After Effects or DaVinci Resolve.</p>
+
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">Through VFX work I picked up industry standard compositing tools like Nuke, 
+                    which introduced me to Python scripting in visual effects pipelines. That eventually carried over into Blender, 
+                    where I've developed purpose-built tools and scripts for artists.</p>
+
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">The filmmaking side never went away either. I still edit and produce my own YouTube documentaries.</p>
+                    
+                    <!-- <p class="text-gray-700 leading-relaxed">Filmmaking origin, VFX, graphics engineering. Blender + scripting, Adobe Suite, DaVinci Resolve, YouTube</p> -->
                     <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/adobe-creative-cloud.png" alt="Adobe Creative Cloud" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Adobe Suite</span></div>
                         <div class="stack-icon"><img src="/icons/davinci-resolve-12-logo-black-and-white.png" alt="DaVinci Resolve" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">DaVinci Resolve</span></div>
                         <div class="stack-icon"><img src="/icons/Blender_logo_no_text.svg.png" alt="Blender" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Blender</span></div>
                     </div>
                 </div>
-                <!-- Left: image/video placeholder -->
-                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
-                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                <!-- Left: image -->
+                <div class="flex-none flex items-stretch" style="width: 420px; position: relative; padding: 1.5rem 0;">
+                    <img src="/images/organized-equipment.webp" alt="Equipment" style="width: 100%; height: 100%; object-fit: contain; object-position: center; display: block;" />
+                    <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 600; color: #e53e3e; pointer-events: none; letter-spacing: 0.05em;">PLACEHOLDER</span>
                 </div>
             </div>
         </div>
@@ -434,9 +464,19 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                 <!-- Left: text -->
                 <div class="flex-1 flex flex-col py-16">
                     <h2 class="text-2xl font-semibold text-gray-900 mb-3 bragging-heading">Gamedev</h2>
-                    <p class="text-gray-700 leading-relaxed">Unity, taught a university course, rendering knowledge from the inside, speedrunner's understanding of games, actively building personal projects</p>
+
+                    <!-- <p class="text-gray-700 leading-relaxed">Unity, taught a university course, rendering knowledge from the inside, speedrunner's understanding of games, actively building personal projects</p> -->
+
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">Video games have always been a big part of my life. 
+                    In my free time I speedrun games, competing on leaderboards and performing commentated runs at live events.</p>
+
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">On the professional side, I taught a Unity development course at Czech Technical 
+                    University for several years, mentoring a team that went on to win the semestral competition. My background in rendering also means I 
+                    understand what's happening inside game engines at a deeper technical level.</p>
+
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">I'm currently building my own games on the side, putting all of that together.</p>
                     <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
-                        <div class="stack-icon"><img src="/icons/Unity_Technologies_logo.svg.png" alt="Unity" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Unity</span></div>
+                        <div class="stack-icon"><img src="/icons/Unity_Technologies_logo.svg.png" alt="Unity" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Unity</span></div>
                     </div>
                 </div>
                 <!-- Right: image -->
@@ -460,8 +500,18 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually): text -->
                 <div class="flex-1 flex flex-col" style="position:relative; z-index:1;">
-                    <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">Live stuff</h2>
-                    <p class="text-slate-400 leading-relaxed">GDQ (60k viewers), SIGGRAPH talk (~1000 in the room), live event tech production (audio, video, transitions, hardware, OBS)</p>
+                    <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">In front and behind the camera</h2>
+
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">I've been both the tech team member making live events happen, and the talent standing on stage when they do.</p>
+
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">Behind the camera, I've worked on several live events, handling everything from physical hardware setup, 
+                    pre-performance checks, camera work and audio mixing, to running the full broadcast. Both in person and online.</p>
+
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">In front of the camera, I performed a live speedrun showcase at Awesome Games Done Quick 2025 in Pittsburgh, 
+                    one of the most watched gaming charity events in the world, to around 60,000 live viewers. On the research side, I presented at SIGGRAPH 
+                    Asia 2022 to a room of around 1,000 researchers.</p>
+
+                    <!-- <p class="text-slate-400 leading-relaxed">GDQ (60k viewers), SIGGRAPH talk (~1000 in the room), live event tech production (audio, video, transitions, hardware, OBS)</p> -->
                     <div style="display:flex; gap:2.5rem; align-items:center; margin-top:auto; padding-top:1.5rem; justify-content:center;">
                         <div class="stack-icon"><img src="/icons/obs-studio-v04pu8ksuqcecv9lzkz7rb.png" alt="OBS" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">OBS Studio</span></div>
                     </div>
@@ -563,7 +613,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="career" class="w-full py-10 px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
 
-        <h1 class="text-3xl font-light text-slate-200 mb-16 tracking-wide">Career at a Glance</h1>
+<h1 class="text-3xl text-slate-200 mb-16 bragging-heading">Career at a Glance</h1>
 
             <!-- outer wrapper: margin-left makes room for WORK/EDU labels -->
             <div class="relative" style="margin-left: 2.5rem;" id="tl-container">
@@ -643,7 +693,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="work-experience" class="w-full min-h-screen py-16 px-4 md:px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
 
-            <h1 class="text-3xl font-light text-slate-200 mb-16 tracking-wide">Work Experience</h1>
+            <h1 class="text-3xl text-slate-200 mb-16 bragging-heading">Work Experience</h1>
 
             <div class="relative flex flex-col gap-12">
 
@@ -721,7 +771,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="education" class="w-full py-16 px-4 md:px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
 
-            <h1 class="text-3xl font-light text-slate-200 mb-16 tracking-wide">Education</h1>
+            <h1 class="text-3xl text-slate-200 mb-16 bragging-heading">Education</h1>
 
             <div class="relative flex flex-col gap-12">
 
@@ -812,7 +862,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                         <a href="mailto:hire@vahisht.dev" class="quest-btn quest-btn-accept">
                             <span class="quest-btn-key">&#8617;</span> Accept
                         </a>
-                        <button disabled class="quest-btn quest-btn-decline"><span class="quest-btn-key">Esc</span> Decline</button>
+                        <button class="quest-btn quest-btn-decline" onclick="window.location.href='https://www.youtube.com/watch?v=MS8OawQegYE'"><span class="quest-btn-key">Esc</span> Decline</button>
                     </div>
 
                 </div>
@@ -1138,7 +1188,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         transition: filter 0.1s;
         letter-spacing: 0.02em;
     }
-    .quest-btn:hover:not(:disabled) {
+    .quest-btn:hover:not(:disabled):not(.quest-btn-decline) {
         filter: brightness(1.15);
     }
     .quest-btn-accept {
@@ -1300,13 +1350,17 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         });
     }
 
-    const sectionObserver = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-            if (entry.isIntersecting) {
-                setActive((entry.target as HTMLElement).id);
+    function updateActiveSection() {
+        const threshold = window.innerHeight * 0.45;
+        let active = sections[0];
+        for (const section of sections) {
+            if (section.getBoundingClientRect().top <= threshold) {
+                active = section;
             }
         }
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+        if (active) setActive(active.id);
+    }
 
-    sections.forEach(s => sectionObserver.observe(s));
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    updateActiveSection();
 </script>
