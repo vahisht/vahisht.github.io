@@ -140,26 +140,118 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </div>
 
     <!-- Bragging One -->
-    <section id="bragging" class="w-full px-8" style="position:relative; background-color: #0a1628;">
-        <div style="position:absolute;inset:0;background-image:url('/backgrounds/skyline.png');background-repeat:repeat-x;background-position:bottom;background-size:auto 35%;opacity:0.45;pointer-events:none;z-index:0;"></div>
-        <div class="mx-auto" style="max-width: 1400px; position:relative; z-index:1;">
+    <section id="bragging" class="w-full py-6 px-8" style="position:relative; overflow:hidden; background-color:#0a1628;">
+        <!-- Blurred bg wrapper: JS sets pixel-precise mask-image after layout -->
+        <div id="ir-bg-wrapper" style="position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none;">
+            <img id="ir-bg" src="/images/IMG_20200208_100355.jpg" alt="" aria-hidden="true"
+                 style="position:absolute; display:block; pointer-events:none; filter:blur(4px);" />
+        </div>
+        <!-- Sharp bg: clip-pathed to slot by JS, not masked -->
+        <img id="ir-bg-sharp" src="/images/IMG_20200208_100355.jpg" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
+        <div class="mx-auto" style="max-width:1400px; position:relative; z-index:3;">
             <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
-                <div class="flex-1 flex flex-col py-16">
+                <div class="flex-1 flex flex-col" style="position:relative; z-index:1;">
                     <h2 class="text-2xl font-semibold text-white mb-3">Industry Research, Big Tech Edition</h2>
                     <p class="text-slate-400 leading-relaxed">Google, Snapchat</p>
-                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
-                        <div class="stack-icon"><img src="/icons/logo-google.png" alt="Google" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Google</span></div>
-                        <div class="stack-icon"><img src="/icons/snapchat_PNG63.png" alt="Snapchat" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Snapchat</span></div>
+                    <div style="display:flex; gap:2.5rem; align-items:center; margin-top:auto; padding-top:1.5rem; justify-content:center;">
+                        <div class="stack-icon"><img src="/icons/logo-google.png" alt="Google" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">Google</span></div>
+                        <div class="stack-icon"><img src="/icons/snapchat_PNG63.png" alt="Snapchat" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">Snapchat</span></div>
                     </div>
                 </div>
-                <!-- Right: image/video placeholder -->
-                <div class="flex-none overflow-hidden" style="width: 420px; align-self: stretch;">
-                    <img src="/images/google-offices.png" alt="Live event" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" />
+                <!-- Right: AOI frame -->
+                <div id="ir-slot" class="flex-none" style="align-self:stretch; position:relative; min-height:320px; box-shadow:0 0 0 9999px rgba(0,0,0,0.55);">
+                    <span style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:3px solid #fff;border-left:3px solid #fff;"></span>
+                    <span style="position:absolute;top:0;right:0;width:18px;height:18px;border-top:3px solid #fff;border-right:3px solid #fff;"></span>
+                    <span style="position:absolute;bottom:0;left:0;width:18px;height:18px;border-bottom:3px solid #fff;border-left:3px solid #fff;"></span>
+                    <span style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-bottom:3px solid #fff;border-right:3px solid #fff;"></span>
                 </div>
             </div>
         </div>
     </section>
+    <script is:inline>
+    (function () {
+        var AOI_X1 = 1983, AOI_Y1 = 2744;
+        var AOI_X2 = 2727, AOI_Y2 = 3218;
+        var FADE_LEFT_PX  = 1200; // px of fade from image left visible edge inward  — tune this
+        var FADE_RIGHT_PX = 750;  // px of fade ending at slot right edge             — tune this
+
+        var bg        = document.getElementById('ir-bg');
+        var bgWrapper = document.getElementById('ir-bg-wrapper');
+        var bgSharp   = document.getElementById('ir-bg-sharp');
+        var slot      = document.getElementById('ir-slot');
+        var section   = bg && bg.closest('section');
+
+        function positionAll() {
+            if (!section || !bg || !slot || !bg.naturalWidth) return;
+
+            var aoiW = AOI_X2 - AOI_X1;
+            var aoiH = AOI_Y2 - AOI_Y1;
+
+            // Derive slot size from section width — stable anchor, no feedback loop
+            var contentW = Math.min(section.offsetWidth - 64, 1400);
+            var slotW    = Math.round(window.innerWidth < 768 ? contentW * 0.85 : contentW * 0.45);
+            var slotH    = Math.max(280, Math.round(slotW * aoiH / aoiW * 0.85));
+            slot.style.width     = slotW + 'px';
+            slot.style.height    = slotH + 'px';
+            slot.style.minHeight = '0';
+
+            var sr = section.getBoundingClientRect();
+            var fr = slot.getBoundingClientRect();
+            var scale = Math.max(fr.width / aoiW, fr.height / aoiH);
+
+            var imgW = bg.naturalWidth  * scale;
+            var imgH = bg.naturalHeight * scale;
+            var imgLeft = (fr.left - sr.left + fr.width  / 2) - (AOI_X1 + AOI_X2) / 2 * scale;
+            var imgTop  = (fr.top  - sr.top  + fr.height / 2) - (AOI_Y1 + AOI_Y2) / 2 * scale;
+
+            bg.style.maxWidth = 'none';
+            bg.style.width  = imgW + 'px';
+            bg.style.height = imgH + 'px';
+            bg.style.left   = imgLeft + 'px';
+            bg.style.top    = imgTop  + 'px';
+
+            // Mask: left fade anchors to image left edge; right fade anchors to image right
+            // visible edge (blurred image can extend beyond the slot to the right).
+            if (bgWrapper) {
+                var secW          = section.offsetWidth;
+                var imgRight      = imgLeft + imgW;
+                var leftFadeStart = Math.max(0, imgLeft);                    // image visible left edge
+                var leftFadeEnd   = leftFadeStart + FADE_LEFT_PX;            // fully opaque by here
+                var rightFadeEnd  = Math.min(secW, imgRight);                // transparent at image/section right
+                var rightFadeStart = Math.max(leftFadeEnd, rightFadeEnd - FADE_RIGHT_PX);
+                var msk = 'linear-gradient(to right, transparent 0px, transparent ' + Math.round(leftFadeStart) + 'px, black ' + Math.round(leftFadeEnd) + 'px, black ' + Math.round(rightFadeStart) + 'px, transparent ' + Math.round(rightFadeEnd) + 'px)';
+                bgWrapper.style.maskImage = msk;
+                bgWrapper.style.webkitMaskImage = msk;
+            }
+
+            // Sharp image: same position, clip-path cuts it to exactly the slot area
+            if (bgSharp) {
+                bgSharp.style.maxWidth = 'none';
+                bgSharp.style.width  = imgW + 'px';
+                bgSharp.style.height = imgH + 'px';
+                bgSharp.style.left   = imgLeft + 'px';
+                bgSharp.style.top    = imgTop  + 'px';
+                var cTop    = Math.max(0, (fr.top    - sr.top)    - imgTop);
+                var cLeft   = Math.max(0, (fr.left   - sr.left)   - imgLeft);
+                var cRight  = Math.max(0, (imgLeft   + imgW)      - (fr.right  - sr.left));
+                var cBottom = Math.max(0, (imgTop    + imgH)      - (fr.bottom - sr.top));
+                bgSharp.style.clipPath = 'inset(' + cTop + 'px ' + cRight + 'px ' + cBottom + 'px ' + cLeft + 'px)';
+            }
+        }
+
+        function init() {
+            positionAll();
+        }
+
+        if (bg.complete && bg.naturalWidth) {
+            init();
+        } else {
+            bg.addEventListener('load', init);
+        }
+        window.addEventListener('resize', positionAll);
+    })();
+    </script>
 
     <!-- Bragging Two -->
     <section id="bragging-two" class="w-full py-16 px-8" style="background: #0d0d1f;">
@@ -202,7 +294,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     <div id="bc-stack" style="position:absolute;transform:scale(0.65);transform-origin:top left;top:8px;left:10px;width:1320px;height:818px;font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;user-select:none;cursor:default;">
                         <svg id="wires-stack" style="position:absolute;top:0;left:0;width:1320px;height:818px;pointer-events:none;overflow:visible;" xmlns="http://www.w3.org/2000/svg"></svg>
                         <!-- Mapping -->
-                        <div style="position:absolute;left:20px;top:62px;width:158px;border-radius:5px;overflow:visible;">
+                        <div style="position:absolute;left:20px;top:200px;width:158px;border-radius:5px;overflow:visible;">
                             <div style="background:#1F4A64;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Mapping</div>
                             <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#E8E8E8;font-size:10.5px">Vector</span><span data-sid="stk_map_vec_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span></div>
@@ -211,28 +303,41 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#888;font-size:10.5px">Scale</span><span style="color:#555;font-size:9px;margin-left:auto">1, 1, 1</span></div>
                             </div>
                         </div>
+                        <!-- Image Texture: Albedo -->
+                        <div style="position:absolute;left:200px;top:10px;width:192px;border-radius:5px;overflow:visible;">
+                            <div style="background:#1B4F6B;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Image Texture</div>
+                            <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
+                                <div style="height:18px;background:#2E2E2E;display:flex;align-items:center;padding:0 6px;border-bottom:1px solid #222;"><span style="color:#777;font-size:9.5px">rock_albedo.png</span></div>
+                                <div style="height:82px;background:#555;position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background-image:repeating-conic-gradient(#656565 0% 25%,#454545 0% 50%);background-size:14px 14px;opacity:0.5;"></div></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_alb_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span></div>
+                                <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#B0B0B0;font-size:10.5px">Color</span><span data-sid="stk_alb_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#B0B0B0;font-size:10.5px">Alpha</span><span style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#A0A0A0;border:1.5px solid rgba(0,0,0,0.5)"></span></div>
+                            </div>
+                        </div>
                         <!-- Image Texture: Roughness -->
-                        <div style="position:absolute;left:270px;top:28px;width:192px;border-radius:5px;overflow:visible;">
+                        <div style="position:absolute;left:200px;top:218px;width:192px;border-radius:5px;overflow:visible;">
                             <div style="background:#1B4F6B;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Image Texture</div>
                             <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
                                 <div style="height:18px;background:#2E2E2E;display:flex;align-items:center;padding:0 6px;border-bottom:1px solid #222;"><span style="color:#777;font-size:9.5px">rock_roughness.png</span></div>
                                 <div style="height:82px;background:#555;position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background-image:repeating-conic-gradient(#656565 0% 25%,#454545 0% 50%);background-size:14px 14px;opacity:0.5;"></div></div>
-                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_rgh_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span><span data-sid="stk_rgh_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_rgh_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span></div>
+                                <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#B0B0B0;font-size:10.5px">Color</span><span data-sid="stk_rgh_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
                                 <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#B0B0B0;font-size:10.5px">Alpha</span><span style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#A0A0A0;border:1.5px solid rgba(0,0,0,0.5)"></span></div>
                             </div>
                         </div>
                         <!-- Image Texture: Normal -->
-                        <div style="position:absolute;left:270px;top:246px;width:192px;border-radius:5px;overflow:visible;">
+                        <div style="position:absolute;left:415px;top:40px;width:192px;border-radius:5px;overflow:visible;">
                             <div style="background:#1B4F6B;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Image Texture</div>
                             <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
                                 <div style="height:18px;background:#2E2E2E;display:flex;align-items:center;padding:0 6px;border-bottom:1px solid #222;gap:4px;"><span style="color:#777;font-size:9.5px">rock_normal.png</span><span style="margin-left:auto;background:#2A3A50;color:#6A9ABB;font-size:8.5px;padding:1px 4px;border-radius:2px">Non-Color</span></div>
                                 <div style="height:82px;background:#8080D0;position:relative;overflow:hidden;"><div style="position:absolute;inset:0;background-image:repeating-conic-gradient(#9090DD 0% 25%,#7070C0 0% 50%);background-size:14px 14px;opacity:0.4;"></div></div>
-                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_nrm_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span><span data-sid="stk_nrm_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-top:1px solid #222;"><span data-sid="stk_nrm_vec_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px">Vector</span></div>
+                                <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#B0B0B0;font-size:10.5px">Color</span><span data-sid="stk_nrm_col_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span></div>
                                 <div style="height:22px;display:flex;align-items:center;justify-content:flex-end;padding:0 10px;position:relative;background:rgba(0,0,0,0.12);border-radius:0 0 5px 5px;"><span style="color:#B0B0B0;font-size:10.5px">Alpha</span><span style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#A0A0A0;border:1.5px solid rgba(0,0,0,0.5)"></span></div>
                             </div>
                         </div>
                         <!-- Normal Map -->
-                        <div style="position:absolute;left:498px;top:306px;width:156px;border-radius:5px;overflow:visible;">
+                        <div style="position:absolute;left:622px;top:170px;width:156px;border-radius:5px;overflow:visible;">
                             <div style="background:#1F4A64;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Normal Map</div>
                             <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Strength</span><span style="color:#555;font-size:9px;margin-left:auto">1.000</span><span data-sid="stk_nm_nrm_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span></div>
@@ -240,10 +345,10 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                             </div>
                         </div>
                         <!-- Principled BSDF -->
-                        <div style="position:absolute;left:705px;top:128px;width:214px;border-radius:5px;overflow:visible;outline:2px solid #FF7F00;">
+                        <div style="position:absolute;left:790px;top:60px;width:214px;border-radius:5px;overflow:visible;outline:2px solid #FF7F00;">
                             <div style="background:#1D5E3E;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Principled BSDF</div>
                             <div style="background:#3D3D3D;border-radius:0 0 5px 5px;overflow:visible;">
-                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_pb_base_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Base Color</span><span data-sid="stk_pb_bsdf_o" style="position:absolute;top:7px;right:-4px;width:8px;height:8px;border-radius:50%;background:#63C763;border:1.5px solid #3A8A3A"></span></div>
+                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_pb_base_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#C7C729;border:1.5px solid #8A8A20"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Base Color</span></div>
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Subsurface Weight</span><span style="color:#555;font-size:9px;margin-left:auto">0</span></div>
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Metallic</span><span style="color:#555;font-size:9px;margin-left:auto">0.000</span></div>
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Specular IOR Level</span><span style="color:#555;font-size:9px;margin-left:auto">0.5</span></div>
@@ -252,15 +357,6 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span style="color:#888;font-size:10.5px">Transmission Weight</span><span style="color:#555;font-size:9px;margin-left:auto">0</span></div>
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="color:#888;font-size:10.5px">Emission Color</span></div>
                                 <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_pb_nrm_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid #4545AA"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Normal</span></div>
-                            </div>
-                        </div>
-                        <!-- Material Output -->
-                        <div style="position:absolute;left:965px;top:128px;width:162px;border-radius:5px;overflow:visible;">
-                            <div style="background:#282828;border:1px solid #3A3A3A;height:24px;border-radius:5px 5px 0 0;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700">Material Output</div>
-                            <div style="background:#3D3D3D;border:1px solid #2A2A2A;border-top:none;border-radius:0 0 5px 5px;overflow:visible;">
-                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;"><span data-sid="stk_mo_surf_i" style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#63C763;border:1.5px solid #3A8A3A"></span><span style="color:#E8E8E8;font-size:10.5px;font-weight:600">Surface</span></div>
-                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;background:rgba(0,0,0,0.12);"><span style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#63C763;border:1.5px solid rgba(0,0,0,0.4)"></span><span style="color:#888;font-size:10.5px">Volume</span></div>
-                                <div style="height:22px;display:flex;align-items:center;padding:0 10px 0 12px;position:relative;border-radius:0 0 5px 5px;"><span style="position:absolute;top:7px;left:-4px;width:8px;height:8px;border-radius:50%;background:#6363C7;border:1.5px solid rgba(0,0,0,0.4)"></span><span style="color:#888;font-size:10.5px">Displacement</span></div>
                             </div>
                         </div>
                         <div style="position:absolute;bottom:8px;right:14px;font-size:0;"></div>
@@ -272,12 +368,13 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <script is:inline>
     (function(){
         const CONNS = [
+            ['stk_map_vec_o','stk_alb_vec_i', '#6363C7'],
             ['stk_map_vec_o','stk_rgh_vec_i', '#6363C7'],
             ['stk_map_vec_o','stk_nrm_vec_i', '#6363C7'],
+            ['stk_alb_col_o','stk_pb_base_i', '#C7C729'],
             ['stk_rgh_col_o','stk_pb_rgh_i',  '#C7C729'],
             ['stk_nrm_col_o','stk_nm_col_i',  '#C7C729'],
             ['stk_nm_nrm_o', 'stk_pb_nrm_i', '#6363C7'],
-            ['stk_pb_bsdf_o','stk_mo_surf_i', '#63C763'],
         ];
         const SCALE = 0.65;
         function draw(){
@@ -309,17 +406,17 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </script>
 
     <!-- Bragging Four -->
-    <section class="w-full py-16 px-8" style="background: #0d0d1f;">
+    <section class="w-full py-16 px-8" style="background: rgb(218, 218, 218);">
         <div class="mx-auto" style="max-width: 1400px;">
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually left due to row-reverse): text -->
                 <div class="flex-1 flex flex-col">
-                    <h2 class="text-2xl font-semibold text-white mb-3">Started with a Camera</h2>
-                    <p class="text-slate-400 leading-relaxed">Filmmaking origin, VFX, graphics engineering. Blender + scripting, Adobe Suite, DaVinci Resolve, YouTube</p>
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-3">Started with a Camera</h2>
+                    <p class="text-gray-700 leading-relaxed">Filmmaking origin, VFX, graphics engineering. Blender + scripting, Adobe Suite, DaVinci Resolve, YouTube</p>
                     <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
-                        <div class="stack-icon"><img src="/icons/adobe-creative-cloud.png" alt="Adobe Creative Cloud" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Adobe Suite</span></div>
-                        <div class="stack-icon"><img src="/icons/davinci-resolve-12-logo-black-and-white.png" alt="DaVinci Resolve" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">DaVinci Resolve</span></div>
-                        <div class="stack-icon"><img src="/icons/Blender_logo_no_text.svg.png" alt="Blender" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Blender</span></div>
+                        <div class="stack-icon"><img src="/icons/adobe-creative-cloud.png" alt="Adobe Creative Cloud" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Adobe Suite</span></div>
+                        <div class="stack-icon"><img src="/icons/davinci-resolve-12-logo-black-and-white.png" alt="DaVinci Resolve" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">DaVinci Resolve</span></div>
+                        <div class="stack-icon"><img src="/icons/Blender_logo_no_text.svg.png" alt="Blender" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Blender</span></div>
                     </div>
                 </div>
                 <!-- Left: image/video placeholder -->
@@ -331,20 +428,20 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     </section>
 
     <!-- Bragging Five -->
-    <section id="bragging" class="w-full py-16 px-8" style="background: #0a1628;">
+    <section id="bragging" class="w-full px-8" style="background: linear-gradient(to bottom, #8AAEC6 0%, #9DBDD1 12%, #B2CCDA 28%, #C8DAE8 45%, #DDEAF3 58%, #EBF2F8 62%, #F5F8FA 64%, #F8FAFB 65%, #E0D8D0 66%, #C0B5A8 69%, #A89A90 77%, #907E74 88%, #7D7268 100%);">
         <div class="mx-auto" style="max-width: 1400px;">
             <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
-                <div class="flex-1 flex flex-col">
-                    <h2 class="text-2xl font-semibold text-white mb-3">Gamedev</h2>
-                    <p class="text-slate-400 leading-relaxed">Unity, taught a university course, rendering knowledge from the inside, speedrunner's understanding of games, actively building personal projects</p>
+                <div class="flex-1 flex flex-col py-16">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-3">Gamedev</h2>
+                    <p class="text-gray-700 leading-relaxed">Unity, taught a university course, rendering knowledge from the inside, speedrunner's understanding of games, actively building personal projects</p>
                     <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/Unity_Technologies_logo.svg.png" alt="Unity" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Unity</span></div>
                     </div>
                 </div>
-                <!-- Right: image/video placeholder -->
-                <div class="flex-none flex items-center justify-center rounded-lg border border-slate-700" style="width: 420px; height: 260px; background: #0f172a;">
-                    <span class="text-slate-600 text-sm">Image / video placeholder</span>
+                <!-- Right: image -->
+                <div class="flex-none flex items-stretch" style="width: 420px;">
+                    <img src="/images/bamboel_1.gif" alt="Gamedev" style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;" />
                 </div>
             </div>
         </div>
@@ -411,6 +508,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             var imgLeft = (fr.left - sr.left + fr.width  / 2) - (AOI_X1 + AOI_X2) / 2 * scale;
             var imgTop  = (fr.top  - sr.top  + fr.height / 2) - (AOI_Y1 + AOI_Y2) / 2 * scale;
 
+            bg.style.maxWidth = 'none';
             bg.style.width  = imgW + 'px';
             bg.style.height = imgH + 'px';
             bg.style.left   = imgLeft + 'px';
@@ -434,6 +532,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
 
             // Sharp image: same position, clip-path cuts it to exactly the slot area
             if (bgSharp) {
+                bgSharp.style.maxWidth = 'none';
                 bgSharp.style.width  = imgW + 'px';
                 bgSharp.style.height = imgH + 'px';
                 bgSharp.style.left   = imgLeft + 'px';
