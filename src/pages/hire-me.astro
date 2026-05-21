@@ -32,6 +32,10 @@ function slugify(s: string): string {
     return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+function processDescription(html: string): string {
+    return html.replace(/\*/g, '<sup style="color: #f59e0b; font-size: 1em; opacity: 0.85; letter-spacing: 0; vertical-align: -0.1em; margin-left: 1px; font-weight: 600;">*</sup>');
+}
+
 const now = new Date();
 
 const companies = workData.work_experience.map((company) => {
@@ -152,16 +156,19 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
                 <div class="flex-1 flex flex-col" style="position:relative; z-index:1;">
+                    <div class="flex-1"></div>
+                    <div>
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">Industry Research, Big Tech Edition</h2>
 
-                    <p class="text-slate-300 leading-relaxed mb-4 text-justify">I started in Los Angeles joining Snapchat as a Research Intern right after I finished my Master's degree.</p>
+                    <p class="text-slate-300 leading-relaxed mb-4 text-justify">I started in Los Angeles joining <em class="font-medium">Snapchat</em> as a Research Intern right after I finished my Master's degree.</p>
 
-                    <p class="text-slate-300 leading-relaxed mb-4 text-justify">A while into my Ph.D., I joined Google in New York as an Engineering Intern, collaborating with one 
+                    <p class="text-slate-300 leading-relaxed mb-4 text-justify">A while into my Ph.D., I joined <em class="font-medium">Google</em> in New York as an Engineering Intern, collaborating with one 
                     of their research teams on computer graphics projects. It went well enough that they kept me on and I ended up working with Google 
                     for over three more years.</p>
-
+                    </div>
                     <!-- <p class="text-slate-400 leading-relaxed">Google, Snapchat</p> -->
-                    <div style="display:flex; gap:2.5rem; align-items:center; margin-top:auto; padding-top:1.5rem; justify-content:center;">
+                    <div class="flex-1"></div>
+                    <div style="display:flex; gap:2.5rem; align-items:center; padding-top:1.5rem; justify-content:center;">
                         <div class="stack-icon"><img src="/icons/logo-google.png" alt="Google" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">Google</span></div>
                         <div class="stack-icon"><img src="/icons/snapchat_PNG63.png" alt="Snapchat" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">Snapchat</span></div>
                     </div>
@@ -266,15 +273,19 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually left due to row-reverse): text -->
                 <div class="flex-1 flex flex-col">
+                    <div class="flex-1"></div>
+                    <div>
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">Rendering Research, from PhD to Production</h2>
-                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">I have a Ph.D. in computer graphics, specializing in Stylization and Non-Photorealistic Rendering. 
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">I have a Ph.D. in computer graphics, specializing in Stylization and <em class="font-medium">Non-Photorealistic Rendering</em>. 
                     During my studies I worked in the research team of prof. Daniel Sýkora, helping artists express themselves in animated content with fewer technical constraints. 
-                    We published several papers at some of the field's most prestigious venues, including SIGGRAPH.</p>
+                    We published several papers at some of the field's most prestigious venues, including <em class="font-medium">SIGGRAPH</em>.</p>
 
                     <p class="text-slate-400 leading-relaxed mb-4 text-justify">I've since taken that expertise into production, 
                     working as a Rendering Research Engineer and eventually leading a team of engineers developing highly specialized rendering technology.</p>
+                    </div>
                     <!-- <p class="text-slate-400 leading-relaxed">PhD in computer graphics, SIGGRAPH publication, NPR/stylization specialization, currently Rendering Research Lead managing a team</p> -->
-                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                    <div class="flex-1"></div>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/ACM_SIGGRAPH_logo.svg.png" alt="SIGGRAPH" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">SIGGRAPH</span></div>
                     </div>
                 </div>
@@ -292,15 +303,18 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row gap-8 items-stretch">
                 <!-- Left: text -->
                 <div class="flex-1 flex flex-col">
+                    <div class="flex-1"></div>
+                    <div>
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">The Stack</h2>
                     <p class="text-slate-400 leading-relaxed mb-4 text-justify">Between industry and academia, I've worked on a wide range of projects using both widely available technologies and heavily customized in-house tools.</p>
 
-                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">Picking up new technologies has never been a problem, whether that's C++ and GLSL for graphics programming, 
-                    C++ and C# for game development, Python for research, machine learning and scripting, or TypeScript and assorted web frameworks for online content. 
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">Picking up new technologies has never been a problem, whether that's <em class="font-medium">C++</em> and <em class="font-medium">GLSL</em> for graphics programming, 
+                    <em class="font-medium">C++</em> and <em class="font-medium">C#</em> for game development, <em class="font-medium">Python</em> for research, machine learning and scripting, or <em class="font-medium">TypeScript</em> and assorted web frameworks for online content. 
                     And that's not even all of it.</p>
-
+                    </div>
                     <!-- <p class="text-slate-400 leading-relaxed">C++, C#, Python, GLSL, TypeScript/JavaScript</p> -->
-                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                    <div class="flex-1"></div>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/plus_logo_c_icon_214621.png" alt="C++" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">C++</span></div>
                         <div class="stack-icon"><img src="/icons/csharp.png" alt="C#" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">C#</span></div>
                         <div class="stack-icon"><img src="/icons/Python-logo-notext.svg.png" alt="Python" style="height: 40px; width: auto; object-fit: contain;" /><span class="stack-icon-label">Python</span></div>
@@ -430,19 +444,22 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually left due to row-reverse): text -->
                 <div class="flex-1 flex flex-col py-16">
+                    <div class="flex-1"></div>
+                    <div>
                     <h2 class="text-2xl font-semibold text-gray-900 mb-3 bragging-heading">Started with a Camera</h2>
-                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">My passion for computer graphics and VFX started early, watching creators like Film Riot and Video Copilot. 
-                    I started teaching myself video editing, beginning with Sony Vegas before moving on to a broader range of editors and compositors: Adobe Premiere, 
-                    After Effects or DaVinci Resolve.</p>
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">My passion for computer graphics and VFX started early, watching creators like <em class="font-medium">Film Riot</em> and <em class="font-medium">Video Copilot</em>. 
+                    I started teaching myself video editing, beginning with <em class="font-medium">Sony Vegas</em> before moving on to a broader range of editors and compositors: <em class="font-medium">Adobe Premiere</em>, 
+                    <em class="font-medium">After Effects</em> or <em class="font-medium">DaVinci Resolve</em>.</p>
 
-                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">Through VFX work I picked up industry standard compositing tools like Nuke, 
-                    which introduced me to Python scripting in visual effects pipelines. That eventually carried over into Blender, 
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">Through VFX work I picked up industry standard compositing tools like <em class="font-medium">Nuke</em>, 
+                    which introduced me to Python scripting in visual effects pipelines. That eventually carried over into <em class="font-medium">Blender</em>, 
                     where I've developed purpose-built tools and scripts for artists.</p>
 
-                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">The filmmaking side never went away either. I still edit and produce my own YouTube documentaries.</p>
-                    
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">The filmmaking side never went away either. I still edit and produce my own <em class="font-medium">YouTube</em> documentaries.</p>
+                    </div>
                     <!-- <p class="text-gray-700 leading-relaxed">Filmmaking origin, VFX, graphics engineering. Blender + scripting, Adobe Suite, DaVinci Resolve, YouTube</p> -->
-                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                    <div class="flex-1"></div>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/adobe-creative-cloud.png" alt="Adobe Creative Cloud" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Adobe Suite</span></div>
                         <div class="stack-icon"><img src="/icons/davinci-resolve-12-logo-black-and-white.png" alt="DaVinci Resolve" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">DaVinci Resolve</span></div>
                         <div class="stack-icon"><img src="/icons/Blender_logo_no_text.svg.png" alt="Blender" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Blender</span></div>
@@ -463,6 +480,8 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
                 <div class="flex-1 flex flex-col py-16">
+                    <div class="flex-1"></div>
+                    <div>
                     <h2 class="text-2xl font-semibold text-gray-900 mb-3 bragging-heading">Gamedev</h2>
 
                     <!-- <p class="text-gray-700 leading-relaxed">Unity, taught a university course, rendering knowledge from the inside, speedrunner's understanding of games, actively building personal projects</p> -->
@@ -470,12 +489,13 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     <p class="text-gray-700 leading-relaxed mb-4 text-justify">Video games have always been a big part of my life. 
                     In my free time I speedrun games, competing on leaderboards and performing commentated runs at live events.</p>
 
-                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">On the professional side, I taught a Unity development course at Czech Technical 
-                    University for several years, mentoring a team that went on to win the semestral competition. My background in rendering also means I 
+                    <p class="text-gray-700 leading-relaxed mb-4 text-justify">On the professional side, I taught a <em class="font-medium">Unity</em> development course at <em class="font-medium">Czech Technical University</em> for several years, mentoring a team that went on to win the semestral competition. My background in rendering also means I 
                     understand what's happening inside game engines at a deeper technical level.</p>
 
                     <p class="text-gray-700 leading-relaxed mb-4 text-justify">I'm currently building my own games on the side, putting all of that together.</p>
-                    <div style="display: flex; gap: 2.5rem; align-items: center; margin-top: auto; padding-top: 1.5rem; justify-content: center;">
+                    </div>
+                    <div class="flex-1"></div>
+                    <div style="display: flex; gap: 2.5rem; align-items: center; padding-top: 1.5rem; justify-content: center;">
                         <div class="stack-icon"><img src="/icons/Unity_Technologies_logo.svg.png" alt="Unity" style="height: 40px; width: auto; object-fit: contain; filter: invert(1);" /><span class="stack-icon-label">Unity</span></div>
                     </div>
                 </div>
@@ -500,6 +520,8 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually): text -->
                 <div class="flex-1 flex flex-col" style="position:relative; z-index:1;">
+                    <div class="flex-1"></div>
+                    <div>
                     <h2 class="text-2xl font-semibold text-white mb-3 bragging-heading">In front and behind the camera</h2>
 
                     <p class="text-slate-400 leading-relaxed mb-4 text-justify">I've been both the tech team member making live events happen, and the talent standing on stage when they do.</p>
@@ -507,12 +529,13 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     <p class="text-slate-400 leading-relaxed mb-4 text-justify">Behind the camera, I've worked on several live events, handling everything from physical hardware setup, 
                     pre-performance checks, camera work and audio mixing, to running the full broadcast. Both in person and online.</p>
 
-                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">In front of the camera, I performed a live speedrun showcase at Awesome Games Done Quick 2025 in Pittsburgh, 
+                    <p class="text-slate-400 leading-relaxed mb-4 text-justify">In front of the camera, I performed a live speedrun showcase at <em class="font-medium">Awesome Games Done Quick 2025</em> in Pittsburgh, 
                     one of the most watched gaming charity events in the world, to around 60,000 live viewers. On the research side, I presented at SIGGRAPH 
                     Asia 2022 to a room of around 1,000 researchers.</p>
-
+                    </div>
                     <!-- <p class="text-slate-400 leading-relaxed">GDQ (60k viewers), SIGGRAPH talk (~1000 in the room), live event tech production (audio, video, transitions, hardware, OBS)</p> -->
-                    <div style="display:flex; gap:2.5rem; align-items:center; margin-top:auto; padding-top:1.5rem; justify-content:center;">
+                    <div class="flex-1"></div>
+                    <div style="display:flex; gap:2.5rem; align-items:center; padding-top:1.5rem; justify-content:center;">
                         <div class="stack-icon"><img src="/icons/obs-studio-v04pu8ksuqcecv9lzkz7rb.png" alt="OBS" style="height:40px; width:auto; object-fit:contain;" /><span class="stack-icon-label">OBS Studio</span></div>
                     </div>
                 </div>
@@ -750,7 +773,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                                                 {role.location && <p class="text-slate-600 italic mt-0.5" style="font-size: 0.69rem;">{role.location}</p>}
                                             </div>
 
-                                            <div class="flex-1 description text-slate-400 text-sm leading-relaxed" set:html={role.description} />
+                                            <div class="flex-1 description text-slate-400 text-sm leading-relaxed" set:html={processDescription(role.description)} />
 
                                         </div>
                                     );
@@ -763,6 +786,8 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                 ))}
 
             </div>
+
+            <p class="text-slate-600 text-xs mt-10 italic" style="text-align: right;">* Some details are intentionally vague due to an existing NDA.</p>
 
         </div>
     </section>
@@ -778,11 +803,11 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                 <div class="absolute top-2 bottom-2 w-px bg-slate-700 hidden md:block" style="left: 4rem;"></div>
 
                 {eduData.education.map((entry) => (
-                    <div id={`edu-${slugify(entry.institution)}`} class="flex flex-col md:flex-row md:items-center">
+                    <div id={`edu-${slugify(entry.institution)}`} class="flex flex-col md:flex-row md:items-start">
 
                         <div class="flex-none hidden md:block" style="width: 4rem;"></div>
 
-                        <div class="flex flex-row items-center gap-3 md:contents">
+                        <div class="flex flex-row items-center gap-3 flex-none" style="width: 16rem;">
 
                         <div class="flex-none flex items-center md:relative" style="width: 2.5rem;">
                             {entry.logo ? (
@@ -792,14 +817,14 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                             )}
                         </div>
 
-                        <div class="flex-none flex flex-col justify-center" style="width: 13rem;">
+                        <div class="flex-none flex flex-col" style="width: 13rem;">
                             <span class="font-bold text-white leading-snug whitespace-nowrap" style="font-size: 1.1rem;">{entry.institution}</span>
                             {entry.faculty && <span class="text-slate-400 mt-0.5" style="font-size: 1.0rem;">{entry.faculty}</span>}
                         </div>
 
                         </div>
 
-                        <div class="flex flex-col gap-3 md:flex-row md:items-start md:gap-10 py-2 md:pl-28">
+                        <div class="flex flex-col gap-3 md:flex-row md:items-start md:gap-10 md:pl-28">
                             <div class="w-full md:flex-none md:w-72">
                                 <p class="font-semibold text-white" style="font-size: 1.25rem;">{entry.degree}</p>
                                 <p class="text-slate-400 mt-0.5" style="font-size: 0.8rem;">{entry.field}</p>
@@ -884,6 +909,9 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         font-weight: 400;
         text-transform: uppercase;
         letter-spacing: 0.2em;
+    }
+    :global(.description p + p) {
+        margin-top: 0.75rem;
     }
     .stack-icon-label {
         position: absolute;
@@ -978,10 +1006,6 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     :global(.side-nav-contact:hover .side-nav-label),
     :global(.side-nav-contact.active .side-nav-label) {
         color: #818cf8;
-    }
-
-    .description p + p {
-        margin-top: 0.75rem;
     }
 
     /* ── Intro list ── */

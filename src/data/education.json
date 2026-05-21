@@ -3,7 +3,7 @@
         {
             "current": false,
             "degree": "Doctor of Philosophy (PhD)",
-            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "description": "<p>My Ph.D. focused on real-time, stereoscopic example-based stylization, resulting in 5 published papers, one of which I authored as first author.</p><p>During this time, my team won Chaos Neurathon 2023, a neural rendering competition organized by Chaos, one of the leading rendering software companies in the industry.</p>",
             "end": "2024",
             "faculty": "Faculty of Electrical Engineering",
             "field": "Computer Graphics",
@@ -14,7 +14,7 @@
         {
             "current": false,
             "degree": "Master's degree",
-            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "description": "<p>Driven by my passion for computer graphics, I switched to the Faculty of Electrical Engineering to enroll in the Master's program under the Department of Computer Graphics and Interaction.</p><p>My Master's thesis went on to receive the prestigious Dean's Award.</p>",
             "end": "2018",
             "faculty": "Faculty of Electrical Engineering",
             "field": "Computer Graphics",
@@ -25,7 +25,7 @@
         {
             "current": false,
             "degree": "Bachelor's degree",
-            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "description": "<p>I started my university studies at the Faculty of Information Technology at Czech Technical University, enrolling in the most graphics-adjacent program available at the time. It was here that I discovered my passion for computer graphics, which eventually led me to switch faculties for my Master's</p>",
             "end": "2016",
             "faculty": "Faculty of Information Technology",
             "field": "Web and Multimedia",
@@ -35,8 +35,8 @@
         },
         {
             "current": false,
-            "degree": "Secondary School",
-            "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+            "degree": "Gymnasium",
+            "description": "<p>I attended Gymnázium Arabská in Prague, enrolling in their programming-focused programme. During my studies, our team competed in CTU Open, the Czech and Slovak regional contest of the ACM ICPC, placing well enough to receive direct admission offers from CTU Faculty of Information Technology, CTU Faculty of Electrical Engineering, and Charles University's Faculty of Mathematics and Physics.</p>",
             "end": "2013",
             "faculty": null,
             "field": "Programming",
