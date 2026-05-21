@@ -3,7 +3,7 @@
         {
             "current": false,
             "degree": "Doctor of Philosophy (PhD)",
-            "description": "<p>My Ph.D. focused on real-time, stereoscopic example-based stylization, resulting in 5 published papers, one of which I authored as first author.</p><p>During this time, my team won Chaos Neurathon 2023, a neural rendering competition organized by Chaos, one of the leading rendering software companies in the industry.</p>",
+            "description": "<p>My Ph.D. focused on real-time, stereoscopic example-based stylization, resulting in 5 published papers, one of which I authored as first author.</p><p>During this time, my team won <a href=\"https://fel.cvut.cz/en/what-s-on/news/32924-a-team-of-students-from-the-faculty-of-electrical-engineering-ctu-won-the-chaos-neurathon-2023\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Chaos Neurathon 2023</em></a>, a neural rendering competition organized by <em>Chaos</em>, one of the leading rendering software companies in the industry.</p>",
             "end": "2024",
             "faculty": "Faculty of Electrical Engineering",
             "field": "Computer Graphics",
@@ -14,7 +14,7 @@
         {
             "current": false,
             "degree": "Master's degree",
-            "description": "<p>Driven by my passion for computer graphics, I switched to the Faculty of Electrical Engineering to enroll in the Master's program under the Department of Computer Graphics and Interaction.</p><p>My Master's thesis went on to receive the prestigious Dean's Award.</p>",
+            "description": "<p>Driven by my passion for computer graphics, I switched to the <em>Faculty of Electrical Engineering</em> to enroll in the Master's program under the <em>Department of Computer Graphics and Interaction</em>.</p><p>My Master's thesis went on to receive the prestigious <a href=\"https://dcgi.fel.cvut.cz/en/theses/2018/kucerm22/\" target=\"_blank\" rel=\"noopener noreferrer\"><em>Dean's Award</em></a>.</p>",
             "end": "2018",
             "faculty": "Faculty of Electrical Engineering",
             "field": "Computer Graphics",
@@ -25,7 +25,7 @@
         {
             "current": false,
             "degree": "Bachelor's degree",
-            "description": "<p>I started my university studies at the Faculty of Information Technology at Czech Technical University, enrolling in the most graphics-adjacent program available at the time. It was here that I discovered my passion for computer graphics, which eventually led me to switch faculties for my Master's</p>",
+            "description": "<p>I started my university studies at the <em>Faculty of Information Technology</em> at <em>Czech Technical University</em>, enrolling in the most graphics-adjacent program available at the time. It was here that I discovered my passion for computer graphics, which eventually led me to switch faculties for my Master's</p>",
             "end": "2016",
             "faculty": "Faculty of Information Technology",
             "field": "Web and Multimedia",
@@ -36,7 +36,7 @@
         {
             "current": false,
             "degree": "Gymnasium",
-            "description": "<p>I attended Gymnázium Arabská in Prague, enrolling in their programming-focused programme. During my studies, our team competed in CTU Open, the Czech and Slovak regional contest of the ACM ICPC, placing well enough to receive direct admission offers from CTU Faculty of Information Technology, CTU Faculty of Electrical Engineering, and Charles University's Faculty of Mathematics and Physics.</p>",
+            "description": "<p>I attended <em>Gymnázium Arabská</em> in Prague, enrolling in their programming-focused programme. During my studies, our team competed in <a href=\"https://codeforces.com/gym/100795/standings/participant/9927130?locale=en\" target=\"_blank\" rel=\"noopener noreferrer\"><em>CTU Open</em></a>, the Czech and Slovak regional contest of the <em>ACM ICPC</em>, placing well enough to receive direct admission offers from <em>CTU Faculty of Information Technology</em>, <em>CTU Faculty of Electrical Engineering</em>, and <em>Charles University's Faculty of Mathematics and Physics</em>.</p>",
             "end": "2013",
             "faculty": null,
             "field": "Programming",

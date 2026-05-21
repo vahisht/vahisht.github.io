@@ -913,6 +913,13 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     :global(.description p + p) {
         margin-top: 0.75rem;
     }
+    :global(.description a) {
+        text-decoration: underline;
+        transition: color 0.15s;
+    }
+    :global(.description a:hover) {
+        color: #e2e8f0;
+    }
     .stack-icon-label {
         position: absolute;
         bottom: calc(100% + 8px);

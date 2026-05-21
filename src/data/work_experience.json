@@ -27,7 +27,7 @@
                 },
                 {
                     "current": false,
-                    "description": "<p>During my part-time role at Urus, I worked on rendering research and development with a focus on stylization, helping shape new techniques and tools. *</p>",
+                    "description": "<p>During my part-time role at <em>Urus</em>, I worked on rendering research and development with a focus on stylization, helping shape new techniques and tools. *</p>",
                     "duration": "8 months",
                     "end": "2024-03",
                     "location": "Remote",
@@ -45,7 +45,7 @@
             "roles": [
                 {
                     "current": false,
-                    "description": "<p>Following the internship, I joined one of Google's research teams, collaborating on computer graphics projects and research papers. *</p>",
+                    "description": "<p>Following the internship, I joined one of <em>Google</em>'s research teams, collaborating on computer graphics projects and research papers. *</p>",
                     "duration": "3 years 3 months",
                     "end": "2023-08",
                     "location": "Prague, Czech Republic",
@@ -73,7 +73,7 @@
             "roles": [
                 {
                     "current": false,
-                    "description": "<p>Following my time at Snap, I joined a research team at CTU Prague, continuing to develop some of the ideas from that internship while also picking up new academic projects as I prepared to start my Ph.D.</p>",
+                    "description": "<p>Following my time at <em>Snap</em>, I joined a research team at <em>CTU Prague</em>, continuing to develop some of the ideas from that internship while also picking up new academic projects as I prepared to start my Ph.D.</p>",
                     "duration": "6 months",
                     "end": "2019-04",
                     "location": "Prague, Czech Republic",
@@ -91,7 +91,7 @@
             "roles": [
                 {
                     "current": false,
-                    "description": "<p>I joined Snapchat in Santa Monica, working on two real-time experimental projects for their product.*</p>",
+                    "description": "<p>I joined <em>Snapchat</em> in Santa Monica, working on two real-time experimental projects for their product.*</p>",
                     "duration": "4 months",
                     "end": "2018-10",
                     "location": "Greater Los Angeles Area, USA",
@@ -109,7 +109,7 @@
             "roles": [
                 {
                     "current": false,
-                    "description": "<p>During my Master's studies I worked part time as a consultant, building custom software solutions for clients across various business processes.</p><p>My proudest project was an invoice automation system I built from scratch for Fortuna, the betting company. Starting from just a problem description, I developed an OCR-based solution that significantly reduced the manual workload of their accounting team.</p>",
+                    "description": "<p>During my Master's studies I worked part time as a consultant, building custom software solutions for clients across various business processes.</p><p>My proudest project was an invoice automation system I built from scratch for <em>Fortuna</em>, the betting company. Starting from just a problem description, I developed an OCR-based solution that significantly reduced the manual workload of their accounting team.</p>",
                     "duration": "1 year 4 months",
                     "end": "2017-11",
                     "location": "Prague, Czech Republic",
