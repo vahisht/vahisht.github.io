@@ -282,7 +282,7 @@
                                 </a>
                             {:else if n.image}
                                 <div class="thumb-link {n.imageAnchor === 'bottom' ? 'anchor-bottom' : ''}">
-                                    <div class="thumb-wrapper image-wrapper {n.imageAnchor === 'bottom' ? 'anchor-bottom' : ''}">
+                                    <div class="thumb-wrapper image-wrapper {n.imageAnchor === 'bottom' ? 'anchor-bottom' : ''} {n.borderType === 'none' ? 'no-shadow' : ''}">
                                         <img src={`/${n.image}`} alt={n.title} class="thumb-img" />
                                     </div>
                                 </div>
@@ -425,6 +425,11 @@
     .image-wrapper {
         aspect-ratio: unset;
         max-height: calc(40vh - 4rem);
+    }
+
+    .no-shadow {
+        box-shadow: none;
+        border-radius: 0;
     }
 
     .image-wrapper.anchor-bottom {

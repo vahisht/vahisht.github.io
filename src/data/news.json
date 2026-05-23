@@ -22,5 +22,19 @@
         },
         "description": "<p>Vahisht, Havrd and a 6 hour estimate.</p><p>Will Steam maintenance stop them from finishing a run before the speedtech gets patched out?</p>",
         "link": "https://www.youtube.com/watch?v=oUipVe-4HgM"
+    },
+    {
+        "title": "Operation Tango at ESA Summer 26",
+        "category": "Upcoming marathon run",
+        "style": {
+            "type": "tech",
+            "color": "#121b42",
+            "color2": "#89fbfc",
+            "text": "#FFFFFF"
+        },
+        "description": "<p>Vahisht and Ali saving the world in this coop puzzle game.</p><p>Soon at ESA Summer 2026</p>",
+        "image": "images/rd0Itl2rGhig6Kk1LQMZRdxE.webp",
+        "imageAnchor": "bottom",
+        "borderType": "none"
     }
 ]
