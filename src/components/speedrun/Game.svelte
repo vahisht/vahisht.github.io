@@ -72,7 +72,7 @@
 
     function handleClick() {
         if (speedrun.video) {
-            const isTouch = window.matchMedia('(hover: none)').matches;
+            const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
             if (isTouch) {
                 window.location.href = speedrun.video;
             } else {
@@ -449,8 +449,10 @@
         animation: legendaryHover 1.5s ease-in-out infinite;
     }
 
-    /* ── Touch devices: disable hover transforms that overflow the page ── */
-    @media (hover: none) {
+    /* ── Touch devices: disable hover transforms that overflow the page ──
+       Also key off pointer:coarse — Firefox for Android (and some others)
+       falsely report hover:hover, so the hover query alone misses them. ── */
+    @media (hover: none), (pointer: coarse) {
         .glow-wrapper:hover {
             z-index: 1;
         }

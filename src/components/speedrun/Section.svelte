@@ -40,10 +40,7 @@
 
 {#if results.length > 0}
     <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-3">
-            <span class="text-sm font-bold uppercase tracking-widest text-white">{sectionTitle}</span>
-            <div style="flex:1; height:1px; background: rgba(255,255,255,0.15);"></div>
-        </div>
+        <h2 class="section-heading">{sectionTitle}</h2>
         <div class="card-grid">
             {#each results as speedrun}
                 <Game speedrun={speedrun} />
@@ -53,6 +50,17 @@
 {/if}
 
 <style>
+    /* Matches the .bragging-heading style on the hire-me page (Death Stranding feel). */
+    .section-heading {
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 1.5rem;
+        color: #ffffff;
+        margin: 0;
+    }
+
     .card-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr));

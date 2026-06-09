@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # random stuff
 /inspiration
+
+# local screenshot/preview tooling (playwright-core driving system Edge)
+.preview/

@@ -7,7 +7,9 @@ import DialogBox from "../components/speedrun/DialogBox.svelte"
 
 <Layout title="Speedruns">
 
-    <div style="display: flex; flex-direction: column;">
+    <!-- min-height fills the viewport (nav is 5vh) so the lowest non-empty band -->
+    <!-- stretches via flex:1, continuing its pattern into any empty space below. -->
+    <div style="display: flex; flex-direction: column; min-height: 95vh;">
 
         <!-- Filter bar — always dark blue -->
         <div style="background: #020617;">

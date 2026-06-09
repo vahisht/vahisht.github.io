@@ -151,7 +151,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                  style="position:absolute; display:block; pointer-events:none; filter:blur(4px);" />
         </div>
         <!-- Sharp bg: clip-pathed to slot by JS, not masked -->
-        <img id="ir-bg-sharp" src="/images/IMG_20200208_100355_opt.jpg" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
+        <img id="ir-bg-sharp" class="brag-media" src="/images/IMG_20200208_100355_opt.jpg" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
         <div class="mx-auto" style="max-width:1400px; position:relative; z-index:3;">
             <div class="flex flex-col md:flex-row gap-12 items-stretch">
                 <!-- Left: text -->
@@ -174,7 +174,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     </div>
                 </div>
                 <!-- Right: AOI frame -->
-                <div id="ir-slot" class="flex-none" style="align-self:stretch; position:relative; min-height:320px; box-shadow:0 0 0 9999px rgba(0,0,0,0.55);">
+                <div id="ir-slot" class="flex-none brag-media" style="align-self:stretch; position:relative; min-height:320px; box-shadow:0 0 0 9999px rgba(0,0,0,0.55);">
                     <span style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:3px solid #fff;border-left:3px solid #fff;"></span>
                     <span style="position:absolute;top:0;right:0;width:18px;height:18px;border-top:3px solid #fff;border-right:3px solid #fff;"></span>
                     <span style="position:absolute;bottom:0;left:0;width:18px;height:18px;border-bottom:3px solid #fff;border-left:3px solid #fff;"></span>
@@ -290,7 +290,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     </div>
                 </div>
                 <!-- Left: lit sphere -->
-                <div class="flex-none flex items-center justify-center" style="width: 420px; height: 260px;">
+                <div class="flex-none flex items-center justify-center brag-media" style="width: 420px; height: 260px;">
                     <img src="/icons/lit_sphere.png" alt="Lit sphere rendering" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
                 </div>
             </div>
@@ -323,7 +323,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     </div>
                 </div>
                 <!-- Blender Shader Graph -->
-                <div style="flex:1;min-width:0;height:286px;position:relative;overflow:hidden;">
+                <div class="brag-media" style="flex:1;min-width:0;height:286px;position:relative;overflow:hidden;">
                     <div id="bc-stack" style="position:absolute;transform:scale(0.65);transform-origin:top left;top:8px;left:10px;width:1320px;height:818px;font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;font-size:11px;user-select:none;cursor:default;">
                         <svg id="wires-stack" style="position:absolute;top:0;left:0;width:1320px;height:818px;pointer-events:none;overflow:visible;" xmlns="http://www.w3.org/2000/svg"></svg>
                         <!-- Mapping -->
@@ -466,7 +466,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     </div>
                 </div>
                 <!-- Left: image -->
-                <div class="flex-none flex items-stretch" style="width: 420px; position: relative; padding: 1.5rem 0;">
+                <div class="flex-none flex items-stretch brag-media" style="width: 420px; position: relative; padding: 1.5rem 0;">
                     <img src="/images/organized-equipment.webp" alt="Equipment" style="width: 100%; height: 100%; object-fit: contain; object-position: center; display: block;" />
                     <span style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 600; color: #e53e3e; pointer-events: none; letter-spacing: 0.05em;">PLACEHOLDER</span>
                 </div>
@@ -500,7 +500,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     </div>
                 </div>
                 <!-- Right: image -->
-                <div class="flex-none flex items-stretch" style="width: 420px;">
+                <div class="flex-none flex items-stretch brag-media" style="width: 420px;">
                     <img src="/images/bamboel_1.gif" alt="Gamedev" style="width: 100%; height: 100%; object-fit: contain; object-position: bottom; display: block;" />
                 </div>
             </div>
@@ -515,7 +515,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                  style="position:absolute; display:block; pointer-events:none; filter:blur(4px);" />
         </div>
         <!-- Sharp bg: clip-pathed to slot by JS, not masked -->
-        <img id="live-bg-sharp" src="/images/IMG_7386_full.JPG" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
+        <img id="live-bg-sharp" class="brag-media" src="/images/IMG_7386_full.JPG" alt="" aria-hidden="true" style="position:absolute; display:block; pointer-events:none; z-index:1;" />
         <div class="mx-auto" style="max-width:1400px; position:relative; z-index:3;">
             <div class="flex flex-col md:flex-row-reverse gap-12 items-stretch">
                 <!-- Right (visually): text -->
@@ -540,7 +540,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
                     </div>
                 </div>
                 <!-- Left: AOI frame — image is scaled+positioned by JS so this slot frames the subject -->
-                <div id="live-slot" class="flex-none" style="align-self:stretch; position:relative; min-height:320px; box-shadow:0 0 0 9999px rgba(0,0,0,0.55);">
+                <div id="live-slot" class="flex-none brag-media" style="align-self:stretch; position:relative; min-height:320px; box-shadow:0 0 0 9999px rgba(0,0,0,0.55);">
                     <span style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:3px solid #fff;border-left:3px solid #fff;"></span>
                     <span style="position:absolute;top:0;right:0;width:18px;height:18px;border-top:3px solid #fff;border-right:3px solid #fff;"></span>
                     <span style="position:absolute;bottom:0;left:0;width:18px;height:18px;border-bottom:3px solid #fff;border-left:3px solid #fff;"></span>
@@ -636,7 +636,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="career" class="w-full py-10 px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
 
-<h1 class="text-3xl text-slate-200 mb-16 bragging-heading">Career at a Glance</h1>
+<h1 class="text-3xl text-slate-200 mb-16 bragging-heading"><span style="font-size: 1.2em;">[ </span>Career at a Glance<span style="font-size: 1.2em;"> ]</span></h1>
 
             <!-- outer wrapper: margin-left makes room for WORK/EDU labels -->
             <div class="relative" style="margin-left: 2.5rem;" id="tl-container">
@@ -716,7 +716,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="work-experience" class="w-full py-16 px-4 md:px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
 
-            <h1 class="text-3xl text-slate-200 mb-16 bragging-heading">Work Experience</h1>
+            <h1 class="text-3xl text-slate-200 mb-16 bragging-heading"><span style="font-size: 1.2em;">[ </span>Work Experience<span style="font-size: 1.2em;"> ]</span></h1>
 
             <div class="relative flex flex-col gap-12">
 
@@ -796,7 +796,7 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <section id="education" class="w-full py-16 px-4 md:px-8" style="background: #020617;">
         <div class="mx-auto" style="max-width: 1400px;">
 
-            <h1 class="text-3xl text-slate-200 mb-16 bragging-heading">Education</h1>
+            <h1 class="text-3xl text-slate-200 mb-16 bragging-heading"><span style="font-size: 1.2em;">[ </span>Education<span style="font-size: 1.2em;"> ]</span></h1>
 
             <div class="relative flex flex-col gap-12">
 
@@ -847,8 +847,8 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
     <!-- Hire Me Quest -->
     <section id="hire-me-quest" class="w-full pt-16 px-8" style="background: #12101e url('/backgrounds/wow.png') center center / cover no-repeat; overflow: hidden;">
         <div class="mx-auto" style="max-width: 1400px;">
-            <div class="flex justify-end items-end gap-0">
-                <img src="/backgrounds/wow_chars.png" alt="" aria-hidden="true" style="height: 520px; width: auto; object-fit: contain; object-position: bottom; flex-shrink: 0; pointer-events: none; user-select: none;" />
+            <div class="flex justify-end items-end gap-0 quest-row">
+                <img class="quest-chars" src="/backgrounds/wow_chars.png" alt="" aria-hidden="true" style="height: 520px; width: auto; object-fit: contain; object-position: bottom; flex-shrink: 0; pointer-events: none; user-select: none;" />
                 <div class="quest-panel" style="margin-bottom: 4rem;">
 
                     <!-- Title bar -->
@@ -909,6 +909,46 @@ const tlTickYears = [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024, 2026];
         font-weight: 400;
         text-transform: uppercase;
         letter-spacing: 0.2em;
+    }
+    /* On phones, drop the large side media in the bragging sections (framed photos,
+       lit sphere, shader graph, equipment photo, gamedev gif). The tech-stack logo
+       rows are kept. 767px = just below Tailwind's md breakpoint, where these stack. */
+    @media (max-width: 767px) {
+        .brag-media {
+            display: none !important;
+        }
+        /* Bragging One & Six: the framed slot is gone, but keep the photo as a simple
+           full-cover, darkened blur. Overrides the desktop JS positioning/mask, which
+           is computed from the now-hidden frame slot and would otherwise misplace it. */
+        #ir-bg-wrapper, #live-bg-wrapper {
+            -webkit-mask-image: none !important;
+                    mask-image: none !important;
+        }
+        #ir-bg, #live-bg {
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            filter: blur(4px) brightness(0.4) !important;
+        }
+        /* Hire Me Quest: the side character image + fixed 580px panel overflow on a
+           phone. Drop the characters and center the parchment with padding so the
+           background shows around it. */
+        #hire-me-quest {
+            padding: 2rem 1.25rem;
+        }
+        .quest-chars {
+            display: none;
+        }
+        .quest-row {
+            justify-content: center;
+        }
+        #hire-me-quest .quest-panel {
+            width: 100%;
+            max-width: 560px;
+            margin-bottom: 0 !important;
+        }
     }
     :global(.description p + p) {
         margin-top: 0.75rem;
