@@ -1,7 +1,7 @@
 <script lang="ts">
     import { visibleRunCounts, selectedSeries, selectedEvent } from "../../stores/sharedStore";
     import Section from "./Section.svelte";
-    import TrianglePattern from "./TrianglePattern.svelte";
+    import TrianglePattern from "../TrianglePattern.svelte";
 
     $: hasRuns = $visibleRunCounts.speedrun > 0;
     $: hasCommentary = $visibleRunCounts.commentary > 0;
