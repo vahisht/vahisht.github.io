@@ -1,24 +1,144 @@
 ---
-import { Image } from "astro:assets";
-import MobileNav from "../components/MobileNav.svelte"
+// Quiet HUD-chrome top bar: line + type only, no fill/pattern, no animation.
+// Content is centered to the same 1600px frame as the page content below.
+// Active item is set via aria-current by comparing each href to the current path.
+const path = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const links = [
+    { href: "/", label: "Home" },
+    { href: "/speedrun", label: "Speedruns" },
+];
+const isActive = (href: string) =>
+    href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
 ---
 
-<nav class="flex w-full h-[5vh] bg-gray-900 justify-center">
-    <div class="flex justify-between items-center w-full px-8" style="max-width: 1600px;">
+<nav class="topbar">
+    <div class="topbar-inner">
+        <a class="logo" href="/" aria-label="Home">
+            <!-- width/height reserve the logo's box (964x724 ratio) so links don't shift
+                 while the image loads on each navigation. -->
+            <img src="/logo.png" alt="Vahisht" width="964" height="724" />
+        </a>
 
-    <div class="flex items-center gap-6">
-        <Image src={"/logo.png"} alt="Logo" width={64} height={64} />
-
-        <div class="hidden sm:flex items-center gap-4" style="font-family: 'Titillium Web', sans-serif;">
-            <a href={"/"}>
-                <p class="text-xl p-2 text-gray-300 hover:text-white transition-colors">Home</p>
-            </a>
-            <a href={"/speedrun"}>
-                <p class="text-xl p-2 text-gray-300 hover:text-white transition-colors">Speedruns</p>
-            </a>
+        <div class="nav-links">
+            {links.map((l) => (
+                <a class="nav-link" href={l.href} aria-current={isActive(l.href) ? "page" : undefined}>{l.label}</a>
+            ))}
         </div>
     </div>
-
-    <MobileNav client:visible />
-    </div>
 </nav>
+
+<style is:global>
+    :root {
+        --bar-bg: #080d1b;      /* near-black, faint navy (a touch more saturated) */
+        --bar-rule: #1f2c40;    /* baseline hairline */
+        --bar-tick: #3a4450;    /* corner ticks */
+        --nav-dim: #8e99a8;     /* inactive nav */
+        --nav-hover: #c2ccd8;
+        --nav-active: #eaf0f6;
+        --nav-bracket: #566170; /* the [ ] around active item */
+        --accent: #f3e500;      /* signature color — active tick only on this bar */
+    }
+</style>
+
+<style>
+    .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        height: 64px;
+        background: var(--bar-bg);
+        border-bottom: 1px solid var(--bar-rule);
+    }
+
+    /* Centered content frame — lines up with the 1600px page content below. */
+    .topbar-inner {
+        position: relative;
+        max-width: 1600px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    /* Corner ticks: short verticals at each end of the content frame's baseline. */
+    .topbar-inner::before,
+    .topbar-inner::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 1px;
+        height: 5px;
+        background: var(--bar-tick);
+    }
+    .topbar-inner::before { left: 0; }
+    .topbar-inner::after { right: 0; }
+
+    /* Logo: existing PNG, used as-is (color baked in — never recolored/traced). */
+    .logo {
+        display: flex;
+    }
+    .logo img {
+        height: 26px;
+        width: auto;
+        display: block;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        height: 100%;
+    }
+
+    /* Codec type: uppercase, wide-tracked (Josefin Sans). */
+    .nav-link {
+        display: block;
+        height: 64px;
+        line-height: 64px;
+        position: relative;
+        font-family: "Josefin Sans", sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.82rem;
+        color: var(--nav-dim);
+        text-decoration: none;
+        transition: color 120ms ease;
+    }
+    /* Hover is mouse-only; touch gets press-state only. */
+    @media (hover: hover) and (pointer: fine) {
+        .nav-link:hover { color: var(--nav-hover); }
+    }
+    .nav-link:active { color: var(--nav-hover); }
+
+    /* Active state: brackets + a short accent tick on the baseline (NOT an underline).
+       Tick is a fixed-width gradient so it stays short/crisp regardless of label length. */
+    .nav-link[aria-current="page"] {
+        color: var(--nav-active);
+        background-image: linear-gradient(var(--accent), var(--accent));
+        background-repeat: no-repeat;
+        background-size: 16px 2px;
+        background-position: center bottom;
+    }
+    /* Brackets sit just outside the text (absolute, out of flow) so toggling the active
+       item never changes a link's width or shifts its siblings on navigation. */
+    .nav-link[aria-current="page"]::before,
+    .nav-link[aria-current="page"]::after {
+        position: absolute;
+        top: 0;
+        line-height: 64px;
+        color: var(--nav-bracket);
+        pointer-events: none;
+    }
+    .nav-link[aria-current="page"]::before { content: "["; right: 100%; margin-right: 5px; }
+    .nav-link[aria-current="page"]::after { content: "]"; left: 100%; margin-left: 5px; }
+
+    /* Keep the short links on one line on small phones. */
+    @media (max-width: 420px) {
+        .topbar-inner { gap: 18px; padding: 0 16px; }
+        .nav-links { gap: 18px; }
+        .nav-link { font-size: 0.76rem; letter-spacing: 0.12em; }
+    }
+</style>
