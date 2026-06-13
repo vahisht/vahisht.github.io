@@ -40,25 +40,28 @@
 
 {#if results.length > 0}
     <div class="flex flex-col gap-4">
-        <h2 class="section-heading">{sectionTitle}</h2>
+        <h2 class="section-heading" class:light={section === 'commentary'}>{sectionTitle}</h2>
         <div class="card-grid">
             {#each results as speedrun}
-                <Game speedrun={speedrun} />
+                <Game speedrun={speedrun} light={section === 'commentary'} />
             {/each}
         </div>
     </div>
 {/if}
 
 <style>
-    /* Matches the .bragging-heading style on the hire-me page (Death Stranding feel). */
+    /* Arcade section header — Pixelify Sans, matching the run-title face. */
     .section-heading {
-        font-family: 'Josefin Sans', sans-serif;
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        font-size: 1.5rem;
-        color: #ffffff;
+        font-family: 'Pixelify Sans', sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        font-size: 2.6rem;
+        color: #eef2fb;
         margin: 0;
+    }
+    /* Commentary section sits on warm cream — dark heading for contrast. */
+    .section-heading.light {
+        color: #2c2218;
     }
 
     .card-grid {

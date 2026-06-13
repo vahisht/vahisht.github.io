@@ -11,9 +11,9 @@ import DialogBox from "../components/speedrun/DialogBox.svelte"
     <!-- stretches via flex:1, continuing its pattern into any empty space below. -->
     <div style="display: flex; flex-direction: column; min-height: calc(100vh - 64px);">
 
-        <!-- Filter bar — always dark blue -->
-        <div style="background: #020617;">
-            <div class="w-full mx-auto px-4 py-6" style="max-width: 1400px;">
+        <!-- Filter bar — full-width sky-blue band, content width-limited -->
+        <div style="background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);">
+            <div class="w-full mx-auto px-4 py-5" style="max-width: 1400px;">
                 <SeriesSelect client:load />
             </div>
         </div>

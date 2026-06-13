@@ -9,7 +9,7 @@
     $: noResults = anyFilterActive && !hasRuns && !hasCommentary;
 
     $: if (typeof document !== 'undefined') {
-        document.body.style.background = hasCommentary ? 'rgb(97, 108, 124)' : '#020617';
+        document.body.style.background = hasCommentary ? '#f3ede2' : '#0b1020';
     }
 </script>
 
@@ -17,7 +17,7 @@
 
 <!-- Runs band — always present with #020617 background -->
 <div class="runs-band" class:no-results-mode={noResults} class:runs-fill={!hasCommentary} class:empty-band={!hasRuns && !noResults}>
-    <TrianglePattern baseColor="#020617" deviation={1.5} rows={12} vignetteStrength={0.35} seed={1} />
+    <TrianglePattern baseColor="#070a14" deviation={1} rows={12} vignetteStrength={0.35} seed={1} />
     <div class="inner">
         {#if noResults}
             <p class="no-results-text">No runs matching filters</p>
@@ -31,7 +31,7 @@
 <div class="commentary-wrap" class:commentary-band={hasCommentary}>
     <!-- Kept permanently mounted (the wrap collapses to 0 height when empty) so -->
     <!-- toggling the commentary filter never remounts the pattern and flashes. -->
-    <TrianglePattern baseColor="rgb(113,112,121)" deviation={3} rows={12} vignetteStrength={0.35} seed={2} />
+    <TrianglePattern baseColor="#ece2d2" deviation={2} rows={12} vignetteStrength={0.18} seed={2} />
     <div class="inner">
         <!-- Always mounted so the store stays up to date; renders nothing when empty -->
         <Section sectionTitle="Marathon Runs With Me On Commentary" section="commentary" />
@@ -49,7 +49,7 @@
     .runs-band {
         position: relative;
         width: 100%;
-        background: #020617;
+        background: #0b1020;
         padding: 2rem 0;
     }
 
@@ -92,7 +92,7 @@
         position: relative;
         flex: 1;
         width: 100%;
-        background: rgb(113, 112, 121);
+        background: #f3ede2;
         padding: 2rem 0;
     }
 

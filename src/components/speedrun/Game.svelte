@@ -1,6 +1,8 @@
 <script>
     // ### Information about a given speedrun, received from the parent component in Section.svelte
     export let speedrun
+    // ### Light variant = cream commentary section (changes border + caption colors).
+    export let light = false
 
     function getYouTubeThumbnail(videoUrl) {
         if (!videoUrl) return null;
@@ -31,30 +33,8 @@
 
     $: gradientColor = seriesGradientColors[speedrun.game_series] || defaultGradientColor;
 
-    const gameFonts = {
-        "Deus Ex":              "Michroma",
-        "Mirror's Edge":        "Titillium Web",
-        "Jedi Knight":          "Orbitron",
-        "Call of Duty":         "Rajdhani",
-        "Halo":                 "Rajdhani",
-        "SWAT4":                "Rajdhani",
-        "Command & Conquer":    "Rajdhani",
-        "Titanfall":            "Rajdhani",
-        "Borderlands":          "Righteous",
-        "Sewer Rave":           "Audiowide",
-        "Hitman":               "Josefin Sans",
-        "No One Lives Forever": "Righteous",
-    };
-    const gameFontSizes = {
-        "Michroma":      "1.1rem",
-        "Orbitron":      "1.25rem",
-        "Josefin Sans":  "1.3rem",
-        "Titillium Web": "1.3rem",
-        "Audiowide":     "1.05rem",
-        "Rajdhani":      "1.4rem",
-    };
-    $: gameFont = gameFonts[speedrun.game_series] || 'Exo 2';
-    $: gameFontSize = gameFontSizes[gameFont] || '1.15rem';
+    // All run titles share one arcade face — Pixelify Sans.
+    const titleFontSize = '1.3rem';
 
     function fitText(node, baseSize) {
         function adjust(base) {
@@ -82,17 +62,18 @@
     }
 </script>
 
-<div class="glow-wrapper {speedrun.important ? 'gold-shine' : ''}">
-    <div
-        class="card {speedrun.video ? 'clickable' : ''}"
-        on:click={handleClick}
-        aria-hidden="true"
-    >
-        {#if speedrun.video}
-            <div class="shine-overlay"></div>
-        {/if}
-        <!-- Thumbnail -->
-        <div class="thumbnail-wrap">
+<div
+    class="card-wrap {speedrun.video ? 'clickable' : ''}"
+    class:light={light}
+    on:click={handleClick}
+    aria-hidden="true"
+>
+    <!-- Thumbnail frame — un-clipped so the gold rays can spill outside -->
+    <div class="thumb-frame {speedrun.important ? 'gold-shine' : ''}">
+        <div class="thumb {speedrun.video ? 'clickable' : ''}">
+            {#if speedrun.video}
+                <div class="shine-overlay"></div>
+            {/if}
             <img
                 src={effectiveThumbnail}
                 alt={speedrun.game}
@@ -108,68 +89,71 @@
                 </div>
             {/if}
         </div>
+    </div>
 
-        <!-- Info below image -->
-        <div class="card-body">
-            <div class="name-event-slot">
-                <p class="game-name-hover" use:fitText={gameFontSize} style="font-family: '{gameFont}', sans-serif;">{speedrun.game}</p>
-            </div>
-            <div class="meta-row">
-                <span class="card-meta">{speedrun.category}{speedrun.event_name ? ` · ${speedrun.event_name}` : ''}{runnerDisplay ? ` · ${runnerDisplay}` : ''}</span>
-            </div>
+    <!-- Caption sits directly on the page background, below the thumbnail -->
+    <div class="caption">
+        <div class="name-slot">
+            <p class="game-name" use:fitText={titleFontSize}>{speedrun.game}</p>
         </div>
+        <span class="card-meta"><span class="bracket">[</span><span class="meta-cat">&nbsp;{speedrun.category}&nbsp;</span><span class="bracket">]</span>{speedrun.year ? ` · ${speedrun.year}` : ''}{runnerDisplay ? ` · ${runnerDisplay}` : ''}</span>
     </div>
 </div>
 
 <style>
-    :root {
-        --card-bg: #0f1117;
-        --card-border: #1e2130;
-        --card-border-hover: #3d4460;
-        --card-radius: 10px;
-        --game-color: #f0f0f0;
-        --category-color: #8b92b8;
-        --category-bg: #1a1f35;
-        --badge-bg: rgba(10, 12, 18, 0.65);
-        --badge-color: #aab0c8;
-    }
-
-    /* --- Glow wrapper: separate from card so overflow:hidden doesn't clip rays --- */
-    .glow-wrapper {
+    .card-wrap {
         position: relative;
-        isolation: isolate;
         width: 100%;
-        border-radius: var(--card-radius);
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
     }
-
-    .gold-shine {
-        z-index: 1;
-    }
-
-    .glow-wrapper:hover {
-        z-index: 2;
-    }
-
-    .card {
-        position: relative;
-        background: linear-gradient(135deg, #0f1117 0%, #0f1117 40%, #1e3a8a 58%, #c8d4ff 72%, #eef0ff 85%, #eef0ff 100%);
-        background-size: 250% 250%;
-        background-position: 0% 0%;
-        border: none;
-        border-radius: var(--card-radius);
-        overflow: hidden;
-        transition: transform 0.4s ease, background-position 0.5s ease;
-    }
-
-    .card.clickable {
+    .card-wrap.clickable {
         cursor: pointer;
     }
 
-    .card.clickable:hover {
-        transform: perspective(600px) rotateX(3deg) scale(1.05);
-        background-position: 100% 100%;
+    /* --- Thumbnail frame: keeps overflow visible so gold rays aren't clipped --- */
+    .thumb-frame {
+        position: relative;
     }
 
+    .thumb {
+        position: relative;
+        box-sizing: border-box;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border-radius: 2px;
+        /* Always-on edge ring so the image never blends into the page. */
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        transition: transform 0.4s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .card-wrap.light .thumb {
+        border-color: rgba(0, 0, 0, 0.16);
+    }
+
+    /* Hover anywhere on the card (thumbnail OR its caption) raises the thumbnail. */
+    .card-wrap.clickable:hover .thumb {
+        /* Lift + slight tilt up so the growing thumbnail clears the caption below. */
+        transform: perspective(600px) rotateX(2.5deg) scale(1.05) translateY(-11px);
+        z-index: 5;
+        /* 2px accent ring — a 1px ring aliases badly under the 3D transform. */
+        border: 2px solid #3ee0ff;
+        box-shadow: 0 10px 22px -8px rgba(0, 0, 0, 0.8);
+    }
+    .card-wrap.light.clickable:hover .thumb {
+        border-color: #f59e0b;
+        /* Stronger lift shadow + a warm halo so the accent ring actually reads on cream. */
+        box-shadow: 0 14px 30px -8px rgba(70, 45, 12, 0.6), 0 0 0 4px rgba(245, 158, 11, 0.22);
+    }
+    /* Important runs keep their gold glow — no cyan/warm accent ring on them. */
+    .card-wrap.clickable:hover .gold-shine .thumb {
+        border-color: rgba(255, 255, 255, 0.14);
+    }
+    .card-wrap.light.clickable:hover .gold-shine .thumb {
+        border-color: rgba(0, 0, 0, 0.16);
+    }
+
+    /* Moving highlight sweep across the thumbnail */
     .shine-overlay {
         position: absolute;
         inset: -20% 0;
@@ -187,15 +171,8 @@
         transform: translateY(-8%);
         transition: transform 0.45s ease;
     }
-    .card.clickable:hover .shine-overlay {
+    .card-wrap.clickable:hover .shine-overlay {
         transform: translateY(8%);
-    }
-
-    /* --- Thumbnail --- */
-    .thumbnail-wrap {
-        position: relative;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
     }
 
     .thumbnail {
@@ -205,10 +182,6 @@
         display: block;
         transition: filter 0.35s ease;
     }
-    .card.clickable:hover .thumbnail {
-        filter: blur(0px);
-    }
-
     .thumbnail.unavailable {
         filter: grayscale(1) brightness(0.5);
     }
@@ -221,7 +194,7 @@
         transition: opacity 0.35s ease;
         pointer-events: none;
     }
-    .card.clickable:hover .tint-overlay {
+    .card-wrap.clickable:hover .tint-overlay {
         opacity: 0;
     }
 
@@ -233,58 +206,8 @@
         opacity: 0;
         transition: opacity 0.35s ease;
     }
-    .card.clickable:hover .series-gradient {
+    .card-wrap.clickable:hover .series-gradient {
         opacity: 0;
-    }
-
-    /* Centered game name overlay */
-    .thumb-text {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 14px;
-        pointer-events: none;
-        transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .card.clickable:hover .thumb-text {
-        opacity: 0;
-        transform: translateY(-6px);
-    }
-
-    .game-name {
-        font-size: clamp(1.1rem, 3.5vw, 2rem);
-        font-weight: 700;
-        font-family: 'Exo 2', sans-serif;
-        color: #fff;
-        margin: 0;
-        text-align: center;
-        text-shadow: 0 2px 12px rgba(0,0,0,0.95), 0 0 30px rgba(0,0,0,0.7);
-        line-height: 1.25;
-        letter-spacing: -0.01em;
-        transition: color 0.4s ease;
-    }
-    .card.clickable:hover .game-name {
-        color: #fff;
-    }
-
-    .event-badge {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        font-size: 0.62rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--badge-color);
-        background: var(--badge-bg);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        padding: 3px 8px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.08);
-        white-space: nowrap;
     }
 
     .unavailable-overlay {
@@ -294,7 +217,6 @@
         align-items: center;
         justify-content: center;
     }
-
     .unavailable-overlay span {
         font-size: 0.75rem;
         font-weight: 600;
@@ -304,65 +226,84 @@
         opacity: 0.8;
     }
 
-    /* --- Card body --- */
-    .card-body {
-        padding: 8px 12px 10px;
+    /* --- Caption (directly on the page, no fill) --- */
+    .caption {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 2px;
     }
 
-    .meta-row {
-        display: flex;
-    }
-
-    .card-meta {
-        font-size: 0.88rem;
-        color: #6b7280;
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        transition: color 0.4s ease;
-    }
-    .card.clickable:hover .card-meta {
-        color: #555;
-    }
-
-    /* Fixed-height slot replaced with simple stack */
-    .name-event-slot {
-        display: flex;
-        flex-direction: column;
-        gap: 1px;
-        height: 1.75rem;
+    .name-slot {
+        height: 1.9rem;
         overflow: hidden;
     }
 
-    .event-line {
-        font-size: 0.68rem;
-        color: #6b7280;
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .game-name-hover {
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: #e2e8f0;
+    .game-name {
+        font-family: 'Pixelify Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #cdd6e4;
         margin: 0;
         line-height: 1.25;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        transition: color 0.4s ease;
+        transition: color 0.35s ease;
     }
-    .card.clickable:hover .game-name-hover {
-        color: #111;
+    .card-wrap.light .game-name {
+        color: #3a3024;
+    }
+    /* Hover anywhere on the card → caption brightens (the text itself does not move) */
+    .card-wrap.clickable:hover .game-name {
+        color: #ffffff;
+        text-shadow: 0 0 12px rgba(62, 224, 255, 0.5);
+    }
+    .card-wrap.light.clickable:hover .game-name {
+        color: #000000;
+        text-shadow: 0 0 14px rgba(245, 150, 30, 0.6);
     }
 
-    /* --- Gold glow for important runs --- */
+    .card-meta {
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 0.74rem;
+        color: #828ea6;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: color 0.35s ease;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+    .bracket {
+        color: #4f5a6e;
+        transition: color 0.35s ease;
+    }
+    .card-wrap.light .card-meta {
+        color: #8a7c64;
+    }
+    .card-wrap.light .bracket {
+        color: #b09e82;
+    }
+    /* Caption meta brightens on hover too */
+    .card-wrap.clickable:hover .card-meta {
+        color: #b4bfd6;
+    }
+    .card-wrap.clickable:hover .bracket {
+        color: #7e8ba6;
+    }
+    .card-wrap.light.clickable:hover .card-meta {
+        color: #4a3d28;
+    }
+    .card-wrap.light.clickable:hover .bracket {
+        color: #7a6438;
+    }
+
+    /* --- Gold glow for important runs (rays on the un-clipped frame) --- */
     @keyframes legendaryPulse {
         0%, 100% {
             box-shadow:
@@ -379,7 +320,6 @@
                 0 0 70px 22px rgba(180, 75, 0, 0.2);
         }
     }
-
     @keyframes legendaryHover {
         0%, 100% {
             box-shadow:
@@ -396,7 +336,6 @@
                 0 0 105px 34px rgba(195, 90, 0, 0.35);
         }
     }
-
     @keyframes rotateRays {
         from { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
         to   { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
@@ -406,7 +345,6 @@
         to   { transform: translate(-50%, -50%) scale(0.45) rotate(360deg); }
     }
 
-    /* Rotating ambient rays on the wrapper — always behind, blurred */
     .gold-shine::before {
         content: '';
         position: absolute;
@@ -437,42 +375,53 @@
         filter: blur(22px);
         z-index: -1;
     }
-    .gold-shine:hover::before {
+    .card-wrap.clickable:hover .gold-shine::before {
         animation: rotateRays 10s linear infinite;
     }
-
-    /* Box-shadow on the card so it follows the 3D transform */
-    .gold-shine > .card {
+    .gold-shine .thumb {
         animation: legendaryPulse 5s ease-in-out infinite;
     }
-    .gold-shine > .card.clickable:hover {
+    .card-wrap.clickable:hover .gold-shine .thumb {
         animation: legendaryHover 1.5s ease-in-out infinite;
     }
 
-    /* ── Touch devices: disable hover transforms that overflow the page ──
-       Also key off pointer:coarse — Firefox for Android (and some others)
-       falsely report hover:hover, so the hover query alone misses them. ── */
+    /* ── Touch devices: disable hover transforms that overflow the page ── */
     @media (hover: none), (pointer: coarse) {
-        .glow-wrapper:hover {
-            z-index: 1;
-        }
-        .card.clickable:hover {
+        .card-wrap.clickable:hover .thumb {
             transform: none;
-            background-position: 0% 0%;
+            z-index: auto;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: none;
         }
-        .card.clickable:hover .shine-overlay {
+        .card-wrap.light.clickable:hover .thumb {
+            border-color: rgba(0, 0, 0, 0.16);
+        }
+        .card-wrap.clickable:hover .shine-overlay {
             transform: translateY(-8%);
         }
-        .card.clickable:hover .game-name-hover {
-            color: #e2e8f0;
+        .card-wrap.clickable:hover .game-name {
+            color: #cdd6e4;
+            text-shadow: none;
         }
-        .card.clickable:hover .card-meta {
-            color: #6b7280;
+        .card-wrap.light.clickable:hover .game-name {
+            color: #3a3024;
         }
-        .gold-shine:hover::before {
+        .card-wrap.clickable:hover .card-meta {
+            color: #828ea6;
+        }
+        .card-wrap.clickable:hover .bracket {
+            color: #4f5a6e;
+        }
+        .card-wrap.light.clickable:hover .card-meta {
+            color: #8a7c64;
+        }
+        .card-wrap.light.clickable:hover .bracket {
+            color: #b09e82;
+        }
+        .card-wrap.clickable:hover .gold-shine::before {
             animation: rotateRaysSmall 10s linear infinite;
         }
-        .gold-shine > .card.clickable:hover {
+        .card-wrap.clickable:hover .gold-shine .thumb {
             animation: legendaryPulse 5s ease-in-out infinite;
         }
     }
